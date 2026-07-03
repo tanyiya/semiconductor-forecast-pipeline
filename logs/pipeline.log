@@ -5883,3 +5883,572 @@ Caused by: java.io.FileNotFoundException: File file:/D:/01_Bomi/03_Projects/ai_s
 2026-07-01 23:36:56,324 | INFO     | __main__ | Ingestion stage complete. Sources processed: ['yahoo']
 2026-07-01 23:36:56,324 | INFO     | spark.spark_session | Stopping SparkSession
 2026-07-01 23:36:56,561 | INFO     | utils.timing | END | Full Ingestion Pipeline | duration=17.00s
+2026-07-03 17:08:49,615 | INFO     | __main__ | Generating synthetic TrendForce data (days=90, seed=42). NOTE: this is fixture data for testing, not real scraped data.
+2026-07-03 17:08:49,631 | INFO     | __main__ | Generated 1170 synthetic TrendForce row(s) across 13 product(s) over 90 day(s)
+2026-07-03 17:09:46,587 | INFO     | __main__ | Generating synthetic TrendForce data (days=90, seed=42). NOTE: this is fixture data for testing, not real scraped data.
+2026-07-03 17:09:46,606 | INFO     | __main__ | Generated 1170 synthetic TrendForce row(s) across 13 product(s) over 90 day(s)
+2026-07-03 17:09:47,039 | INFO     | __main__ | Synthetic TrendForce Bronze data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\trendforce\data.parquet
+2026-07-03 17:10:51,485 | INFO     | __main__ | Generating synthetic TrendForce data (days=90, seed=42). NOTE: this is fixture data for testing, not real scraped data.
+2026-07-03 17:10:51,492 | INFO     | __main__ | Generated 1170 synthetic TrendForce row(s) across 13 product(s) over 90 day(s)
+2026-07-03 17:59:57,024 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-03 18:00:21,538 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-03 18:00:21,538 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-03 18:00:21,538 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle
+2026-07-03 18:00:26,480 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 12648
+2026-07-03 18:00:26,574 | INFO     | processing.kaggle_bronze_silver | [kaggle] Standardised column names: ['year', 'country', 'company', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-03 18:00:26,574 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Configured schema columns not found in data (skipped): ['date', 'chip_type', 'production_volume', 'region', 'revenue_usd']
+2026-07-03 18:00:26,574 | INFO     | processing.kaggle_bronze_silver | [kaggle] Columns present but not in configured schema (left as-is): ['year', 'country', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-03 18:00:26,722 | INFO     | processing.kaggle_bronze_silver | [kaggle] Standardised string values in columns: ['country', 'company', 'technology_node_nm', 'ai_chip_production']
+2026-07-03 18:00:26,724 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Outlier column 'production_volume' not present in data - skipping
+2026-07-03 18:00:26,724 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Outlier column 'revenue_usd' not present in data - skipping
+2026-07-03 18:00:31,499 | INFO     | processing.base_transformer | [kaggle] Silver row count: 12648 (unchanged)
+2026-07-03 18:00:33,007 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle
+2026-07-03 18:00:33,007 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=11.47s
+2026-07-03 18:00:33,007 | INFO     | utils.timing | START | Yahoo Bronze->Silver Transform
+2026-07-03 18:00:33,016 | INFO     | processing.base_transformer | [yahoo] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\yahoo
+2026-07-03 18:00:33,435 | INFO     | processing.base_transformer | [yahoo] Bronze row count: 17591
+2026-07-03 18:00:37,377 | INFO     | processing.base_transformer | [yahoo] Silver row count: 17591 (unchanged)
+2026-07-03 18:00:38,029 | INFO     | processing.base_transformer | [yahoo] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\yahoo
+2026-07-03 18:00:38,029 | INFO     | utils.timing | END | Yahoo Bronze->Silver Transform | duration=5.02s
+2026-07-03 18:00:38,029 | INFO     | utils.timing | START | Trendforce Bronze->Silver Transform
+2026-07-03 18:00:38,029 | INFO     | processing.base_transformer | [trendforce] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\trendforce
+2026-07-03 18:00:38,210 | INFO     | processing.base_transformer | [trendforce] Bronze row count: 1170
+2026-07-03 18:00:38,248 | INFO     | processing.trendforce_bronze_silver | [trendforce] Normalised Product and Category text
+2026-07-03 18:00:38,856 | INFO     | processing.trendforce_bronze_silver | [trendforce] Computed SCD2 Price_Effective_Date / Price_Expiration_Date per (Product, Category)
+2026-07-03 18:00:39,325 | INFO     | processing.trendforce_bronze_silver | [trendforce] Exploded validity intervals to daily grain (open intervals capped at 2026-07-03)
+2026-07-03 18:00:41,713 | ERROR    | utils.timing | FAILED | Trendforce Bronze->Silver Transform
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\base_transformer.py", line 125, in _execute
+    filtered_df = self.apply_quality_filters(transformed_df)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\trendforce_bronze_silver.py", line 207, in apply_quality_filters
+    before = df.count()
+             ^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\sql\classic\dataframe.py", line 439, in count
+    return int(self._jdf.count())
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\java_gateway.py", line 1362, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\errors\exceptions\captured.py", line 263, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\protocol.py", line 327, in get_return_value
+    raise Py4JJavaError(
+py4j.protocol.Py4JJavaError: An error occurred while calling o354.count.
+: org.apache.spark.SparkException: Job aborted due to stage failure: Task 1 in stage 62.0 failed 1 times, most recent failure: Lost task 1.0 in stage 62.0 (TID 109) (VivoBook-S14-X430UN.mshome.net executor driver): org.apache.spark.SparkException: Python worker exited unexpectedly (crashed). Consider setting 'spark.sql.execution.pyspark.udf.faulthandler.enabled' or'spark.python.worker.faulthandler.enabled' configuration to 'true' for the better Python traceback.
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:678)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:663)
+	at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:35)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:128)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:106)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:596)
+	at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
+	at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:611)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:50)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:153)
+	at org.apache.spark.shuffle.ShuffleWriteProcessor.write(ShuffleWriteProcessor.scala:57)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:111)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:54)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:180)
+	at org.apache.spark.scheduler.Task.run(Task.scala:147)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$5(Executor.scala:716)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:86)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:83)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:97)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:719)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:398)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:114)
+	... 24 more
+
+Driver stacktrace:
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$3(DAGScheduler.scala:3122)
+	at scala.Option.getOrElse(Option.scala:201)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:3122)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:3114)
+	at scala.collection.immutable.List.foreach(List.scala:323)
+	at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:3114)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1303)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1303)
+	at scala.Option.foreach(Option.scala:437)
+	at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1303)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:3397)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:3328)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:3317)
+	at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:50)
+Caused by: org.apache.spark.SparkException: Python worker exited unexpectedly (crashed). Consider setting 'spark.sql.execution.pyspark.udf.faulthandler.enabled' or'spark.python.worker.faulthandler.enabled' configuration to 'true' for the better Python traceback.
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:678)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:663)
+	at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:35)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:128)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:106)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:596)
+	at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
+	at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:611)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:50)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:153)
+	at org.apache.spark.shuffle.ShuffleWriteProcessor.write(ShuffleWriteProcessor.scala:57)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:111)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:54)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:180)
+	at org.apache.spark.scheduler.Task.run(Task.scala:147)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$5(Executor.scala:716)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:86)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:83)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:97)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:719)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:398)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:114)
+	... 24 more
+
+2026-07-03 18:00:41,786 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-03 18:04:28,378 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-03 18:04:37,563 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-03 18:04:37,565 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-03 18:04:37,565 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle
+2026-07-03 18:04:42,178 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 12648
+2026-07-03 18:04:42,279 | INFO     | processing.kaggle_bronze_silver | [kaggle] Standardised column names: ['year', 'country', 'company', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-03 18:04:42,285 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Configured schema columns not found in data (skipped): ['date', 'chip_type', 'production_volume', 'region', 'revenue_usd']
+2026-07-03 18:04:42,285 | INFO     | processing.kaggle_bronze_silver | [kaggle] Columns present but not in configured schema (left as-is): ['year', 'country', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-03 18:04:42,446 | INFO     | processing.kaggle_bronze_silver | [kaggle] Standardised string values in columns: ['country', 'company', 'technology_node_nm', 'ai_chip_production']
+2026-07-03 18:04:42,446 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Outlier column 'production_volume' not present in data - skipping
+2026-07-03 18:04:42,446 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Outlier column 'revenue_usd' not present in data - skipping
+2026-07-03 18:04:47,577 | INFO     | processing.base_transformer | [kaggle] Silver row count: 12648 (unchanged)
+2026-07-03 18:04:48,933 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle
+2026-07-03 18:04:48,933 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=11.37s
+2026-07-03 18:04:48,933 | INFO     | utils.timing | START | Yahoo Bronze->Silver Transform
+2026-07-03 18:04:48,938 | INFO     | processing.base_transformer | [yahoo] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\yahoo
+2026-07-03 18:04:49,318 | INFO     | processing.base_transformer | [yahoo] Bronze row count: 17591
+2026-07-03 18:04:53,776 | INFO     | processing.base_transformer | [yahoo] Silver row count: 17591 (unchanged)
+2026-07-03 18:04:54,452 | INFO     | processing.base_transformer | [yahoo] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\yahoo
+2026-07-03 18:04:54,452 | INFO     | utils.timing | END | Yahoo Bronze->Silver Transform | duration=5.52s
+2026-07-03 18:04:54,452 | INFO     | utils.timing | START | Trendforce Bronze->Silver Transform
+2026-07-03 18:04:54,458 | INFO     | processing.base_transformer | [trendforce] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\trendforce
+2026-07-03 18:04:54,697 | INFO     | processing.base_transformer | [trendforce] Bronze row count: 1170
+2026-07-03 18:04:54,728 | INFO     | processing.trendforce_bronze_silver | [trendforce] Normalised Product and Category text
+2026-07-03 18:04:55,310 | INFO     | processing.trendforce_bronze_silver | [trendforce] Computed SCD2 Price_Effective_Date / Price_Expiration_Date per (Product, Category)
+2026-07-03 18:04:55,753 | INFO     | processing.trendforce_bronze_silver | [trendforce] Exploded validity intervals to daily grain (open intervals capped at 2026-07-03)
+2026-07-03 18:04:58,101 | ERROR    | utils.timing | FAILED | Trendforce Bronze->Silver Transform
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\base_transformer.py", line 125, in _execute
+    filtered_df = self.apply_quality_filters(transformed_df)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\trendforce_bronze_silver.py", line 208, in apply_quality_filters
+    before = df.count()
+             ^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\sql\classic\dataframe.py", line 439, in count
+    return int(self._jdf.count())
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\java_gateway.py", line 1362, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\errors\exceptions\captured.py", line 263, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\protocol.py", line 327, in get_return_value
+    raise Py4JJavaError(
+py4j.protocol.Py4JJavaError: An error occurred while calling o354.count.
+: org.apache.spark.SparkException: Job aborted due to stage failure: Task 1 in stage 62.0 failed 1 times, most recent failure: Lost task 1.0 in stage 62.0 (TID 109) (VivoBook-S14-X430UN.mshome.net executor driver): org.apache.spark.SparkException: Python worker exited unexpectedly (crashed). Consider setting 'spark.sql.execution.pyspark.udf.faulthandler.enabled' or'spark.python.worker.faulthandler.enabled' configuration to 'true' for the better Python traceback.
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:678)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:663)
+	at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:35)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:128)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:106)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:596)
+	at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
+	at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:611)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:50)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:153)
+	at org.apache.spark.shuffle.ShuffleWriteProcessor.write(ShuffleWriteProcessor.scala:57)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:111)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:54)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:180)
+	at org.apache.spark.scheduler.Task.run(Task.scala:147)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$5(Executor.scala:716)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:86)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:83)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:97)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:719)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:398)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:114)
+	... 24 more
+
+Driver stacktrace:
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$3(DAGScheduler.scala:3122)
+	at scala.Option.getOrElse(Option.scala:201)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:3122)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:3114)
+	at scala.collection.immutable.List.foreach(List.scala:323)
+	at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:3114)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1303)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1303)
+	at scala.Option.foreach(Option.scala:437)
+	at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1303)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:3397)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:3328)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:3317)
+	at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:50)
+Caused by: org.apache.spark.SparkException: Python worker exited unexpectedly (crashed). Consider setting 'spark.sql.execution.pyspark.udf.faulthandler.enabled' or'spark.python.worker.faulthandler.enabled' configuration to 'true' for the better Python traceback.
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:678)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:663)
+	at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:35)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:128)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:106)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:596)
+	at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
+	at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:611)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:50)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:153)
+	at org.apache.spark.shuffle.ShuffleWriteProcessor.write(ShuffleWriteProcessor.scala:57)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:111)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:54)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:180)
+	at org.apache.spark.scheduler.Task.run(Task.scala:147)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$5(Executor.scala:716)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:86)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:83)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:97)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:719)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:398)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:114)
+	... 24 more
+
+2026-07-03 18:04:58,106 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-03 18:14:00,105 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-03 18:14:08,995 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-03 18:14:08,995 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-03 18:14:08,995 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle
+2026-07-03 18:14:13,459 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 12648
+2026-07-03 18:14:13,565 | INFO     | processing.kaggle_bronze_silver | [kaggle] Standardised column names: ['year', 'country', 'company', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-03 18:14:13,567 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Configured schema columns not found in data (skipped): ['date', 'chip_type', 'production_volume', 'region', 'revenue_usd']
+2026-07-03 18:14:13,567 | INFO     | processing.kaggle_bronze_silver | [kaggle] Columns present but not in configured schema (left as-is): ['year', 'country', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-03 18:14:13,715 | INFO     | processing.kaggle_bronze_silver | [kaggle] Standardised string values in columns: ['country', 'company', 'technology_node_nm', 'ai_chip_production']
+2026-07-03 18:14:13,715 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Outlier column 'production_volume' not present in data - skipping
+2026-07-03 18:14:13,715 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Outlier column 'revenue_usd' not present in data - skipping
+2026-07-03 18:14:18,008 | INFO     | processing.base_transformer | [kaggle] Silver row count: 12648 (unchanged)
+2026-07-03 18:14:19,300 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle
+2026-07-03 18:14:19,300 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=10.30s
+2026-07-03 18:14:19,300 | INFO     | utils.timing | START | Yahoo Bronze->Silver Transform
+2026-07-03 18:14:19,300 | INFO     | processing.base_transformer | [yahoo] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\yahoo
+2026-07-03 18:14:19,693 | INFO     | processing.base_transformer | [yahoo] Bronze row count: 17591
+2026-07-03 18:14:23,572 | INFO     | processing.base_transformer | [yahoo] Silver row count: 17591 (unchanged)
+2026-07-03 18:14:24,178 | INFO     | processing.base_transformer | [yahoo] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\yahoo
+2026-07-03 18:14:24,178 | INFO     | utils.timing | END | Yahoo Bronze->Silver Transform | duration=4.88s
+2026-07-03 18:14:24,178 | INFO     | utils.timing | START | Trendforce Bronze->Silver Transform
+2026-07-03 18:14:24,178 | INFO     | processing.base_transformer | [trendforce] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\trendforce
+2026-07-03 18:14:24,383 | INFO     | processing.base_transformer | [trendforce] Bronze row count: 1170
+2026-07-03 18:14:24,422 | INFO     | processing.trendforce_bronze_silver | [trendforce] Normalised Product and Category text
+2026-07-03 18:14:24,983 | INFO     | processing.trendforce_bronze_silver | [trendforce] Computed SCD2 Price_Effective_Date / Price_Expiration_Date per (Product, Category)
+2026-07-03 18:14:25,399 | INFO     | processing.trendforce_bronze_silver | [trendforce] Exploded validity intervals to daily grain (open intervals capped at 2026-07-03)
+2026-07-03 18:14:27,644 | ERROR    | utils.timing | FAILED | Trendforce Bronze->Silver Transform
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\base_transformer.py", line 125, in _execute
+    filtered_df = self.apply_quality_filters(transformed_df)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\trendforce_bronze_silver.py", line 208, in apply_quality_filters
+    before = df.count()
+             ^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\sql\classic\dataframe.py", line 439, in count
+    return int(self._jdf.count())
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\java_gateway.py", line 1362, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\errors\exceptions\captured.py", line 263, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\protocol.py", line 327, in get_return_value
+    raise Py4JJavaError(
+py4j.protocol.Py4JJavaError: An error occurred while calling o354.count.
+: org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 62.0 failed 1 times, most recent failure: Lost task 0.0 in stage 62.0 (TID 108) (VivoBook-S14-X430UN.mshome.net executor driver): org.apache.spark.SparkException: Python worker exited unexpectedly (crashed). Consider setting 'spark.sql.execution.pyspark.udf.faulthandler.enabled' or'spark.python.worker.faulthandler.enabled' configuration to 'true' for the better Python traceback.
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:678)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:663)
+	at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:35)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:128)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:106)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:596)
+	at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
+	at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:611)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:50)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:153)
+	at org.apache.spark.shuffle.ShuffleWriteProcessor.write(ShuffleWriteProcessor.scala:57)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:111)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:54)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:180)
+	at org.apache.spark.scheduler.Task.run(Task.scala:147)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$5(Executor.scala:716)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:86)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:83)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:97)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:719)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:398)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:114)
+	... 24 more
+
+Driver stacktrace:
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$3(DAGScheduler.scala:3122)
+	at scala.Option.getOrElse(Option.scala:201)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:3122)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:3114)
+	at scala.collection.immutable.List.foreach(List.scala:323)
+	at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:3114)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1303)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1303)
+	at scala.Option.foreach(Option.scala:437)
+	at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1303)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:3397)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:3328)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:3317)
+	at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:50)
+Caused by: org.apache.spark.SparkException: Python worker exited unexpectedly (crashed). Consider setting 'spark.sql.execution.pyspark.udf.faulthandler.enabled' or'spark.python.worker.faulthandler.enabled' configuration to 'true' for the better Python traceback.
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:678)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:663)
+	at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:35)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:128)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:106)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:596)
+	at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
+	at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:611)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:50)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:153)
+	at org.apache.spark.shuffle.ShuffleWriteProcessor.write(ShuffleWriteProcessor.scala:57)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:111)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:54)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:180)
+	at org.apache.spark.scheduler.Task.run(Task.scala:147)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$5(Executor.scala:716)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:86)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:83)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:97)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:719)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:398)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:114)
+	... 24 more
+
+2026-07-03 18:14:27,650 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-03 18:23:38,875 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-03 18:23:47,747 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-03 18:23:47,747 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-03 18:23:47,747 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle
+2026-07-03 18:23:51,964 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 12648
+2026-07-03 18:23:52,053 | INFO     | processing.kaggle_bronze_silver | [kaggle] Standardised column names: ['year', 'country', 'company', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-03 18:23:52,061 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Configured schema columns not found in data (skipped): ['date', 'chip_type', 'production_volume', 'region', 'revenue_usd']
+2026-07-03 18:23:52,061 | INFO     | processing.kaggle_bronze_silver | [kaggle] Columns present but not in configured schema (left as-is): ['year', 'country', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-03 18:23:52,202 | INFO     | processing.kaggle_bronze_silver | [kaggle] Standardised string values in columns: ['country', 'company', 'technology_node_nm', 'ai_chip_production']
+2026-07-03 18:23:52,202 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Outlier column 'production_volume' not present in data - skipping
+2026-07-03 18:23:52,202 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Outlier column 'revenue_usd' not present in data - skipping
+2026-07-03 18:23:56,487 | INFO     | processing.base_transformer | [kaggle] Silver row count: 12648 (unchanged)
+2026-07-03 18:23:57,783 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle
+2026-07-03 18:23:57,783 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=10.03s
+2026-07-03 18:23:57,784 | INFO     | utils.timing | START | Yahoo Bronze->Silver Transform
+2026-07-03 18:23:57,784 | INFO     | processing.base_transformer | [yahoo] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\yahoo
+2026-07-03 18:23:58,122 | INFO     | processing.base_transformer | [yahoo] Bronze row count: 17591
+2026-07-03 18:24:02,712 | INFO     | processing.base_transformer | [yahoo] Silver row count: 17591 (unchanged)
+2026-07-03 18:24:03,386 | INFO     | processing.base_transformer | [yahoo] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\yahoo
+2026-07-03 18:24:03,386 | INFO     | utils.timing | END | Yahoo Bronze->Silver Transform | duration=5.61s
+2026-07-03 18:24:03,386 | INFO     | utils.timing | START | Trendforce Bronze->Silver Transform
+2026-07-03 18:24:03,386 | INFO     | processing.base_transformer | [trendforce] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\trendforce
+2026-07-03 18:24:03,602 | INFO     | processing.base_transformer | [trendforce] Bronze row count: 1170
+2026-07-03 18:24:03,641 | INFO     | processing.trendforce_bronze_silver | [trendforce] Normalised Product and Category text
+2026-07-03 18:24:04,165 | INFO     | processing.trendforce_bronze_silver | [trendforce] Computed SCD2 Price_Effective_Date / Price_Expiration_Date per (Product, Category)
+2026-07-03 18:24:04,635 | INFO     | processing.trendforce_bronze_silver | [trendforce] Exploded validity intervals to daily grain (open intervals capped at 2026-07-03)
+2026-07-03 18:24:06,815 | ERROR    | utils.timing | FAILED | Trendforce Bronze->Silver Transform
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\base_transformer.py", line 125, in _execute
+    filtered_df = self.apply_quality_filters(transformed_df)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\trendforce_bronze_silver.py", line 213, in apply_quality_filters
+    before = df.count()
+             ^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\sql\classic\dataframe.py", line 439, in count
+    return int(self._jdf.count())
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\java_gateway.py", line 1362, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\errors\exceptions\captured.py", line 263, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\protocol.py", line 327, in get_return_value
+    raise Py4JJavaError(
+py4j.protocol.Py4JJavaError: An error occurred while calling o354.count.
+: org.apache.spark.SparkException: Job aborted due to stage failure: Task 1 in stage 62.0 failed 1 times, most recent failure: Lost task 1.0 in stage 62.0 (TID 109) (VivoBook-S14-X430UN.mshome.net executor driver): org.apache.spark.SparkException: Python worker exited unexpectedly (crashed). Consider setting 'spark.sql.execution.pyspark.udf.faulthandler.enabled' or'spark.python.worker.faulthandler.enabled' configuration to 'true' for the better Python traceback.
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:678)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:663)
+	at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:35)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:128)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:106)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:596)
+	at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
+	at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:611)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:50)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:153)
+	at org.apache.spark.shuffle.ShuffleWriteProcessor.write(ShuffleWriteProcessor.scala:57)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:111)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:54)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:180)
+	at org.apache.spark.scheduler.Task.run(Task.scala:147)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$5(Executor.scala:716)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:86)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:83)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:97)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:719)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:398)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:114)
+	... 24 more
+
+Driver stacktrace:
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$3(DAGScheduler.scala:3122)
+	at scala.Option.getOrElse(Option.scala:201)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:3122)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:3114)
+	at scala.collection.immutable.List.foreach(List.scala:323)
+	at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:3114)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1303)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1303)
+	at scala.Option.foreach(Option.scala:437)
+	at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1303)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:3397)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:3328)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:3317)
+	at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:50)
+Caused by: org.apache.spark.SparkException: Python worker exited unexpectedly (crashed). Consider setting 'spark.sql.execution.pyspark.udf.faulthandler.enabled' or'spark.python.worker.faulthandler.enabled' configuration to 'true' for the better Python traceback.
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:678)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:663)
+	at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:35)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:128)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:106)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:596)
+	at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
+	at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:611)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage2.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:50)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:153)
+	at org.apache.spark.shuffle.ShuffleWriteProcessor.write(ShuffleWriteProcessor.scala:57)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:111)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:54)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:180)
+	at org.apache.spark.scheduler.Task.run(Task.scala:147)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$5(Executor.scala:716)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:86)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:83)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:97)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:719)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:398)
+	at org.apache.spark.sql.execution.python.BasePythonUDFRunner$$anon$2.read(PythonUDFRunner.scala:114)
+	... 24 more
+
+2026-07-03 18:24:06,815 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-03 18:30:45,296 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-03 18:30:54,132 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-03 18:30:54,132 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-03 18:30:54,132 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle
+2026-07-03 18:30:58,463 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 12648
+2026-07-03 18:30:58,582 | INFO     | processing.kaggle_bronze_silver | [kaggle] Standardised column names: ['year', 'country', 'company', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-03 18:30:58,582 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Configured schema columns not found in data (skipped): ['date', 'chip_type', 'production_volume', 'region', 'revenue_usd']
+2026-07-03 18:30:58,582 | INFO     | processing.kaggle_bronze_silver | [kaggle] Columns present but not in configured schema (left as-is): ['year', 'country', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-03 18:30:58,722 | INFO     | processing.kaggle_bronze_silver | [kaggle] Standardised string values in columns: ['country', 'company', 'technology_node_nm', 'ai_chip_production']
+2026-07-03 18:30:58,722 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Outlier column 'production_volume' not present in data - skipping
+2026-07-03 18:30:58,722 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Outlier column 'revenue_usd' not present in data - skipping
+2026-07-03 18:31:03,194 | INFO     | processing.base_transformer | [kaggle] Silver row count: 12648 (unchanged)
+2026-07-03 18:31:04,570 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle
+2026-07-03 18:31:04,570 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=10.44s
+2026-07-03 18:31:04,570 | INFO     | utils.timing | START | Yahoo Bronze->Silver Transform
+2026-07-03 18:31:04,570 | INFO     | processing.base_transformer | [yahoo] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\yahoo
+2026-07-03 18:31:04,917 | INFO     | processing.base_transformer | [yahoo] Bronze row count: 17591
+2026-07-03 18:31:08,472 | INFO     | processing.base_transformer | [yahoo] Silver row count: 17591 (unchanged)
+2026-07-03 18:31:09,121 | INFO     | processing.base_transformer | [yahoo] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\yahoo
+2026-07-03 18:31:09,121 | INFO     | utils.timing | END | Yahoo Bronze->Silver Transform | duration=4.56s
+2026-07-03 18:31:09,121 | INFO     | utils.timing | START | Trendforce Bronze->Silver Transform
+2026-07-03 18:31:09,121 | INFO     | processing.base_transformer | [trendforce] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\trendforce
+2026-07-03 18:31:09,316 | INFO     | processing.base_transformer | [trendforce] Bronze row count: 1170
+2026-07-03 18:31:09,354 | INFO     | processing.trendforce_bronze_silver | [trendforce] Normalised Product and Category text
+2026-07-03 18:31:10,065 | INFO     | processing.trendforce_bronze_silver | [trendforce] Computed SCD2 Price_Effective_Date / Price_Expiration_Date per (Product, Category)
+2026-07-03 18:31:10,457 | INFO     | processing.trendforce_bronze_silver | [trendforce] Exploded validity intervals to daily grain (open intervals capped at 2026-07-03)
+2026-07-03 18:31:12,074 | INFO     | processing.base_transformer | [trendforce] Silver row count: 1170 (unchanged)
+2026-07-03 18:31:12,408 | INFO     | processing.base_transformer | [trendforce] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\trendforce
+2026-07-03 18:31:12,409 | INFO     | utils.timing | END | Trendforce Bronze->Silver Transform | duration=3.27s
+2026-07-03 18:31:12,410 | INFO     | spark.spark_session | Stopping SparkSession

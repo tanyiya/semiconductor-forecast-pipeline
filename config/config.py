@@ -25,6 +25,7 @@ PROJECT_ROOT: Path = Path(__file__).resolve().parent.parent
 DATA_DIR: Path = PROJECT_ROOT / "data"
 RAW_DIR: Path = DATA_DIR / "raw"
 BRONZE_DIR: Path = DATA_DIR / "bronze"
+SILVER_DIR: Path = DATA_DIR / "silver"
 LOG_DIR: Path = PROJECT_ROOT / "logs"
 
 RAW_KAGGLE_DIR: Path = RAW_DIR / "kaggle"
@@ -34,6 +35,10 @@ RAW_TRENDFORCE_DIR: Path = RAW_DIR / "trendforce"
 BRONZE_KAGGLE_DIR: Path = BRONZE_DIR / "kaggle"
 BRONZE_YAHOO_DIR: Path = BRONZE_DIR / "yahoo"
 BRONZE_TRENDFORCE_DIR: Path = BRONZE_DIR / "trendforce"
+
+SILVER_KAGGLE_DIR: Path = SILVER_DIR / "kaggle"
+SILVER_YAHOO_DIR: Path = SILVER_DIR / "yahoo"
+SILVER_TRENDFORCE_DIR: Path = SILVER_DIR / "trendforce"
 
 SPARK_WAREHOUSE_DIR: Path = PROJECT_ROOT / "spark-warehouse"
 
@@ -47,6 +52,9 @@ def ensure_directories() -> None:
         BRONZE_KAGGLE_DIR,
         BRONZE_YAHOO_DIR,
         BRONZE_TRENDFORCE_DIR,
+        SILVER_KAGGLE_DIR,
+        SILVER_YAHOO_DIR,
+        SILVER_TRENDFORCE_DIR,
         LOG_DIR,
         SPARK_WAREHOUSE_DIR,
     ):
@@ -59,6 +67,37 @@ def ensure_directories() -> None:
 # Point this at whatever CSV(s) you downloaded from the Kaggle "Global AI
 # Chip Supply Chain" dataset. Wildcards are supported (e.g. "*.csv").
 KAGGLE_CSV_GLOB: str = os.environ.get("KAGGLE_CSV_GLOB", "*.csv")
+
+
+# --------------------------------------------------------------------------
+# Kaggle Silver-layer configuration
+# --------------------------------------------------------------------------
+# The Kaggle dataset's columns are dataset-dependent, so the explicit
+# target schema for casting is declared here rather than hardcoded in the
+# transformer. Update this mapping to match your actual downloaded CSV's
+# columns (after they've been lowercased / space->underscore normalised).
+# Supported type strings: "string", "double", "long", "date".
+@dataclass(frozen=True)
+class KaggleSilverConfig:
+    date_column: str = "date"
+    column_schema: dict = field(
+        default_factory=lambda: {
+            "date": "date",
+            "company": "string",
+            "chip_type": "string",
+            "production_volume": "double",
+            "region": "string",
+            "revenue_usd": "double",
+        }
+    )
+    # Numeric columns to check for statistical outliers (mean +/- N*stddev).
+    outlier_columns: List[str] = field(
+        default_factory=lambda: ["production_volume", "revenue_usd"]
+    )
+    outlier_std_threshold: float = 3.0
+
+
+KAGGLE_SILVER_CONFIG = KaggleSilverConfig()
 
 
 # --------------------------------------------------------------------------
@@ -90,11 +129,17 @@ YAHOO_CONFIG = YahooConfig()
 @dataclass(frozen=True)
 class TrendForceConfig:
     base_url: str = "https://www.trendforce.com"
-    # Category pages to scrape. These are examples; update with the exact
-    # TrendForce URLs relevant to your project scope (DRAM / NAND / SSD).
+    # Verified public price-trend pages (checked 2026-07-01). Each page
+    # stacks several sub-tables (Spot Price, Contract Price, Module Spot
+    # Price, GDDR Spot Price, etc.). Member-gated sub-tables (LPDDR Spot,
+    # Mobile DRAM Contract, eMMC Spot, Wafer Contract) render with no
+    # visible numbers and are automatically skipped by the scraper - only
+    # publicly visible data is ever collected.
     target_pages: List[str] = field(
         default_factory=lambda: [
             "https://www.trendforce.com/price",
+            "https://www.trendforce.com/price/dram/dram_spot",
+            "https://www.trendforce.com/price/flash/flash_spot",
         ]
     )
     request_timeout_seconds: int = 15
