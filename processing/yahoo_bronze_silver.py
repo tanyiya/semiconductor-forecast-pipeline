@@ -42,6 +42,7 @@ class YahooFinanceTransformer(BaseTransformer):
         df = self._deduplicate(df)
         df = self._forward_fill_gaps(df)
         df = self._add_technical_features(df)
+        df = self._standardise_column_names(df)
         return df
 
     # ------------------------------------------------------------------

@@ -6452,3 +6452,463 @@ Caused by: java.io.EOFException
 2026-07-03 18:31:12,408 | INFO     | processing.base_transformer | [trendforce] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\trendforce
 2026-07-03 18:31:12,409 | INFO     | utils.timing | END | Trendforce Bronze->Silver Transform | duration=3.27s
 2026-07-03 18:31:12,410 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-05 14:55:23,498 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-05 14:55:50,279 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-05 14:55:50,279 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-05 14:55:50,281 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle
+2026-07-05 14:55:55,865 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 12648
+2026-07-05 14:55:55,959 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'country', 'company', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-05 14:55:55,961 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Configured schema columns not found in data (skipped): ['date', 'chip_type', 'production_volume', 'region', 'revenue_usd']
+2026-07-05 14:55:55,961 | INFO     | processing.kaggle_bronze_silver | [kaggle] Columns present but not in configured schema (left as-is): ['year', 'country', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-05 14:55:56,098 | INFO     | processing.kaggle_bronze_silver | [kaggle] Standardised string values in columns: ['country', 'company', 'technology_node_nm', 'ai_chip_production']
+2026-07-05 14:55:56,107 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Outlier column 'production_volume' not present in data - skipping
+2026-07-05 14:55:56,107 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Outlier column 'revenue_usd' not present in data - skipping
+2026-07-05 14:56:00,758 | INFO     | processing.base_transformer | [kaggle] Silver row count: 12648 (unchanged)
+2026-07-05 14:56:02,243 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle
+2026-07-05 14:56:02,243 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=11.96s
+2026-07-05 14:56:02,244 | INFO     | utils.timing | START | Yahoo Bronze->Silver Transform
+2026-07-05 14:56:02,244 | INFO     | processing.base_transformer | [yahoo] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\yahoo
+2026-07-05 14:56:02,692 | INFO     | processing.base_transformer | [yahoo] Bronze row count: 17591
+2026-07-05 14:56:05,247 | INFO     | processing.base_transformer | [yahoo] Standardised column names to snake_case: ['date', 'open', 'high', 'low', 'close', 'adj_close', 'volume', 'ticker', 'daily_return', 'volatility_range', 'ma_5', 'ma_20']
+2026-07-05 14:56:07,277 | INFO     | processing.base_transformer | [yahoo] Silver row count: 17591 (unchanged)
+2026-07-05 14:56:08,000 | INFO     | processing.base_transformer | [yahoo] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\yahoo
+2026-07-05 14:56:08,000 | INFO     | utils.timing | END | Yahoo Bronze->Silver Transform | duration=5.76s
+2026-07-05 14:56:08,000 | INFO     | utils.timing | START | Trendforce Bronze->Silver Transform
+2026-07-05 14:56:08,000 | INFO     | processing.base_transformer | [trendforce] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\trendforce
+2026-07-05 14:56:08,239 | INFO     | processing.base_transformer | [trendforce] Bronze row count: 1170
+2026-07-05 14:56:08,280 | INFO     | processing.trendforce_bronze_silver | [trendforce] Normalised Product and Category text
+2026-07-05 14:56:08,908 | INFO     | processing.trendforce_bronze_silver | [trendforce] Computed SCD2 Price_Effective_Date / Price_Expiration_Date per (Product, Category)
+2026-07-05 14:56:09,473 | INFO     | processing.trendforce_bronze_silver | [trendforce] Exploded validity intervals to daily grain (open intervals capped at 2026-07-03)
+2026-07-05 14:56:09,557 | INFO     | processing.base_transformer | [trendforce] Standardised column names to snake_case: ['report_date', 'product', 'price', 'unit', 'category', 'price_effective_date', 'price_expiration_date', 'date']
+2026-07-05 14:56:11,139 | INFO     | processing.base_transformer | [trendforce] Silver row count: 1170 (unchanged)
+2026-07-05 14:56:11,464 | INFO     | processing.base_transformer | [trendforce] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\trendforce
+2026-07-05 14:56:11,464 | INFO     | utils.timing | END | Trendforce Bronze->Silver Transform | duration=3.46s
+2026-07-05 14:56:11,464 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-05 15:50:39,629 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-05 15:50:48,783 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-05 15:50:48,783 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-05 15:50:53,342 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-05 15:50:53,785 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-05 15:50:54,192 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-05 15:50:54,192 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-05 15:50:58,344 | ERROR    | utils.timing | FAILED | Build Dim_Date
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py", line 181, in build_dim_date
+    dim_date.count(),
+    ^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\sql\classic\dataframe.py", line 439, in count
+    return int(self._jdf.count())
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\java_gateway.py", line 1362, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\errors\exceptions\captured.py", line 263, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\protocol.py", line 327, in get_return_value
+    raise Py4JJavaError(
+py4j.protocol.Py4JJavaError: An error occurred while calling o145.count.
+: org.apache.spark.SparkException: Job aborted due to stage failure: Task 1 in stage 15.0 failed 1 times, most recent failure: Lost task 1.0 in stage 15.0 (TID 42) (VivoBook-S14-X430UN.mshome.net executor driver): org.apache.spark.SparkException: Python worker exited unexpectedly (crashed). Consider setting 'spark.sql.execution.pyspark.udf.faulthandler.enabled' or'spark.python.worker.faulthandler.enabled' configuration to 'true' for the better Python traceback.
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:678)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:663)
+	at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:35)
+	at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:1034)
+	at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:1014)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:596)
+	at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
+	at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:611)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.hashAgg_doAggregateWithoutKey_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:50)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:153)
+	at org.apache.spark.shuffle.ShuffleWriteProcessor.write(ShuffleWriteProcessor.scala:57)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:111)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:54)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:180)
+	at org.apache.spark.scheduler.Task.run(Task.scala:147)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$5(Executor.scala:716)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:86)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:83)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:97)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:719)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:398)
+	at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:1022)
+	... 25 more
+
+Driver stacktrace:
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$3(DAGScheduler.scala:3122)
+	at scala.Option.getOrElse(Option.scala:201)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:3122)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:3114)
+	at scala.collection.immutable.List.foreach(List.scala:323)
+	at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:3114)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1303)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1303)
+	at scala.Option.foreach(Option.scala:437)
+	at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1303)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:3397)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:3328)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:3317)
+	at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:50)
+Caused by: org.apache.spark.SparkException: Python worker exited unexpectedly (crashed). Consider setting 'spark.sql.execution.pyspark.udf.faulthandler.enabled' or'spark.python.worker.faulthandler.enabled' configuration to 'true' for the better Python traceback.
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:678)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:663)
+	at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:35)
+	at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:1034)
+	at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:1014)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:596)
+	at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
+	at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:611)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.hashAgg_doAggregateWithoutKey_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:50)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:153)
+	at org.apache.spark.shuffle.ShuffleWriteProcessor.write(ShuffleWriteProcessor.scala:57)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:111)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:54)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:180)
+	at org.apache.spark.scheduler.Task.run(Task.scala:147)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$5(Executor.scala:716)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:86)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:83)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:97)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:719)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:398)
+	at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:1022)
+	... 25 more
+
+2026-07-05 15:50:58,441 | ERROR    | utils.timing | FAILED | Full Silver -> Gold Build
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py", line 547, in run_silver_to_gold
+    dim_date = build_dim_date(yahoo_df, trendforce_df, kaggle_df, spark)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py", line 181, in build_dim_date
+    dim_date.count(),
+    ^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\sql\classic\dataframe.py", line 439, in count
+    return int(self._jdf.count())
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\java_gateway.py", line 1362, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\errors\exceptions\captured.py", line 263, in deco
+    return f(*a, **kw)
+           ^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\protocol.py", line 327, in get_return_value
+    raise Py4JJavaError(
+py4j.protocol.Py4JJavaError: An error occurred while calling o145.count.
+: org.apache.spark.SparkException: Job aborted due to stage failure: Task 1 in stage 15.0 failed 1 times, most recent failure: Lost task 1.0 in stage 15.0 (TID 42) (VivoBook-S14-X430UN.mshome.net executor driver): org.apache.spark.SparkException: Python worker exited unexpectedly (crashed). Consider setting 'spark.sql.execution.pyspark.udf.faulthandler.enabled' or'spark.python.worker.faulthandler.enabled' configuration to 'true' for the better Python traceback.
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:678)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:663)
+	at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:35)
+	at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:1034)
+	at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:1014)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:596)
+	at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
+	at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:611)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.hashAgg_doAggregateWithoutKey_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:50)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:153)
+	at org.apache.spark.shuffle.ShuffleWriteProcessor.write(ShuffleWriteProcessor.scala:57)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:111)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:54)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:180)
+	at org.apache.spark.scheduler.Task.run(Task.scala:147)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$5(Executor.scala:716)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:86)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:83)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:97)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:719)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:398)
+	at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:1022)
+	... 25 more
+
+Driver stacktrace:
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$3(DAGScheduler.scala:3122)
+	at scala.Option.getOrElse(Option.scala:201)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:3122)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:3114)
+	at scala.collection.immutable.List.foreach(List.scala:323)
+	at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:3114)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1303)
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1303)
+	at scala.Option.foreach(Option.scala:437)
+	at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1303)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:3397)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:3328)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:3317)
+	at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:50)
+Caused by: org.apache.spark.SparkException: Python worker exited unexpectedly (crashed). Consider setting 'spark.sql.execution.pyspark.udf.faulthandler.enabled' or'spark.python.worker.faulthandler.enabled' configuration to 'true' for the better Python traceback.
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:678)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator$$anonfun$1.applyOrElse(PythonRunner.scala:663)
+	at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:35)
+	at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:1034)
+	at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:1014)
+	at org.apache.spark.api.python.BasePythonRunner$ReaderIterator.hasNext(PythonRunner.scala:596)
+	at org.apache.spark.InterruptibleIterator.hasNext(InterruptibleIterator.scala:37)
+	at scala.collection.Iterator$$anon$10.hasNext(Iterator.scala:611)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.hashAgg_doAggregateWithoutKey_0$(Unknown Source)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenEvaluatorFactory$WholeStageCodegenPartitionEvaluator$$anon$1.hasNext(WholeStageCodegenEvaluatorFactory.scala:50)
+	at scala.collection.Iterator$$anon$9.hasNext(Iterator.scala:593)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:153)
+	at org.apache.spark.shuffle.ShuffleWriteProcessor.write(ShuffleWriteProcessor.scala:57)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:111)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:54)
+	at org.apache.spark.TaskContext.runTaskWithListeners(TaskContext.scala:180)
+	at org.apache.spark.scheduler.Task.run(Task.scala:147)
+	at org.apache.spark.executor.Executor$TaskRunner.$anonfun$run$5(Executor.scala:716)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally(SparkErrorUtils.scala:86)
+	at org.apache.spark.util.SparkErrorUtils.tryWithSafeFinally$(SparkErrorUtils.scala:83)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:97)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:719)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:398)
+	at org.apache.spark.api.python.PythonRunner$$anon$3.read(PythonRunner.scala:1022)
+	... 25 more
+
+2026-07-05 15:50:58,445 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-05 16:08:36,441 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-05 16:08:45,735 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-05 16:08:45,735 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-05 16:08:50,333 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-05 16:08:50,678 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-05 16:08:51,002 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-05 16:08:51,021 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-05 16:08:53,915 | INFO     | __main__ | [gold] Dim_Date spans 2016-07-01 to 2026-07-03 (3655 day(s))
+2026-07-05 16:08:53,915 | INFO     | utils.timing | END | Build Dim_Date | duration=2.91s
+2026-07-05 16:08:55,420 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-05 16:08:55,420 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-05 16:08:56,536 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-05 16:08:56,536 | INFO     | utils.timing | END | Build Dim_Product | duration=1.11s
+2026-07-05 16:08:57,417 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-05 16:08:57,417 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-05 16:08:58,975 | INFO     | __main__ | [gold] Dim_Company: 4710 distinct compan(y/ies)
+2026-07-05 16:08:58,975 | INFO     | utils.timing | END | Build Dim_Company | duration=1.56s
+2026-07-05 16:09:00,207 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-05 16:09:00,223 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-05 16:09:00,935 | INFO     | __main__ | [gold] Dim_Country: 144 distinct countr(y/ies)
+2026-07-05 16:09:00,935 | INFO     | utils.timing | END | Build Dim_Country | duration=0.71s
+2026-07-05 16:09:01,399 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-05 16:09:01,399 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-05 16:09:02,968 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-05 16:09:02,968 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=1.57s
+2026-07-05 16:09:04,411 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-05 16:09:04,411 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-05 16:09:05,667 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-05 16:09:05,667 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=1.25s
+2026-07-05 16:09:07,106 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-05 16:09:07,106 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-05 16:09:07,106 | ERROR    | __main__ | [gold] Configured Kaggle date column 'date' not found (columns: ['year', 'country', 'company', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']) - cannot derive calendar year, skipping Fact_Production
+2026-07-05 16:09:07,106 | INFO     | utils.timing | END | Build Fact_Production | duration=0.00s
+2026-07-05 16:09:07,110 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market']
+2026-07-05 16:09:07,110 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=21.37s
+2026-07-05 16:09:07,110 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-05 16:10:05,549 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-05 16:10:14,519 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-05 16:10:14,519 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-05 16:10:19,335 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-05 16:10:19,717 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-05 16:10:20,086 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-05 16:10:20,086 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-05 16:10:23,048 | INFO     | __main__ | [gold] Dim_Date spans 2016-07-01 to 2026-07-03 (3655 day(s))
+2026-07-05 16:10:23,048 | INFO     | utils.timing | END | Build Dim_Date | duration=2.97s
+2026-07-05 16:10:24,355 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-05 16:10:24,355 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-05 16:10:25,359 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-05 16:10:25,361 | INFO     | utils.timing | END | Build Dim_Product | duration=1.01s
+2026-07-05 16:10:26,474 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-05 16:10:26,474 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-05 16:10:27,934 | INFO     | __main__ | [gold] Dim_Company: 4710 distinct compan(y/ies)
+2026-07-05 16:10:27,934 | INFO     | utils.timing | END | Build Dim_Company | duration=1.46s
+2026-07-05 16:10:29,223 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-05 16:10:29,223 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-05 16:10:29,744 | INFO     | __main__ | [gold] Dim_Country: 144 distinct countr(y/ies)
+2026-07-05 16:10:29,744 | INFO     | utils.timing | END | Build Dim_Country | duration=0.52s
+2026-07-05 16:10:30,378 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-05 16:10:30,379 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-05 16:10:31,940 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-05 16:10:31,940 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=1.56s
+2026-07-05 16:10:33,481 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-05 16:10:33,481 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-05 16:10:34,950 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-05 16:10:34,950 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=1.48s
+2026-07-05 16:10:36,569 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-05 16:10:36,570 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-05 16:10:36,570 | ERROR    | __main__ | [gold] Configured Kaggle date column 'date' not found (columns: ['year', 'country', 'company', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']) - cannot derive calendar year, skipping Fact_Production
+2026-07-05 16:10:36,570 | INFO     | utils.timing | END | Build Fact_Production | duration=0.00s
+2026-07-05 16:10:36,571 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market']
+2026-07-05 16:10:36,571 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=22.05s
+2026-07-05 16:10:36,572 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-05 16:13:58,821 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-05 16:14:07,885 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-05 16:14:07,887 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-05 16:14:12,671 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-05 16:14:13,056 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-05 16:14:13,420 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-05 16:14:13,421 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-05 16:14:16,721 | INFO     | __main__ | [gold] Dim_Date spans 2016-07-01 to 2026-07-03 (3655 day(s))
+2026-07-05 16:14:16,721 | INFO     | utils.timing | END | Build Dim_Date | duration=3.31s
+2026-07-05 16:14:18,255 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-05 16:14:18,255 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-05 16:14:19,323 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-05 16:14:19,323 | INFO     | utils.timing | END | Build Dim_Product | duration=1.08s
+2026-07-05 16:14:20,225 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-05 16:14:20,225 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-05 16:14:21,941 | INFO     | __main__ | [gold] Dim_Company: 4710 distinct compan(y/ies)
+2026-07-05 16:14:21,941 | INFO     | utils.timing | END | Build Dim_Company | duration=1.72s
+2026-07-05 16:14:23,268 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-05 16:14:23,268 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-05 16:14:23,799 | INFO     | __main__ | [gold] Dim_Country: 144 distinct countr(y/ies)
+2026-07-05 16:14:23,799 | INFO     | utils.timing | END | Build Dim_Country | duration=0.53s
+2026-07-05 16:14:24,326 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-05 16:14:24,326 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-05 16:14:25,804 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-05 16:14:25,804 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=1.48s
+2026-07-05 16:14:27,350 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-05 16:14:27,350 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-05 16:14:28,919 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-05 16:14:28,920 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=1.57s
+2026-07-05 16:14:30,617 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-05 16:14:30,617 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-05 16:14:30,618 | INFO     | __main__ | [gold] Kaggle Silver has no configured date column 'date'; using existing 'year' column instead
+2026-07-05 16:14:31,721 | INFO     | __main__ | [gold] Fact_Production: 12648 row(s)
+2026-07-05 16:14:31,721 | INFO     | utils.timing | END | Build Fact_Production | duration=1.11s
+2026-07-05 16:14:32,800 | ERROR    | utils.timing | FAILED | Full Silver -> Gold Build
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py", line 598, in run_silver_to_gold
+    _write_gold(fact_production, GOLD_FACT_PRODUCTION_DIR, "Fact_Production")
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py", line 105, in _write_gold
+    df.write.mode("overwrite").option("compression", "snappy").parquet(str(path))
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\sql\readwriter.py", line 2003, in parquet
+    self._jwrite.parquet(path)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\java_gateway.py", line 1362, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\errors\exceptions\captured.py", line 269, in deco
+    raise converted from None
+pyspark.errors.exceptions.captured.NumberFormatException: [CAST_INVALID_INPUT] The value 'indian ocean' of the type "STRING" cannot be cast to "DOUBLE" because it is malformed. Correct the value as per the syntax, or change its target type. Use `try_cast` to tolerate malformed input and return NULL instead. SQLSTATE: 22018
+== DataFrame ==
+"cast" was called from
+D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py:511
+
+2026-07-05 16:14:32,808 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-05 16:15:59,981 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-05 16:16:09,712 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-05 16:16:09,712 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-05 16:16:14,516 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-05 16:16:14,944 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-05 16:16:15,338 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-05 16:16:15,338 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-05 16:16:18,434 | INFO     | __main__ | [gold] Dim_Date spans 2016-07-01 to 2026-07-03 (3655 day(s))
+2026-07-05 16:16:18,435 | INFO     | utils.timing | END | Build Dim_Date | duration=3.10s
+2026-07-05 16:16:19,940 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-05 16:16:19,940 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-05 16:16:20,963 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-05 16:16:20,964 | INFO     | utils.timing | END | Build Dim_Product | duration=1.02s
+2026-07-05 16:16:22,210 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-05 16:16:22,210 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-05 16:16:23,954 | INFO     | __main__ | [gold] Dim_Company: 4710 distinct compan(y/ies)
+2026-07-05 16:16:23,955 | INFO     | utils.timing | END | Build Dim_Company | duration=1.74s
+2026-07-05 16:16:25,866 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-05 16:16:25,866 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-05 16:16:26,629 | INFO     | __main__ | [gold] Dim_Country: 144 distinct countr(y/ies)
+2026-07-05 16:16:26,642 | INFO     | utils.timing | END | Build Dim_Country | duration=0.77s
+2026-07-05 16:16:27,786 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-05 16:16:27,786 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-05 16:16:29,868 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-05 16:16:29,868 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=2.08s
+2026-07-05 16:16:31,870 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-05 16:16:31,870 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-05 16:16:34,176 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-05 16:16:34,178 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=2.30s
+2026-07-05 16:16:36,208 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-05 16:16:36,208 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-05 16:16:36,209 | INFO     | __main__ | [gold] Kaggle Silver has no configured date column 'date'; using existing 'year' column instead
+2026-07-05 16:16:37,153 | INFO     | __main__ | [gold] Fact_Production: 12648 row(s)
+2026-07-05 16:16:37,153 | INFO     | utils.timing | END | Build Fact_Production | duration=0.95s
+2026-07-05 16:16:40,363 | INFO     | __main__ | [gold] Wrote Fact_Production to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_production
+2026-07-05 16:16:40,363 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
+2026-07-05 16:16:40,363 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=30.65s
+2026-07-05 16:16:40,365 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-05 16:18:02,638 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-05 16:18:11,765 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-05 16:18:11,765 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-05 16:18:16,535 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-05 16:18:16,940 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-05 16:18:17,315 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-05 16:18:17,315 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-05 16:18:20,191 | INFO     | __main__ | [gold] Dim_Date spans 2016-07-01 to 2026-07-03 (3655 day(s))
+2026-07-05 16:18:20,191 | INFO     | utils.timing | END | Build Dim_Date | duration=2.87s
+2026-07-05 16:18:21,522 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-05 16:18:21,522 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-05 16:18:22,482 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-05 16:18:22,482 | INFO     | utils.timing | END | Build Dim_Product | duration=0.96s
+2026-07-05 16:18:23,378 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-05 16:18:23,378 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-05 16:18:24,762 | INFO     | __main__ | [gold] Dim_Company: 4710 distinct compan(y/ies)
+2026-07-05 16:18:24,762 | INFO     | utils.timing | END | Build Dim_Company | duration=1.38s
+2026-07-05 16:18:26,133 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-05 16:18:26,135 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-05 16:18:26,707 | INFO     | __main__ | [gold] Dim_Country: 144 distinct countr(y/ies)
+2026-07-05 16:18:26,709 | INFO     | utils.timing | END | Build Dim_Country | duration=0.57s
+2026-07-05 16:18:27,242 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-05 16:18:27,242 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-05 16:18:28,768 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-05 16:18:28,768 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=1.52s
+2026-07-05 16:18:30,303 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-05 16:18:30,303 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-05 16:18:31,879 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-05 16:18:31,879 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=1.57s
+2026-07-05 16:18:33,617 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-05 16:18:33,617 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-05 16:18:33,617 | INFO     | __main__ | [gold] Kaggle Silver has no configured date column 'date'; using existing 'year' column instead
+2026-07-05 16:18:34,626 | INFO     | __main__ | [gold] Fact_Production: 12648 row(s)
+2026-07-05 16:18:34,626 | INFO     | utils.timing | END | Build Fact_Production | duration=1.01s
+2026-07-05 16:18:36,975 | INFO     | __main__ | [gold] Wrote Fact_Production to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_production
+2026-07-05 16:18:36,975 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
+2026-07-05 16:18:36,977 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=25.21s
+2026-07-05 16:18:36,977 | INFO     | spark.spark_session | Stopping SparkSession

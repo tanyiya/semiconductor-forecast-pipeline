@@ -44,14 +44,6 @@ _TYPE_MAP = {
 }
 
 
-def _normalise_column_name(name: str) -> str:
-    """lowercase, trim, collapse internal whitespace, spaces -> underscores."""
-    cleaned = name.strip().lower()
-    cleaned = re.sub(r"\s+", "_", cleaned)
-    cleaned = re.sub(r"_+", "_", cleaned)
-    return cleaned
-
-
 class KaggleTransformer(BaseTransformer):
     """Cleans, casts, and outlier-flags the Kaggle Bronze dataset into Silver."""
 
@@ -78,14 +70,8 @@ class KaggleTransformer(BaseTransformer):
         return df
 
     # ------------------------------------------------------------------
-    @staticmethod
-    def _standardise_column_names(df: DataFrame) -> DataFrame:
-        rename_map = {col: _normalise_column_name(col) for col in df.columns}
-        for old_name, new_name in rename_map.items():
-            if old_name != new_name:
-                df = df.withColumnRenamed(old_name, new_name)
-        logger.info("[kaggle] Standardised column names: %s", list(rename_map.values()))
-        return df
+    def _standardise_column_names(self, df: DataFrame) -> DataFrame:
+        return super()._standardise_column_names(df)
 
     def _cast_columns(self, df: DataFrame) -> DataFrame:
         """

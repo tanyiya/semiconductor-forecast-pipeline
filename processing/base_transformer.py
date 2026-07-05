@@ -19,6 +19,7 @@ cryptic Spark stack trace).
 
 from __future__ import annotations
 
+import re
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -63,6 +64,27 @@ class BaseTransformer(ABC):
         """
         self.spark = spark
         self.config: Dict[str, Any] = config or {}
+
+    @staticmethod
+    def _snake_case_column_name(name: str) -> str:
+        """Convert a column name to snake_case for Silver output."""
+        cleaned = name.strip().lower()
+        cleaned = re.sub(r"[^\w]+", "_", cleaned)
+        cleaned = re.sub(r"_+", "_", cleaned)
+        return cleaned.strip("_")
+
+    def _standardise_column_names(self, df: DataFrame) -> DataFrame:
+        """Rename all columns to a normalized snake_case form."""
+        rename_map = {col: self._snake_case_column_name(col) for col in df.columns}
+        for old_name, new_name in rename_map.items():
+            if old_name != new_name:
+                df = df.withColumnRenamed(old_name, new_name)
+        logger.info(
+            "[%s] Standardised column names to snake_case: %s",
+            self.source_name,
+            list(rename_map.values()),
+        )
+        return df
 
     # ------------------------------------------------------------------
     # Abstract contract

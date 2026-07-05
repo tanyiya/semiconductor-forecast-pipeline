@@ -78,6 +78,7 @@ class TrendForceTransformer(BaseTransformer):
         df = self._add_temporal_validity(df)
         if self.config.get("explode_daily", True):
             df = self._explode_to_daily(df)
+        df = self._standardise_column_names(df)
         return df
 
     # ------------------------------------------------------------------

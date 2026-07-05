@@ -21,25 +21,34 @@ from typing import List
 # Base directories
 # --------------------------------------------------------------------------
 PROJECT_ROOT: Path = Path(__file__).resolve().parent.parent
-
+ 
 DATA_DIR: Path = PROJECT_ROOT / "data"
 RAW_DIR: Path = DATA_DIR / "raw"
 BRONZE_DIR: Path = DATA_DIR / "bronze"
 SILVER_DIR: Path = DATA_DIR / "silver"
 LOG_DIR: Path = PROJECT_ROOT / "logs"
-
+ 
 RAW_KAGGLE_DIR: Path = RAW_DIR / "kaggle"
 RAW_YAHOO_DIR: Path = RAW_DIR / "yahoo"
 RAW_TRENDFORCE_DIR: Path = RAW_DIR / "trendforce"
-
+ 
 BRONZE_KAGGLE_DIR: Path = BRONZE_DIR / "kaggle"
 BRONZE_YAHOO_DIR: Path = BRONZE_DIR / "yahoo"
 BRONZE_TRENDFORCE_DIR: Path = BRONZE_DIR / "trendforce"
-
+ 
 SILVER_KAGGLE_DIR: Path = SILVER_DIR / "kaggle"
 SILVER_YAHOO_DIR: Path = SILVER_DIR / "yahoo"
 SILVER_TRENDFORCE_DIR: Path = SILVER_DIR / "trendforce"
-
+ 
+GOLD_DIR: Path = DATA_DIR / "gold"
+GOLD_DIM_DATE_DIR: Path = GOLD_DIR / "dim_date"
+GOLD_DIM_PRODUCT_DIR: Path = GOLD_DIR / "dim_product"
+GOLD_DIM_COMPANY_DIR: Path = GOLD_DIR / "dim_company"
+GOLD_DIM_COUNTRY_DIR: Path = GOLD_DIR / "dim_country"
+GOLD_FACT_MARKET_PRICE_DIR: Path = GOLD_DIR / "fact_market_price"
+GOLD_FACT_STOCK_MARKET_DIR: Path = GOLD_DIR / "fact_stock_market"
+GOLD_FACT_PRODUCTION_DIR: Path = GOLD_DIR / "fact_production"
+ 
 SPARK_WAREHOUSE_DIR: Path = PROJECT_ROOT / "spark-warehouse"
 
 
@@ -168,6 +177,60 @@ class SparkConfig:
 
 SPARK_CONFIG = SparkConfig()
 
+
+ 
+# --------------------------------------------------------------------------
+# Gold-layer / galaxy schema configuration
+# --------------------------------------------------------------------------
+# Dim_Company is a CONFORMED dimension shared by Fact_StockMarket (Yahoo,
+# identified by ticker) and Fact_Production (Kaggle, identified by company
+# name). This mapping is what lets both facts join to the same company
+# rows. Company names are matched against the Kaggle Silver "company"
+# column AFTER it has been lowercased/trimmed (our KaggleTransformer
+# already does this), so keep these values lowercase.
+TICKER_TO_COMPANY_NAME: dict = {
+    "NVDA": "nvidia",
+    "AMD": "amd",
+    "INTC": "intel",
+    "QCOM": "qualcomm",
+    "AVGO": "broadcom",
+    "TSM": "tsmc",
+    "MU": "micron",
+}
+ 
+ 
+# Fact_Production (Kaggle) target schema: Production_Capacity, Fab_Count,
+# AI_Chip_Production, Foundry_Revenue, Global_Market_Share, grained at one
+# row per company per calendar year.
+#
+# IMPORTANT: the real Kaggle "Global AI Chip Supply Chain" dataset's exact
+# column names cannot be verified from this environment. The values below
+# are the snake_case names implied by your Gold schema diagram - update
+# them here if your actual Silver Kaggle columns are named differently.
+# Any column listed here that isn't found in Silver at build time is
+# logged as a warning and filled with NULL rather than crashing the run.
+@dataclass(frozen=True)
+class KaggleGoldConfig:
+    company_column: str = "company"
+    country_column: str = "country"  # adjust if your dataset calls this "country"
+    date_column: str = "date"  # used to derive the calendar year grain
+ 
+    # metric_column -> Spark aggregation function used to roll daily/raw
+    # Kaggle rows up to one-row-per-company-per-year. "sum" for flow
+    # metrics (production/revenue), "avg"/"max" for snapshot-style metrics
+    # (capacity, fab count, market share) - adjust per column as needed.
+    metric_aggregations: dict = field(
+        default_factory=lambda: {
+            "production_capacity_wafers": "avg",
+            "fab_count": "max",
+            "ai_chip_production": "sum",
+            "foundry_revenue_usd": "sum",
+            "global_market_share": "avg",
+        }
+    )
+ 
+ 
+KAGGLE_GOLD_CONFIG = KaggleGoldConfig()
 
 # --------------------------------------------------------------------------
 # Logging configuration

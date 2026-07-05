@@ -14,24 +14,13 @@ Every loader/scraper module obtains its SparkSession through
 """
 
 from __future__ import annotations
-import os
+
 from pyspark.sql import SparkSession
 
 from config.config import SPARK_CONFIG, SPARK_WAREHOUSE_DIR, ensure_directories
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
-
-# --- CRITICAL WINDOWS ENVIRONMENT OVERRIDES ---
-# Force PySpark to use your stable Python 3.12 environment instead of defaulting to 3.14
-py_312_path = r"C:\Users\Admin\AppData\Local\Programs\Python\Python312\python.exe"
-os.environ['PYSPARK_PYTHON'] = py_312_path
-os.environ['PYSPARK_DRIVER_PYTHON'] = py_312_path
-
-# Explicitly link your local Hadoop installation for winutils.exe and hadoop.dll stability
-os.environ['HADOOP_HOME'] = r"D:\01_Bomi\01_ProgramFiles\hadoop"
-os.environ['PATH'] = os.environ['PATH'] + r";D:\01_Bomi\01_ProgramFiles\hadoop\bin"
-# ---------------------------------------------
 
 _spark_session: SparkSession | None = None
 
@@ -42,7 +31,7 @@ def get_spark_session() -> SparkSession:
 
     The session is created once per process and reused on subsequent
     calls, which avoids the overhead of repeatedly tearing down and
-    building the JVM-backed Spark context.
+    rebuilding the JVM-backed Spark context.
 
     Returns
     -------
@@ -57,17 +46,25 @@ def get_spark_session() -> SparkSession:
 
     logger.info("Initialising SparkSession '%s'", SPARK_CONFIG.app_name)
 
-    df_builder = (
-        SparkSession.builder
-        .appName(SPARK_CONFIG.app_name)
+    builder = (
+        SparkSession.builder.appName(SPARK_CONFIG.app_name)
         .master(SPARK_CONFIG.master)
         .config("spark.driver.memory", SPARK_CONFIG.driver_memory)
         .config("spark.executor.memory", SPARK_CONFIG.executor_memory)
         .config("spark.sql.shuffle.partitions", SPARK_CONFIG.shuffle_partitions)
         .config("spark.sql.warehouse.dir", str(SPARK_WAREHOUSE_DIR))
-)
+        # Arrow-based conversion is left OFF. It routes createDataFrame()/
+        # collect()-adjacent operations through a separate Python worker
+        # subprocess, which has proven unreliable on Windows (worker
+        # crashes with an opaque "Python worker exited unexpectedly" /
+        # EOFException under otherwise normal load). The Yahoo Finance
+        # loader's pandas -> Spark conversion works fine without Arrow;
+        # it's just marginally slower, which is an acceptable trade-off
+        # for reliability here.
+        .config("spark.sql.execution.arrow.pyspark.enabled", "false")
+    )
 
-    session = df_builder.getOrCreate()
+    session = builder.getOrCreate()
     session.sparkContext.setLogLevel(SPARK_CONFIG.log_level)
 
     logger.info(
