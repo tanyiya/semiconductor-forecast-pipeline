@@ -120,15 +120,28 @@ class BaseTransformer(ABC):
         unparseable price).
         """
         return df.dropna(how="all")
-
+    
     def write_silver(self, df: DataFrame) -> None:
-        """Persist the transformed DataFrame to the Silver layer as Parquet."""
         self.silver_dir.mkdir(parents=True, exist_ok=True)
-        writer = df.write.mode("overwrite").option("compression", "snappy")
+
+        # Write as a single Parquet file to keep Silver schema consistent.
+        writer = (
+            df.coalesce(1)
+            .write
+            .mode("overwrite")
+            .option("compression", "snappy")
+        )
+
         if self.partition_by:
             writer = writer.partitionBy(*self.partition_by)
+
         writer.parquet(str(self.silver_dir))
-        logger.info("[%s] Silver data written to %s", self.source_name, self.silver_dir)
+
+        logger.info(
+            "[%s] Silver data written to %s",
+            self.source_name,
+            self.silver_dir
+        )
 
     def run(self) -> DataFrame:
         """

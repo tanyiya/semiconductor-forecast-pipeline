@@ -6912,3 +6912,667 @@ D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold
 2026-07-05 16:18:36,975 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
 2026-07-05 16:18:36,977 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=25.21s
 2026-07-05 16:18:36,977 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-08 01:43:09,432 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-08 01:43:39,682 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-08 01:43:46,060 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-08 01:45:21,999 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-08 01:45:32,142 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-08 01:53:11,972 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-08 01:53:27,909 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-08 01:53:27,909 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-08 01:53:34,372 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-08 01:53:34,816 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-08 01:53:35,206 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-08 01:53:35,206 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-08 01:53:38,519 | INFO     | __main__ | [gold] Dim_Date spans 2016-07-01 to 2026-07-03 (3655 day(s))
+2026-07-08 01:53:38,519 | INFO     | utils.timing | END | Build Dim_Date | duration=3.31s
+2026-07-08 01:53:40,169 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-08 01:53:40,169 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-08 01:53:41,207 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-08 01:53:41,207 | INFO     | utils.timing | END | Build Dim_Product | duration=1.04s
+2026-07-08 01:53:42,344 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-08 01:53:42,344 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-08 01:53:47,174 | INFO     | utils.timing | END | Build Dim_Company | duration=4.82s
+2026-07-08 01:53:48,358 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-08 01:53:48,358 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-08 01:53:49,523 | INFO     | utils.timing | END | Build Dim_Country | duration=1.17s
+2026-07-08 01:53:50,087 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-08 01:53:50,087 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-08 01:53:51,490 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-08 01:53:51,490 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=1.40s
+2026-07-08 01:53:53,210 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-08 01:53:53,210 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-08 01:53:54,821 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-08 01:53:54,821 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=1.62s
+2026-07-08 01:53:56,436 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-08 01:53:56,436 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-08 01:53:56,436 | INFO     | __main__ | [gold] Kaggle Silver has no configured date column 'date'; using existing 'year' column instead
+2026-07-08 01:53:57,400 | INFO     | __main__ | [gold] Fact_Production: 12648 row(s)
+2026-07-08 01:53:57,400 | INFO     | utils.timing | END | Build Fact_Production | duration=0.96s
+2026-07-08 01:53:59,827 | INFO     | __main__ | [gold] Wrote Fact_Production to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_production
+2026-07-08 01:53:59,827 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
+2026-07-08 01:53:59,827 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=31.92s
+2026-07-08 01:53:59,827 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-08 02:01:49,222 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-08 02:01:58,721 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-08 02:01:58,722 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-08 02:02:04,075 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-08 02:02:04,498 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-08 02:02:04,864 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-08 02:02:04,864 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-08 02:02:07,976 | INFO     | __main__ | [gold] Dim_Date spans 2016-07-01 to 2026-07-03 (3655 day(s))
+2026-07-08 02:02:07,976 | INFO     | utils.timing | END | Build Dim_Date | duration=3.12s
+2026-07-08 02:02:09,392 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-08 02:02:09,392 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-08 02:02:10,501 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-08 02:02:10,501 | INFO     | utils.timing | END | Build Dim_Product | duration=1.11s
+2026-07-08 02:02:11,629 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-08 02:02:11,631 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-08 02:02:15,725 | INFO     | utils.timing | END | Build Dim_Company | duration=4.09s
+2026-07-08 02:02:16,917 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-08 02:02:16,917 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-08 02:02:17,102 | INFO     | utils.timing | END | Build Dim_Country | duration=0.18s
+2026-07-08 02:02:17,403 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-08 02:02:17,403 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-08 02:02:18,674 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-08 02:02:18,676 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=1.27s
+2026-07-08 02:02:20,053 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-08 02:02:20,053 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-08 02:02:21,441 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-08 02:02:21,443 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=1.39s
+2026-07-08 02:02:23,223 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-08 02:02:23,224 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-08 02:02:23,224 | INFO     | __main__ | [gold] Kaggle Silver has no configured date column 'date'; using existing 'year' column instead
+2026-07-08 02:02:23,585 | ERROR    | utils.timing | FAILED | Build Fact_Production
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py", line 537, in build_fact_production
+    rolled_up = rolled_up.join(dim_country.select("country_key", "country"), on="country", how="left")
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\sql\classic\dataframe.py", line 1015, in select
+    jdf = self._jdf.select(self._jcols(*cols))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\java_gateway.py", line 1362, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\errors\exceptions\captured.py", line 269, in deco
+    raise converted from None
+pyspark.errors.exceptions.captured.AnalysisException: [UNRESOLVED_COLUMN.WITH_SUGGESTION] A column, variable, or function parameter with name `country_key` cannot be resolved. Did you mean one of the following? [`country`]. SQLSTATE: 42703;
+'Project ['country_key, country#49]
++- Project [country#49]
+   +- Relation [year#48,country#49,company#50,production_capacity_wafers#51,fab_count#52,technology_node_nm#53,ai_chip_production#54,foundry_revenue_usd#55,global_market_share#56] parquet
+
+2026-07-08 02:02:23,623 | ERROR    | utils.timing | FAILED | Full Silver -> Gold Build
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py", line 602, in run_silver_to_gold
+    fact_production = build_fact_production(kaggle_df, dim_company, dim_country)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py", line 537, in build_fact_production
+    rolled_up = rolled_up.join(dim_country.select("country_key", "country"), on="country", how="left")
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\sql\classic\dataframe.py", line 1015, in select
+    jdf = self._jdf.select(self._jcols(*cols))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\java_gateway.py", line 1362, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\errors\exceptions\captured.py", line 269, in deco
+    raise converted from None
+pyspark.errors.exceptions.captured.AnalysisException: [UNRESOLVED_COLUMN.WITH_SUGGESTION] A column, variable, or function parameter with name `country_key` cannot be resolved. Did you mean one of the following? [`country`]. SQLSTATE: 42703;
+'Project ['country_key, country#49]
++- Project [country#49]
+   +- Relation [year#48,country#49,company#50,production_capacity_wafers#51,fab_count#52,technology_node_nm#53,ai_chip_production#54,foundry_revenue_usd#55,global_market_share#56] parquet
+
+2026-07-08 02:02:23,625 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-08 02:05:03,467 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-08 02:05:12,781 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-08 02:05:12,781 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-08 02:05:17,958 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-08 02:05:18,423 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-08 02:05:18,791 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-08 02:05:18,791 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-08 02:05:22,465 | INFO     | __main__ | [gold] Dim_Date spans 2016-07-01 to 2026-07-03 (3655 day(s))
+2026-07-08 02:05:22,465 | INFO     | utils.timing | END | Build Dim_Date | duration=3.67s
+2026-07-08 02:05:24,084 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-08 02:05:24,085 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-08 02:05:25,137 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-08 02:05:25,137 | INFO     | utils.timing | END | Build Dim_Product | duration=1.05s
+2026-07-08 02:05:26,092 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-08 02:05:26,092 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-08 02:05:30,129 | INFO     | utils.timing | END | Build Dim_Company | duration=4.04s
+2026-07-08 02:05:31,584 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-08 02:05:31,584 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-08 02:05:33,239 | INFO     | __main__ | [gold] Dim_Country: 144 distinct countr(y/ies)
+2026-07-08 02:05:33,239 | INFO     | utils.timing | END | Build Dim_Country | duration=1.65s
+2026-07-08 02:05:33,660 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-08 02:05:33,660 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-08 02:05:34,860 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-08 02:05:34,860 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=1.20s
+2026-07-08 02:05:36,331 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-08 02:05:36,331 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-08 02:05:37,722 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-08 02:05:37,723 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=1.39s
+2026-07-08 02:05:39,194 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-08 02:05:39,194 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-08 02:05:39,195 | INFO     | __main__ | [gold] Kaggle Silver has no configured date column 'date'; using existing 'year' column instead
+2026-07-08 02:05:39,893 | INFO     | __main__ | [gold] Fact_Production: 12648 row(s)
+2026-07-08 02:05:39,893 | INFO     | utils.timing | END | Build Fact_Production | duration=0.70s
+2026-07-08 02:05:42,348 | INFO     | __main__ | [gold] Wrote Fact_Production to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_production
+2026-07-08 02:05:42,350 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
+2026-07-08 02:05:42,350 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=29.56s
+2026-07-08 02:05:42,350 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-08 02:12:13,297 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-08 02:12:22,977 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-08 02:12:22,979 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-08 02:12:22,979 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle
+2026-07-08 02:12:27,521 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 12648
+2026-07-08 02:12:27,623 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'country', 'company', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-08 02:12:27,623 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Configured schema columns not found in data (skipped): ['date', 'chip_type', 'production_volume', 'region', 'revenue_usd']
+2026-07-08 02:12:27,623 | INFO     | processing.kaggle_bronze_silver | [kaggle] Columns present but not in configured schema (left as-is): ['year', 'country', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-08 02:12:27,784 | INFO     | processing.kaggle_bronze_silver | [kaggle] Standardised string values in columns: ['country', 'company', 'technology_node_nm', 'ai_chip_production']
+2026-07-08 02:12:27,784 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Outlier column 'production_volume' not present in data - skipping
+2026-07-08 02:12:27,784 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Outlier column 'revenue_usd' not present in data - skipping
+2026-07-08 02:12:32,375 | INFO     | processing.base_transformer | [kaggle] Silver row count: 12648 (unchanged)
+2026-07-08 02:12:33,665 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle
+2026-07-08 02:12:33,665 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=10.69s
+2026-07-08 02:12:33,666 | INFO     | utils.timing | START | Yahoo Bronze->Silver Transform
+2026-07-08 02:12:33,667 | INFO     | processing.base_transformer | [yahoo] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\yahoo
+2026-07-08 02:12:34,094 | INFO     | processing.base_transformer | [yahoo] Bronze row count: 17591
+2026-07-08 02:12:36,477 | INFO     | processing.base_transformer | [yahoo] Standardised column names to snake_case: ['date', 'open', 'high', 'low', 'close', 'adj_close', 'volume', 'ticker', 'daily_return', 'volatility_range', 'ma_5', 'ma_20']
+2026-07-08 02:12:38,580 | INFO     | processing.base_transformer | [yahoo] Silver row count: 17591 (unchanged)
+2026-07-08 02:12:39,461 | INFO     | processing.base_transformer | [yahoo] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\yahoo
+2026-07-08 02:12:39,461 | INFO     | utils.timing | END | Yahoo Bronze->Silver Transform | duration=5.80s
+2026-07-08 02:12:39,461 | INFO     | utils.timing | START | Trendforce Bronze->Silver Transform
+2026-07-08 02:12:39,461 | INFO     | processing.base_transformer | [trendforce] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\trendforce
+2026-07-08 02:12:39,672 | INFO     | processing.base_transformer | [trendforce] Bronze row count: 1170
+2026-07-08 02:12:39,714 | INFO     | processing.trendforce_bronze_silver | [trendforce] Normalised Product and Category text
+2026-07-08 02:12:40,449 | INFO     | processing.trendforce_bronze_silver | [trendforce] Computed SCD2 Price_Effective_Date / Price_Expiration_Date per (Product, Category)
+2026-07-08 02:12:41,076 | INFO     | processing.trendforce_bronze_silver | [trendforce] Exploded validity intervals to daily grain (open intervals capped at 2026-07-03)
+2026-07-08 02:12:41,141 | INFO     | processing.base_transformer | [trendforce] Standardised column names to snake_case: ['report_date', 'product', 'price', 'unit', 'category', 'price_effective_date', 'price_expiration_date', 'date']
+2026-07-08 02:12:42,879 | INFO     | processing.base_transformer | [trendforce] Silver row count: 1170 (unchanged)
+2026-07-08 02:12:43,138 | INFO     | processing.base_transformer | [trendforce] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\trendforce
+2026-07-08 02:12:43,138 | INFO     | utils.timing | END | Trendforce Bronze->Silver Transform | duration=3.68s
+2026-07-08 02:12:43,138 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-08 02:13:36,352 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-08 02:13:45,552 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-08 02:13:45,552 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-08 02:13:50,552 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-08 02:13:50,924 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-08 02:13:51,189 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-08 02:13:51,190 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-08 02:13:54,097 | INFO     | __main__ | [gold] Dim_Date spans 2016-07-01 to 2026-07-03 (3655 day(s))
+2026-07-08 02:13:54,097 | INFO     | utils.timing | END | Build Dim_Date | duration=2.91s
+2026-07-08 02:13:55,434 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-08 02:13:55,434 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-08 02:13:56,262 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-08 02:13:56,262 | INFO     | utils.timing | END | Build Dim_Product | duration=0.82s
+2026-07-08 02:13:57,012 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-08 02:13:57,012 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-08 02:14:01,315 | INFO     | utils.timing | END | Build Dim_Company | duration=4.30s
+2026-07-08 02:14:02,310 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-08 02:14:02,310 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-08 02:14:03,562 | INFO     | __main__ | [gold] Dim_Country: 144 distinct countr(y/ies)
+2026-07-08 02:14:03,562 | INFO     | utils.timing | END | Build Dim_Country | duration=1.26s
+2026-07-08 02:14:03,919 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-08 02:14:03,919 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-08 02:14:05,022 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-08 02:14:05,022 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=1.11s
+2026-07-08 02:14:06,137 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-08 02:14:06,137 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-08 02:14:07,337 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-08 02:14:07,337 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=1.19s
+2026-07-08 02:14:09,048 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-08 02:14:09,048 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-08 02:14:09,048 | INFO     | __main__ | [gold] Kaggle Silver has no configured date column 'date'; using existing 'year' column instead
+2026-07-08 02:14:09,939 | INFO     | __main__ | [gold] Fact_Production: 12648 row(s)
+2026-07-08 02:14:09,939 | INFO     | utils.timing | END | Build Fact_Production | duration=0.89s
+2026-07-08 02:14:11,584 | INFO     | __main__ | [gold] Wrote Fact_Production to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_production
+2026-07-08 02:14:11,584 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
+2026-07-08 02:14:11,584 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=26.03s
+2026-07-08 02:14:11,584 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-08 02:16:58,436 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-08 02:17:08,153 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-08 02:17:08,153 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-08 02:17:12,843 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-08 02:17:13,198 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-08 02:17:13,470 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-08 02:17:13,470 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-08 02:17:16,088 | INFO     | __main__ | [gold] Dim_Date spans 2016-07-01 to 2026-07-03 (3655 day(s))
+2026-07-08 02:17:16,088 | INFO     | utils.timing | END | Build Dim_Date | duration=2.62s
+2026-07-08 02:17:17,324 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-08 02:17:17,324 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-08 02:17:17,982 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-08 02:17:17,982 | INFO     | utils.timing | END | Build Dim_Product | duration=0.65s
+2026-07-08 02:17:18,582 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-08 02:17:18,582 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-08 02:17:22,220 | INFO     | utils.timing | END | Build Dim_Company | duration=3.63s
+2026-07-08 02:17:23,004 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-08 02:17:23,004 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-08 02:17:23,913 | INFO     | utils.timing | END | Build Dim_Country | duration=0.90s
+2026-07-08 02:17:24,186 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-08 02:17:24,187 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-08 02:17:25,229 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-08 02:17:25,231 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=1.04s
+2026-07-08 02:17:26,823 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-08 02:17:26,823 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-08 02:17:28,042 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-08 02:17:28,042 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=1.22s
+2026-07-08 02:17:29,503 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-08 02:17:29,503 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-08 02:17:29,503 | INFO     | __main__ | [gold] Kaggle Silver has no configured date column 'date'; using existing 'year' column instead
+2026-07-08 02:17:30,177 | INFO     | __main__ | [gold] Fact_Production: 12648 row(s)
+2026-07-08 02:17:30,179 | INFO     | utils.timing | END | Build Fact_Production | duration=0.67s
+2026-07-08 02:17:31,710 | INFO     | __main__ | [gold] Wrote Fact_Production to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_production
+2026-07-08 02:17:31,710 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
+2026-07-08 02:17:31,710 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=23.57s
+2026-07-08 02:17:31,710 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-08 02:21:49,225 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-08 02:21:58,601 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-08 02:21:58,601 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-08 02:22:03,385 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-08 02:22:03,702 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-08 02:22:03,970 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-08 02:22:03,970 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-08 02:22:06,647 | INFO     | __main__ | [gold] Dim_Date spans 2016-07-01 to 2026-07-03 (3655 day(s))
+2026-07-08 02:22:06,647 | INFO     | utils.timing | END | Build Dim_Date | duration=2.67s
+2026-07-08 02:22:07,908 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-08 02:22:07,908 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-08 02:22:08,568 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-08 02:22:08,568 | INFO     | utils.timing | END | Build Dim_Product | duration=0.67s
+2026-07-08 02:22:09,196 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-08 02:22:09,197 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-08 02:22:13,134 | INFO     | utils.timing | END | Build Dim_Company | duration=3.94s
+2026-07-08 02:22:14,068 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-08 02:22:14,068 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-08 02:22:16,690 | INFO     | utils.timing | END | Build Dim_Country | duration=2.62s
+2026-07-08 02:22:17,159 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-08 02:22:17,160 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-08 02:22:18,113 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-08 02:22:18,113 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=0.97s
+2026-07-08 02:22:19,106 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-08 02:22:19,106 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-08 02:22:20,265 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-08 02:22:20,265 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=1.16s
+2026-07-08 02:22:21,766 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-08 02:22:21,766 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-08 02:22:21,766 | INFO     | __main__ | [gold] Kaggle Silver has no configured date column 'date'; using existing 'year' column instead
+2026-07-08 02:22:22,621 | INFO     | __main__ | [gold] Fact_Production: 12648 row(s)
+2026-07-08 02:22:22,622 | INFO     | utils.timing | END | Build Fact_Production | duration=0.86s
+2026-07-08 02:22:23,961 | INFO     | __main__ | [gold] Wrote Fact_Production to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_production
+2026-07-08 02:22:23,961 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
+2026-07-08 02:22:23,961 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=25.37s
+2026-07-08 02:22:23,961 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-08 02:25:55,828 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-08 02:26:04,668 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-08 02:26:04,669 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-08 02:26:09,276 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-08 02:26:09,626 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-08 02:26:09,864 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-08 02:26:09,864 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-08 02:26:12,724 | INFO     | __main__ | [gold] Dim_Date spans 2016-07-01 to 2026-07-03 (3655 day(s))
+2026-07-08 02:26:12,724 | INFO     | utils.timing | END | Build Dim_Date | duration=2.86s
+2026-07-08 02:26:14,037 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-08 02:26:14,037 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-08 02:26:14,725 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-08 02:26:14,727 | INFO     | utils.timing | END | Build Dim_Product | duration=0.69s
+2026-07-08 02:26:15,378 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-08 02:26:15,378 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-08 02:26:19,357 | INFO     | utils.timing | END | Build Dim_Company | duration=3.98s
+2026-07-08 02:26:20,317 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-08 02:26:20,317 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-08 02:26:21,679 | INFO     | utils.timing | END | Build Dim_Country | duration=1.36s
+2026-07-08 02:26:22,178 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-08 02:26:22,179 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-08 02:26:23,389 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-08 02:26:23,389 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=1.22s
+2026-07-08 02:26:24,338 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-08 02:26:24,338 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-08 02:26:25,382 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-08 02:26:25,382 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=1.05s
+2026-07-08 02:26:26,660 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-08 02:26:26,660 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-08 02:26:26,660 | INFO     | __main__ | [gold] Kaggle Silver has no configured date column 'date'; using existing 'year' column instead
+2026-07-08 02:26:27,453 | INFO     | __main__ | [gold] Fact_Production: 12648 row(s)
+2026-07-08 02:26:27,453 | INFO     | utils.timing | END | Build Fact_Production | duration=0.79s
+2026-07-08 02:26:28,961 | INFO     | __main__ | [gold] Wrote Fact_Production to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_production
+2026-07-08 02:26:28,966 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
+2026-07-08 02:26:28,966 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=24.30s
+2026-07-08 02:26:28,966 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-08 02:38:05,082 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-08 02:38:13,754 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-08 02:38:13,754 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-08 02:38:13,755 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle
+2026-07-08 02:38:18,265 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 12648
+2026-07-08 02:38:18,390 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'country', 'company', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-08 02:38:18,390 | WARNING  | processing.kaggle_bronze_silver | [kaggle] Unknown type 'int' for column 'year' - skipping cast
+2026-07-08 02:38:18,687 | INFO     | processing.kaggle_bronze_silver | [kaggle] Standardised string values in columns: ['country', 'company', 'technology_node_nm', 'ai_chip_production']
+2026-07-08 02:38:19,984 | INFO     | processing.kaggle_bronze_silver | [kaggle] Column 'production_capacity_wafers': flagged and capped 350 outlier row(s) (bounds=[-208119516498.46, 280269459586.36])
+2026-07-08 02:38:20,431 | INFO     | processing.kaggle_bronze_silver | [kaggle] Column 'fab_count': flagged and capped 370 outlier row(s) (bounds=[-118915468776.67, 152402358952.67])
+2026-07-08 02:38:20,889 | INFO     | processing.kaggle_bronze_silver | [kaggle] Column 'foundry_revenue_usd': flagged and capped 319 outlier row(s) (bounds=[-2248426439.46, 2847000663.55])
+2026-07-08 02:38:21,345 | INFO     | processing.kaggle_bronze_silver | [kaggle] Column 'global_market_share': flagged and capped 3 outlier row(s) (bounds=[-1.57, 5.69])
+2026-07-08 02:38:25,451 | INFO     | processing.base_transformer | [kaggle] Silver row count: 12648 (unchanged)
+2026-07-08 02:38:26,521 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle
+2026-07-08 02:38:26,521 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=12.77s
+2026-07-08 02:38:26,521 | INFO     | utils.timing | START | Yahoo Bronze->Silver Transform
+2026-07-08 02:38:26,522 | INFO     | processing.base_transformer | [yahoo] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\yahoo
+2026-07-08 02:38:26,883 | INFO     | processing.base_transformer | [yahoo] Bronze row count: 17591
+2026-07-08 02:38:28,872 | INFO     | processing.base_transformer | [yahoo] Standardised column names to snake_case: ['date', 'open', 'high', 'low', 'close', 'adj_close', 'volume', 'ticker', 'daily_return', 'volatility_range', 'ma_5', 'ma_20']
+2026-07-08 02:38:30,554 | INFO     | processing.base_transformer | [yahoo] Silver row count: 17591 (unchanged)
+2026-07-08 02:38:31,322 | INFO     | processing.base_transformer | [yahoo] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\yahoo
+2026-07-08 02:38:31,322 | INFO     | utils.timing | END | Yahoo Bronze->Silver Transform | duration=4.80s
+2026-07-08 02:38:31,322 | INFO     | utils.timing | START | Trendforce Bronze->Silver Transform
+2026-07-08 02:38:31,323 | INFO     | processing.base_transformer | [trendforce] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\trendforce
+2026-07-08 02:38:31,539 | INFO     | processing.base_transformer | [trendforce] Bronze row count: 1170
+2026-07-08 02:38:31,572 | INFO     | processing.trendforce_bronze_silver | [trendforce] Normalised Product and Category text
+2026-07-08 02:38:32,148 | INFO     | processing.trendforce_bronze_silver | [trendforce] Computed SCD2 Price_Effective_Date / Price_Expiration_Date per (Product, Category)
+2026-07-08 02:38:32,461 | INFO     | processing.trendforce_bronze_silver | [trendforce] Exploded validity intervals to daily grain (open intervals capped at 2026-07-03)
+2026-07-08 02:38:32,521 | INFO     | processing.base_transformer | [trendforce] Standardised column names to snake_case: ['report_date', 'product', 'price', 'unit', 'category', 'price_effective_date', 'price_expiration_date', 'date']
+2026-07-08 02:38:34,202 | INFO     | processing.base_transformer | [trendforce] Silver row count: 1170 (unchanged)
+2026-07-08 02:38:34,418 | INFO     | processing.base_transformer | [trendforce] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\trendforce
+2026-07-08 02:38:34,418 | INFO     | utils.timing | END | Trendforce Bronze->Silver Transform | duration=3.11s
+2026-07-08 02:38:34,418 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-08 02:39:06,139 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-08 02:39:14,683 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-08 02:39:14,683 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-08 02:39:19,310 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-08 02:39:19,641 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-08 02:39:19,906 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-08 02:39:19,906 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-08 02:39:22,932 | INFO     | __main__ | [gold] Dim_Date spans 1990-01-01 to 2036-01-01 (16802 day(s))
+2026-07-08 02:39:22,932 | INFO     | utils.timing | END | Build Dim_Date | duration=3.02s
+2026-07-08 02:39:24,487 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-08 02:39:24,487 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-08 02:39:25,269 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-08 02:39:25,269 | INFO     | utils.timing | END | Build Dim_Product | duration=0.78s
+2026-07-08 02:39:26,004 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-08 02:39:26,004 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-08 02:39:29,912 | INFO     | utils.timing | END | Build Dim_Company | duration=3.91s
+2026-07-08 02:39:30,830 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-08 02:39:30,830 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-08 02:39:32,422 | INFO     | utils.timing | END | Build Dim_Country | duration=1.59s
+2026-07-08 02:39:32,782 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-08 02:39:32,782 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-08 02:39:33,946 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-08 02:39:33,946 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=1.16s
+2026-07-08 02:39:35,016 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-08 02:39:35,016 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-08 02:39:36,348 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-08 02:39:36,350 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=1.33s
+2026-07-08 02:39:37,906 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-08 02:39:37,906 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-08 02:39:38,573 | INFO     | __main__ | [gold] Fact_Production: 12648 row(s)
+2026-07-08 02:39:38,573 | INFO     | utils.timing | END | Build Fact_Production | duration=0.67s
+2026-07-08 02:39:39,999 | INFO     | __main__ | [gold] Wrote Fact_Production to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_production
+2026-07-08 02:39:39,999 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
+2026-07-08 02:39:40,000 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=25.32s
+2026-07-08 02:39:40,001 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-08 23:23:45,739 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-08 23:24:10,118 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-08 23:24:10,118 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-08 23:24:15,622 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-08 23:24:15,991 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-08 23:24:16,281 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-08 23:24:16,281 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-08 23:24:19,356 | INFO     | __main__ | [gold] Dim_Date spans 1990-01-01 to 2036-01-01 (16802 day(s))
+2026-07-08 23:24:19,356 | INFO     | utils.timing | END | Build Dim_Date | duration=3.08s
+2026-07-08 23:24:20,754 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-08 23:24:20,754 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-08 23:24:21,550 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-08 23:24:21,550 | INFO     | utils.timing | END | Build Dim_Product | duration=0.80s
+2026-07-08 23:24:22,454 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-08 23:24:24,758 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-08 23:24:24,758 | ERROR    | utils.timing | FAILED | Full Silver -> Gold Build
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py", line 600, in run_silver_to_gold
+    dim_country = build_dim_country(kaggle_df)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: build_dim_country() missing 1 required positional argument: 'kaggle_df'
+2026-07-08 23:24:24,764 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-09 14:34:38,437 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-09 14:35:13,297 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-09 14:35:13,298 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-09 14:35:20,311 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-09 14:35:20,890 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-09 14:35:21,356 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-09 14:35:21,356 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-09 14:35:26,084 | INFO     | __main__ | [gold] Dim_Date spans 1990-01-01 to 2036-01-01 (16802 day(s))
+2026-07-09 14:35:26,084 | INFO     | utils.timing | END | Build Dim_Date | duration=4.74s
+2026-07-09 14:35:28,150 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-09 14:35:28,150 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-09 14:35:29,423 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-09 14:35:29,423 | INFO     | utils.timing | END | Build Dim_Product | duration=1.27s
+2026-07-09 14:35:30,979 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-09 14:35:34,892 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-09 14:35:34,892 | ERROR    | utils.timing | FAILED | Full Silver -> Gold Build
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py", line 600, in run_silver_to_gold
+    dim_country = build_dim_country(kaggle_df)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: build_dim_country() missing 1 required positional argument: 'kaggle_df'
+2026-07-09 14:35:34,895 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-09 14:37:47,251 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-09 14:38:19,014 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-09 14:38:19,014 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-09 14:38:28,567 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-09 14:38:29,272 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-09 14:38:29,902 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-09 14:38:29,902 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-09 14:38:35,611 | INFO     | __main__ | [gold] Dim_Date spans 1990-01-01 to 2036-01-01 (16802 day(s))
+2026-07-09 14:38:35,615 | INFO     | utils.timing | END | Build Dim_Date | duration=5.71s
+2026-07-09 14:38:38,340 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-09 14:38:38,340 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-09 14:38:39,698 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-09 14:38:39,708 | INFO     | utils.timing | END | Build Dim_Product | duration=1.36s
+2026-07-09 14:38:41,188 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-09 14:38:41,206 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-09 14:38:44,162 | INFO     | __main__ | [gold] Dim_Company: 4710 distinct compan(y/ies)
+2026-07-09 14:38:44,162 | INFO     | utils.timing | END | Build Dim_Company | duration=2.95s
+2026-07-09 14:38:46,589 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-09 14:38:46,598 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-09 14:38:47,333 | INFO     | __main__ | [gold] Dim_Country: 144 distinct countr(y/ies)
+2026-07-09 14:38:47,335 | INFO     | utils.timing | END | Build Dim_Country | duration=0.74s
+2026-07-09 14:38:48,022 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-09 14:38:48,022 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-09 14:38:50,066 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-09 14:38:50,066 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=2.04s
+2026-07-09 14:38:53,036 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-09 14:38:53,037 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-09 14:38:55,430 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-09 14:38:55,440 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=2.40s
+2026-07-09 14:38:57,588 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-09 14:38:57,599 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-09 14:38:58,812 | INFO     | __main__ | [gold] Fact_Production: 12648 row(s)
+2026-07-09 14:38:58,812 | INFO     | utils.timing | END | Build Fact_Production | duration=1.21s
+2026-07-09 14:39:01,313 | INFO     | __main__ | [gold] Wrote Fact_Production to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_production
+2026-07-09 14:39:01,313 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
+2026-07-09 14:39:01,313 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=42.30s
+2026-07-09 14:39:01,313 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-09 15:18:24,907 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-09 15:18:52,341 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-09 15:18:52,341 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-09 15:18:58,354 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-09 15:18:58,707 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-09 15:18:58,997 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-09 15:18:58,997 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-09 15:19:02,096 | INFO     | __main__ | [gold] Dim_Date spans 1990-01-01 to 2036-01-01 (16802 day(s))
+2026-07-09 15:19:02,096 | INFO     | utils.timing | END | Build Dim_Date | duration=3.10s
+2026-07-09 15:19:03,582 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-09 15:19:03,582 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-09 15:19:04,290 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-09 15:19:04,292 | INFO     | utils.timing | END | Build Dim_Product | duration=0.71s
+2026-07-09 15:19:04,945 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-09 15:19:04,945 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-09 15:19:06,487 | INFO     | __main__ | [gold] Dim_Company: 4710 distinct compan(y/ies)
+2026-07-09 15:19:06,492 | INFO     | utils.timing | END | Build Dim_Company | duration=1.55s
+2026-07-09 15:19:08,246 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-09 15:19:08,246 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-09 15:19:08,694 | INFO     | __main__ | [gold] Dim_Country: 144 distinct countr(y/ies)
+2026-07-09 15:19:08,694 | INFO     | utils.timing | END | Build Dim_Country | duration=0.45s
+2026-07-09 15:19:09,218 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-09 15:19:09,218 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-09 15:19:10,693 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-09 15:19:10,695 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=1.47s
+2026-07-09 15:19:12,651 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-09 15:19:12,652 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-09 15:19:14,652 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-09 15:19:14,652 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=2.00s
+2026-07-09 15:19:16,570 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-09 15:19:16,570 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-09 15:19:17,223 | INFO     | __main__ | [gold] Fact_Production: 12648 row(s)
+2026-07-09 15:19:17,223 | INFO     | utils.timing | END | Build Fact_Production | duration=0.65s
+2026-07-09 15:19:18,858 | INFO     | __main__ | [gold] Wrote Fact_Production to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_production
+2026-07-09 15:19:18,858 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
+2026-07-09 15:19:18,858 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=26.51s
+2026-07-09 15:19:18,858 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-09 15:33:55,688 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-09 15:34:06,002 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-09 15:34:06,002 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-09 15:34:11,481 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-09 15:34:11,935 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-09 15:34:12,235 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-09 15:34:12,235 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-09 15:34:16,036 | INFO     | __main__ | [gold] Dim_Date spans 1990-01-01 to 2036-01-01 (16802 day(s))
+2026-07-09 15:34:16,036 | INFO     | utils.timing | END | Build Dim_Date | duration=3.80s
+2026-07-09 15:34:17,919 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-09 15:34:17,919 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-09 15:34:18,826 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-09 15:34:18,826 | INFO     | utils.timing | END | Build Dim_Product | duration=0.91s
+2026-07-09 15:34:19,918 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-09 15:34:19,918 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-09 15:34:21,134 | ERROR    | utils.timing | FAILED | Build Dim_Company
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py", line 276, in build_dim_company
+    logger.info("[gold] Dim_Company: %d distinct compan(y/ies)", dim_company.count())
+                                                                 ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\sql\classic\dataframe.py", line 439, in count
+    return int(self._jdf.count())
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\java_gateway.py", line 1362, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\errors\exceptions\captured.py", line 269, in deco
+    raise converted from None
+pyspark.errors.exceptions.captured.NumberFormatException: [CAST_INVALID_INPUT] The value 'micron' of the type "STRING" cannot be cast to "DOUBLE" because it is malformed. Correct the value as per the syntax, or change its target type. Use `try_cast` to tolerate malformed input and return NULL instead. SQLSTATE: 22018
+== DataFrame ==
+"cast" was called from
+D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py:250
+
+2026-07-09 15:34:21,138 | ERROR    | utils.timing | FAILED | Full Silver -> Gold Build
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py", line 596, in run_silver_to_gold
+    dim_company = build_dim_company(yahoo_df, kaggle_df)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py", line 276, in build_dim_company
+    logger.info("[gold] Dim_Company: %d distinct compan(y/ies)", dim_company.count())
+                                                                 ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\sql\classic\dataframe.py", line 439, in count
+    return int(self._jdf.count())
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\java_gateway.py", line 1362, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\errors\exceptions\captured.py", line 269, in deco
+    raise converted from None
+pyspark.errors.exceptions.captured.NumberFormatException: [CAST_INVALID_INPUT] The value 'micron' of the type "STRING" cannot be cast to "DOUBLE" because it is malformed. Correct the value as per the syntax, or change its target type. Use `try_cast` to tolerate malformed input and return NULL instead. SQLSTATE: 22018
+== DataFrame ==
+"cast" was called from
+D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold.py:250
+
+2026-07-09 15:34:21,141 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-09 15:35:50,441 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-09 15:36:00,680 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-09 15:36:00,680 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-09 15:36:06,083 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-09 15:36:06,465 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-09 15:36:06,746 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-09 15:36:06,746 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-09 15:36:10,529 | INFO     | __main__ | [gold] Dim_Date spans 1990-01-01 to 2036-01-01 (16802 day(s))
+2026-07-09 15:36:10,529 | INFO     | utils.timing | END | Build Dim_Date | duration=3.78s
+2026-07-09 15:36:12,500 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-09 15:36:12,500 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-09 15:36:13,342 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-09 15:36:13,342 | INFO     | utils.timing | END | Build Dim_Product | duration=0.84s
+2026-07-09 15:36:14,345 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-09 15:36:14,347 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-09 15:36:16,668 | INFO     | __main__ | [gold] Dim_Company: 60 distinct compan(y/ies)
+2026-07-09 15:36:16,668 | INFO     | utils.timing | END | Build Dim_Company | duration=2.32s
+2026-07-09 15:36:18,378 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-09 15:36:18,380 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-09 15:36:19,912 | INFO     | __main__ | [gold] Dim_Country: 37 distinct countr(y/ies)
+2026-07-09 15:36:19,912 | INFO     | utils.timing | END | Build Dim_Country | duration=1.54s
+2026-07-09 15:36:20,641 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-09 15:36:20,643 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-09 15:36:21,913 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-09 15:36:21,913 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=1.28s
+2026-07-09 15:36:23,558 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-09 15:36:23,558 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-09 15:36:25,097 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-09 15:36:25,098 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=1.53s
+2026-07-09 15:36:26,757 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-09 15:36:26,757 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-09 15:36:27,565 | INFO     | __main__ | [gold] Fact_Production: 12648 row(s)
+2026-07-09 15:36:27,565 | INFO     | utils.timing | END | Build Fact_Production | duration=0.80s
+2026-07-09 15:36:29,505 | INFO     | __main__ | [gold] Wrote Fact_Production to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_production
+2026-07-09 15:36:29,505 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
+2026-07-09 15:36:29,505 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=28.82s
+2026-07-09 15:36:29,505 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-09 15:38:09,639 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-09 15:38:28,192 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-09 15:38:28,192 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-09 15:38:37,705 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-09 15:38:38,191 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-09 15:38:38,594 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-09 15:38:38,594 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-09 15:38:46,487 | INFO     | __main__ | [gold] Dim_Date spans 1990-01-01 to 2036-01-01 (16802 day(s))
+2026-07-09 15:38:46,500 | INFO     | utils.timing | END | Build Dim_Date | duration=7.90s
+2026-07-09 15:38:50,863 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-09 15:38:50,881 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-09 15:38:52,858 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-09 15:38:52,864 | INFO     | utils.timing | END | Build Dim_Product | duration=1.96s
+2026-07-09 15:38:54,648 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-09 15:38:54,648 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-09 15:38:57,500 | INFO     | __main__ | [gold] Dim_Company: 60 distinct compan(y/ies)
+2026-07-09 15:38:57,504 | INFO     | utils.timing | END | Build Dim_Company | duration=2.85s
+2026-07-09 15:39:00,495 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-09 15:39:00,495 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-09 15:39:03,335 | INFO     | __main__ | [gold] Dim_Country: 37 distinct countr(y/ies)
+2026-07-09 15:39:03,341 | INFO     | utils.timing | END | Build Dim_Country | duration=2.85s
+2026-07-09 15:39:04,848 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-09 15:39:04,848 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-09 15:39:06,735 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-09 15:39:06,735 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=1.89s
+2026-07-09 15:39:08,945 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-09 15:39:08,945 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-09 15:39:11,409 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-09 15:39:11,409 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=2.45s
+2026-07-09 15:39:13,438 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-09 15:39:13,439 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-09 15:39:14,503 | INFO     | __main__ | [gold] Fact_Production: 12648 row(s)
+2026-07-09 15:39:14,503 | INFO     | utils.timing | END | Build Fact_Production | duration=1.06s
+2026-07-09 15:39:17,139 | INFO     | __main__ | [gold] Wrote Fact_Production to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_production
+2026-07-09 15:39:17,139 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
+2026-07-09 15:39:17,139 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=48.94s
+2026-07-09 15:39:17,139 | INFO     | spark.spark_session | Stopping SparkSession

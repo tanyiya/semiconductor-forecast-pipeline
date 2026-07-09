@@ -88,24 +88,33 @@ KAGGLE_CSV_GLOB: str = os.environ.get("KAGGLE_CSV_GLOB", "*.csv")
 # Supported type strings: "string", "double", "long", "date".
 @dataclass(frozen=True)
 class KaggleSilverConfig:
-    date_column: str = "date"
+
+    date_column: str = "year"
+
     column_schema: dict = field(
         default_factory=lambda: {
-            "date": "date",
+            "year": "int",
+            "country": "string",
             "company": "string",
-            "chip_type": "string",
-            "production_volume": "double",
-            "region": "string",
-            "revenue_usd": "double",
+            "production_capacity_wafers": "double",
+            "fab_count": "double",
+            "technology_node_nm": "string",
+            "ai_chip_production": "string",
+            "foundry_revenue_usd": "double",
+            "global_market_share": "double",
         }
     )
-    # Numeric columns to check for statistical outliers (mean +/- N*stddev).
+
     outlier_columns: List[str] = field(
-        default_factory=lambda: ["production_volume", "revenue_usd"]
+        default_factory=lambda: [
+            "production_capacity_wafers",
+            "fab_count",
+            "foundry_revenue_usd",
+            "global_market_share",
+        ]
     )
+
     outlier_std_threshold: float = 3.0
-
-
 KAGGLE_SILVER_CONFIG = KaggleSilverConfig()
 
 
@@ -213,7 +222,7 @@ TICKER_TO_COMPANY_NAME: dict = {
 class KaggleGoldConfig:
     company_column: str = "company"
     country_column: str = "country"  # adjust if your dataset calls this "country"
-    date_column: str = "date"  # used to derive the calendar year grain
+    date_column: str = "year"  # used to derive the calendar year grain
  
     # metric_column -> Spark aggregation function used to roll daily/raw
     # Kaggle rows up to one-row-per-company-per-year. "sum" for flow
