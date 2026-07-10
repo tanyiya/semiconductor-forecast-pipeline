@@ -75,7 +75,7 @@ def run_pipeline(sources: List[str], kaggle_date_column: str | None) -> None:
         if "kaggle" in sources:
             try:
                 results["kaggle"] = run_kaggle_ingestion(
-                    spark, expected_date_column=kaggle_date_column
+                    spark
                 )
             except FileNotFoundError as exc:
                 logger.error("Kaggle ingestion skipped: %s", exc)

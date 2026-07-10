@@ -176,7 +176,7 @@ TRENDFORCE_CONFIG = TrendForceConfig()
 # --------------------------------------------------------------------------
 @dataclass(frozen=True)
 class SparkConfig:
-    app_name: str = "AISemiconductorDemandForecasting-Ingestion"
+    app_name: str = "SemiconductorForecastPipeline"
     master: str = "local[*]"
     driver_memory: str = "4g"
     executor_memory: str = "4g"

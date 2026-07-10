@@ -7576,3 +7576,616 @@ D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\silver_to_gold
 2026-07-09 15:39:17,139 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
 2026-07-09 15:39:17,139 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=48.94s
 2026-07-09 15:39:17,139 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-10 22:47:25,609 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-10 22:47:57,085 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-10 22:47:57,085 | INFO     | utils.timing | START | Full Silver -> Gold Build
+2026-07-10 22:48:03,556 | INFO     | __main__ | [gold] Read Silver 'yahoo': 17591 row(s)
+2026-07-10 22:48:04,004 | INFO     | __main__ | [gold] Read Silver 'trendforce': 1170 row(s)
+2026-07-10 22:48:04,367 | INFO     | __main__ | [gold] Read Silver 'kaggle': 12648 row(s)
+2026-07-10 22:48:04,367 | INFO     | utils.timing | START | Build Dim_Date
+2026-07-10 22:48:08,337 | INFO     | __main__ | [gold] Dim_Date spans 1990-01-01 to 2036-01-01 (16802 day(s))
+2026-07-10 22:48:08,337 | INFO     | utils.timing | END | Build Dim_Date | duration=3.97s
+2026-07-10 22:48:10,135 | INFO     | __main__ | [gold] Wrote Dim_Date to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_date
+2026-07-10 22:48:10,136 | INFO     | utils.timing | START | Build Dim_Product
+2026-07-10 22:48:11,095 | INFO     | __main__ | [gold] Dim_Product: 13 distinct product(s)
+2026-07-10 22:48:11,095 | INFO     | utils.timing | END | Build Dim_Product | duration=0.96s
+2026-07-10 22:48:12,297 | INFO     | __main__ | [gold] Wrote Dim_Product to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_product
+2026-07-10 22:48:12,298 | INFO     | utils.timing | START | Build Dim_Company
+2026-07-10 22:48:14,977 | INFO     | __main__ | [gold] Dim_Company: 4710 distinct compan(y/ies)
+2026-07-10 22:48:14,977 | INFO     | utils.timing | END | Build Dim_Company | duration=2.68s
+2026-07-10 22:48:17,280 | INFO     | __main__ | [gold] Wrote Dim_Company to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_company
+2026-07-10 22:48:17,280 | INFO     | utils.timing | START | Build Dim_Country
+2026-07-10 22:48:18,288 | INFO     | __main__ | [gold] Dim_Country: 144 distinct countr(y/ies)
+2026-07-10 22:48:18,292 | INFO     | utils.timing | END | Build Dim_Country | duration=1.01s
+2026-07-10 22:48:18,937 | INFO     | __main__ | [gold] Wrote Dim_Country to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\dim_country
+2026-07-10 22:48:18,937 | INFO     | utils.timing | START | Build Fact_MarketPrice
+2026-07-10 22:48:20,638 | INFO     | __main__ | [gold] Fact_MarketPrice: 1170 row(s)
+2026-07-10 22:48:20,638 | INFO     | utils.timing | END | Build Fact_MarketPrice | duration=1.70s
+2026-07-10 22:48:22,995 | INFO     | __main__ | [gold] Wrote Fact_MarketPrice to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_market_price
+2026-07-10 22:48:22,997 | INFO     | utils.timing | START | Build Fact_StockMarket
+2026-07-10 22:48:24,926 | INFO     | __main__ | [gold] Fact_StockMarket: 17591 row(s)
+2026-07-10 22:48:24,934 | INFO     | utils.timing | END | Build Fact_StockMarket | duration=1.94s
+2026-07-10 22:48:27,632 | INFO     | __main__ | [gold] Wrote Fact_StockMarket to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_stock_market
+2026-07-10 22:48:27,632 | INFO     | utils.timing | START | Build Fact_Production
+2026-07-10 22:48:28,509 | INFO     | __main__ | [gold] Fact_Production: 12648 row(s)
+2026-07-10 22:48:28,509 | INFO     | utils.timing | END | Build Fact_Production | duration=0.87s
+2026-07-10 22:48:31,160 | INFO     | __main__ | [gold] Wrote Fact_Production to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\gold\fact_production
+2026-07-10 22:48:31,160 | INFO     | __main__ | [gold] Gold build complete. Tables written: ['dim_date', 'dim_product', 'dim_company', 'dim_country', 'fact_market_price', 'fact_stock_market', 'fact_production']
+2026-07-10 22:48:31,160 | INFO     | utils.timing | END | Full Silver -> Gold Build | duration=34.08s
+2026-07-10 22:48:31,160 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-10 22:58:33,973 | INFO     | __main__ | Starting ingestion pipeline for sources: ['kaggle']
+2026-07-10 22:58:33,973 | INFO     | utils.timing | START | Full Ingestion Pipeline
+2026-07-10 22:58:33,973 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-10 22:58:44,352 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-10 22:58:44,352 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-10 22:58:44,509 | ERROR    | utils.timing | FAILED | Full Ingestion Pipeline
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\main.py", line 77, in run_pipeline
+    results["kaggle"] = run_kaggle_ingestion(
+                        ^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_kaggle_ingestion() got an unexpected keyword argument 'expected_date_column'
+2026-07-10 22:58:44,509 | ERROR    | __main__ | Pipeline run failed
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\main.py", line 105, in main
+    run_pipeline(args.sources, args.kaggle_date_column)
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\main.py", line 77, in run_pipeline
+    results["kaggle"] = run_kaggle_ingestion(
+                        ^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_kaggle_ingestion() got an unexpected keyword argument 'expected_date_column'
+2026-07-10 23:05:04,884 | INFO     | __main__ | Starting ingestion pipeline for sources: ['kaggle']
+2026-07-10 23:05:04,886 | INFO     | utils.timing | START | Full Ingestion Pipeline
+2026-07-10 23:05:04,886 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-10 23:05:13,357 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-10 23:05:13,357 | INFO     | utils.timing | START | Kaggle Ingestion Pipeline
+2026-07-10 23:05:13,357 | INFO     | utils.timing | START | Kaggle CSV Read
+2026-07-10 23:05:13,357 | INFO     | ingestion.kaggle_loader | Reading Kaggle CSV: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\semiconductor_production.csv
+2026-07-10 23:05:13,357 | ERROR    | utils.timing | FAILED | Kaggle CSV Read
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\ingestion\kaggle_loader.py", line 70, in read_csv
+    raise FileNotFoundError(
+FileNotFoundError: Expected Kaggle CSV file 'semiconductor_production.csv' not found at 'D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\semiconductor_production.csv'. Place the Kaggle dataset CSV(s) there before running this loader.
+2026-07-10 23:05:13,357 | ERROR    | utils.timing | FAILED | Kaggle Ingestion Pipeline
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\ingestion\kaggle_loader.py", line 139, in run
+    df = self.read_csv(filename)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\ingestion\kaggle_loader.py", line 70, in read_csv
+    raise FileNotFoundError(
+FileNotFoundError: Expected Kaggle CSV file 'semiconductor_production.csv' not found at 'D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\semiconductor_production.csv'. Place the Kaggle dataset CSV(s) there before running this loader.
+2026-07-10 23:05:13,372 | ERROR    | __main__ | Kaggle ingestion skipped: Expected Kaggle CSV file 'semiconductor_production.csv' not found at 'D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\semiconductor_production.csv'. Place the Kaggle dataset CSV(s) there before running this loader.
+2026-07-10 23:05:13,372 | INFO     | __main__ | Ingestion stage complete. Sources processed: []
+2026-07-10 23:05:13,372 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-10 23:05:13,862 | INFO     | utils.timing | END | Full Ingestion Pipeline | duration=8.98s
+2026-07-10 23:06:45,633 | INFO     | __main__ | Starting ingestion pipeline for sources: ['kaggle']
+2026-07-10 23:06:45,648 | INFO     | utils.timing | START | Full Ingestion Pipeline
+2026-07-10 23:06:45,651 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-10 23:06:53,744 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-10 23:06:53,744 | INFO     | utils.timing | START | Kaggle Ingestion Pipeline
+2026-07-10 23:06:53,744 | INFO     | utils.timing | START | Kaggle CSV Read
+2026-07-10 23:06:53,744 | INFO     | ingestion.kaggle_loader | Reading Kaggle CSV: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\1_semiconductor_production.csv
+2026-07-10 23:06:56,673 | INFO     | ingestion.kaggle_loader | Loaded file: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\1_semiconductor_production.csv
+2026-07-10 23:06:56,673 | INFO     | utils.timing | END | Kaggle CSV Read | duration=2.93s
+2026-07-10 23:06:56,673 | INFO     | ingestion.kaggle_loader | [1_semiconductor_production.csv] Schema:
+2026-07-10 23:06:56,702 | INFO     | ingestion.kaggle_loader |   root
+2026-07-10 23:06:56,702 | INFO     | ingestion.kaggle_loader |    |-- Year: integer (nullable = true)
+2026-07-10 23:06:56,702 | INFO     | ingestion.kaggle_loader |    |-- Country: string (nullable = true)
+2026-07-10 23:06:56,702 | INFO     | ingestion.kaggle_loader |    |-- Company: string (nullable = true)
+2026-07-10 23:06:56,702 | INFO     | ingestion.kaggle_loader |    |-- Production_Capacity_Wafers: double (nullable = true)
+2026-07-10 23:06:56,702 | INFO     | ingestion.kaggle_loader |    |-- Fab_Count: integer (nullable = true)
+2026-07-10 23:06:56,702 | INFO     | ingestion.kaggle_loader |    |-- Technology_Node_nm: string (nullable = true)
+2026-07-10 23:06:56,702 | INFO     | ingestion.kaggle_loader |    |-- AI_Chip_Production: double (nullable = true)
+2026-07-10 23:06:56,702 | INFO     | ingestion.kaggle_loader |    |-- Foundry_Revenue_USD: double (nullable = true)
+2026-07-10 23:06:56,702 | INFO     | ingestion.kaggle_loader |    |-- Global_Market_Share: double (nullable = true)
+2026-07-10 23:06:59,025 | INFO     | ingestion.kaggle_loader | [1_semiconductor_production.csv] Row count: 2282
+2026-07-10 23:06:59,025 | INFO     | ingestion.kaggle_loader | [1_semiconductor_production.csv] Summary statistics:
+2026-07-10 23:07:01,615 | INFO     | ingestion.kaggle_loader |   {'summary': 'count', 'Year': '2282', 'Country': '2282', 'Company': '2282', 'Production_Capacity_Wafers': '2282', 'Fab_Count': '2282', 'Technology_Node_nm': '2282', 'AI_Chip_Production': '2282', 'Foundry_Revenue_USD': '2282', 'Global_Market_Share': '2282'}
+2026-07-10 23:07:01,615 | INFO     | ingestion.kaggle_loader |   {'summary': 'mean', 'Year': '2013.3781770376863', 'Country': None, 'Company': None, 'Production_Capacity_Wafers': '843759.9084228694', 'Fab_Count': '13.76424189307625', 'Technology_Node_nm': None, 'AI_Chip_Production': '103812.64942156662', 'Foundry_Revenue_USD': '1.3628231555306988E9', 'Global_Market_Share': '2.0595836985100777'}
+2026-07-10 23:07:01,615 | INFO     | ingestion.kaggle_loader |   {'summary': 'stddev', 'Year': '13.520935967338964', 'Country': None, 'Company': None, 'Production_Capacity_Wafers': '594922.055521889', 'Fab_Count': '12.506257305190736', 'Technology_Node_nm': None, 'AI_Chip_Production': '176131.530648527', 'Foundry_Revenue_USD': '1.35477000973586E9', 'Global_Market_Share': '1.209097203525345'}
+2026-07-10 23:07:01,615 | INFO     | ingestion.kaggle_loader |   {'summary': 'min', 'Year': '1990', 'Country': 'China', 'Company': 'AMD', 'Production_Capacity_Wafers': '12705.837390565175', 'Fab_Count': '1', 'Technology_Node_nm': '1.4nm', 'AI_Chip_Production': '0.0', 'Foundry_Revenue_USD': '1.2705837390565176E7', 'Global_Market_Share': '0.06'}
+2026-07-10 23:07:01,615 | INFO     | ingestion.kaggle_loader |   {'summary': '25%', 'Year': '2002', 'Country': None, 'Company': None, 'Production_Capacity_Wafers': '371378.44644245366', 'Fab_Count': '5', 'Technology_Node_nm': None, 'AI_Chip_Production': '0.0', 'Foundry_Revenue_USD': '4.3386891838041764E8', 'Global_Market_Share': '1.06'}
+2026-07-10 23:07:01,615 | INFO     | ingestion.kaggle_loader |   {'summary': '50%', 'Year': '2014', 'Country': None, 'Company': None, 'Production_Capacity_Wafers': '705753.3855975872', 'Fab_Count': '10', 'Technology_Node_nm': None, 'AI_Chip_Production': '0.0', 'Foundry_Revenue_USD': '8.684502562656714E8', 'Global_Market_Share': '1.97'}
+2026-07-10 23:07:01,615 | INFO     | ingestion.kaggle_loader |   {'summary': '75%', 'Year': '2025', 'Country': None, 'Company': None, 'Production_Capacity_Wafers': '1213054.238557408', 'Fab_Count': '19', 'Technology_Node_nm': None, 'AI_Chip_Production': '144288.01926410172', 'Foundry_Revenue_USD': '1.828012346102273E9', 'Global_Market_Share': '2.94'}
+2026-07-10 23:07:01,615 | INFO     | ingestion.kaggle_loader |   {'summary': 'max', 'Year': '2036', 'Country': 'USA', 'Company': 'Western Digital', 'Production_Capacity_Wafers': '2784326.232928346', 'Fab_Count': '77', 'Technology_Node_nm': '99nm', 'AI_Chip_Production': '1070084.2422192607', 'Foundry_Revenue_USD': '8.036072382801228E9', 'Global_Market_Share': '6.34'}
+2026-07-10 23:07:01,787 | INFO     | ingestion.validator | Validation Report [1_semiconductor_production] - PASSED
+  rows                : 2282
+  empty               : False
+  duplicate_rows      : 0
+  missing_columns     : none
+  unexpected_columns  : none
+  type_mismatches     : none
+2026-07-10 23:07:01,787 | INFO     | utils.timing | START | Kaggle Bronze Write
+2026-07-10 23:07:03,416 | INFO     | ingestion.kaggle_loader | Kaggle Bronze data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\1_semiconductor_production
+2026-07-10 23:07:03,417 | INFO     | utils.timing | END | Kaggle Bronze Write | duration=1.62s
+2026-07-10 23:07:03,417 | INFO     | utils.timing | START | Kaggle CSV Read
+2026-07-10 23:07:03,417 | INFO     | ingestion.kaggle_loader | Reading Kaggle CSV: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\2_ai_hardware_demand.csv
+2026-07-10 23:07:03,585 | INFO     | ingestion.kaggle_loader | Loaded file: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\2_ai_hardware_demand.csv
+2026-07-10 23:07:03,585 | INFO     | utils.timing | END | Kaggle CSV Read | duration=0.17s
+2026-07-10 23:07:03,585 | INFO     | ingestion.kaggle_loader | [2_ai_hardware_demand.csv] Schema:
+2026-07-10 23:07:03,585 | INFO     | ingestion.kaggle_loader |   root
+2026-07-10 23:07:03,585 | INFO     | ingestion.kaggle_loader |    |-- Year: integer (nullable = true)
+2026-07-10 23:07:03,585 | INFO     | ingestion.kaggle_loader |    |-- Country: string (nullable = true)
+2026-07-10 23:07:03,585 | INFO     | ingestion.kaggle_loader |    |-- AI_GPU_Demand: double (nullable = true)
+2026-07-10 23:07:03,595 | INFO     | ingestion.kaggle_loader |    |-- Data_Center_Count: integer (nullable = true)
+2026-07-10 23:07:03,595 | INFO     | ingestion.kaggle_loader |    |-- AI_Compute_Power: double (nullable = true)
+2026-07-10 23:07:03,595 | INFO     | ingestion.kaggle_loader |    |-- Cloud_AI_Investment: double (nullable = true)
+2026-07-10 23:07:03,595 | INFO     | ingestion.kaggle_loader |    |-- Training_Compute_FLOPS: double (nullable = true)
+2026-07-10 23:07:03,595 | INFO     | ingestion.kaggle_loader |    |-- AI_Model_Count: integer (nullable = true)
+2026-07-10 23:07:03,715 | INFO     | ingestion.kaggle_loader | [2_ai_hardware_demand.csv] Row count: 1880
+2026-07-10 23:07:03,715 | INFO     | ingestion.kaggle_loader | [2_ai_hardware_demand.csv] Summary statistics:
+2026-07-10 23:07:04,731 | INFO     | ingestion.kaggle_loader |   {'summary': 'count', 'Year': '1880', 'Country': '1880', 'AI_GPU_Demand': '1880', 'Data_Center_Count': '1880', 'AI_Compute_Power': '1880', 'Cloud_AI_Investment': '1880', 'Training_Compute_FLOPS': '1880', 'AI_Model_Count': '1880'}
+2026-07-10 23:07:04,731 | INFO     | ingestion.kaggle_loader |   {'summary': 'mean', 'Year': '2013.0', 'Country': None, 'AI_GPU_Demand': '1.2157698752677226E8', 'Data_Center_Count': '24340.128191489363', 'AI_Compute_Power': '3.643789455687633E8', 'Cloud_AI_Investment': '1.5525053666625088E14', 'Training_Compute_FLOPS': '2.0461888862043647E22', 'AI_Model_Count': '121581.11861702127'}
+2026-07-10 23:07:04,733 | INFO     | ingestion.kaggle_loader |   {'summary': 'stddev', 'Year': '13.568269028431246', 'Country': None, 'AI_GPU_Demand': '4.3910768934065586E8', 'Data_Center_Count': '87821.96151397351', 'AI_Compute_Power': '1.3925086339313798E9', 'Cloud_AI_Investment': '5.87944303173517E14', 'Training_Compute_FLOPS': '8.912125723543054E22', 'AI_Model_Count': '439107.6142862827'}
+2026-07-10 23:07:04,733 | INFO     | ingestion.kaggle_loader |   {'summary': 'min', 'Year': '1990', 'Country': 'Argentina', 'AI_GPU_Demand': '0.0', 'Data_Center_Count': '1', 'AI_Compute_Power': '0.0', 'Cloud_AI_Investment': '0.0', 'Training_Compute_FLOPS': '0.0', 'AI_Model_Count': '0'}
+2026-07-10 23:07:04,733 | INFO     | ingestion.kaggle_loader |   {'summary': '25%', 'Year': '2001', 'Country': None, 'AI_GPU_Demand': '52.55496701502296', 'Data_Center_Count': '22', 'AI_Compute_Power': '127.82013913129092', 'Cloud_AI_Investment': '5.493191773150875E7', 'Training_Compute_FLOPS': '5.858140012011693E15', 'AI_Model_Count': '4'}
+2026-07-10 23:07:04,735 | INFO     | ingestion.kaggle_loader |   {'summary': '50%', 'Year': '2013', 'Country': None, 'AI_GPU_Demand': '4048.268167552095', 'Data_Center_Count': '44', 'AI_Compute_Power': '9803.122534783986', 'Cloud_AI_Investment': '5.289274395695672E9', 'Training_Compute_FLOPS': '5.851452625337568E17', 'AI_Model_Count': '9'}
+2026-07-10 23:07:04,737 | INFO     | ingestion.kaggle_loader |   {'summary': '75%', 'Year': '2025', 'Country': None, 'AI_GPU_Demand': '8504880.035163565', 'Data_Center_Count': '1709', 'AI_Compute_Power': '2.453140243715897E7', 'Cloud_AI_Investment': '9.63711606426755E12', 'Training_Compute_FLOPS': '1.1887234519301226E21', 'AI_Model_Count': '8507'}
+2026-07-10 23:07:04,740 | INFO     | ingestion.kaggle_loader |   {'summary': 'max', 'Year': '2036', 'Country': 'Vietnam', 'AI_GPU_Demand': '3.84929302390277E9', 'Data_Center_Count': '769894', 'AI_Compute_Power': '1.5733110862173986E10', 'Cloud_AI_Investment': '6.265035424303961E15', 'Training_Compute_FLOPS': '1.3658393442240905E24', 'AI_Model_Count': '3849295'}
+2026-07-10 23:07:04,919 | INFO     | ingestion.validator | Validation Report [2_ai_hardware_demand] - PASSED
+  rows                : 1880
+  empty               : False
+  duplicate_rows      : 0
+  missing_columns     : none
+  unexpected_columns  : none
+  type_mismatches     : none
+2026-07-10 23:07:04,920 | INFO     | utils.timing | START | Kaggle Bronze Write
+2026-07-10 23:07:05,169 | INFO     | ingestion.kaggle_loader | Kaggle Bronze data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\2_ai_hardware_demand
+2026-07-10 23:07:05,170 | INFO     | utils.timing | END | Kaggle Bronze Write | duration=0.25s
+2026-07-10 23:07:05,170 | INFO     | utils.timing | START | Kaggle CSV Read
+2026-07-10 23:07:05,170 | INFO     | ingestion.kaggle_loader | Reading Kaggle CSV: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\semiconductor_trade_supply_chain.csv
+2026-07-10 23:07:05,171 | ERROR    | utils.timing | FAILED | Kaggle CSV Read
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\ingestion\kaggle_loader.py", line 70, in read_csv
+    raise FileNotFoundError(
+FileNotFoundError: Expected Kaggle CSV file 'semiconductor_trade_supply_chain.csv' not found at 'D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\semiconductor_trade_supply_chain.csv'. Place the Kaggle dataset CSV(s) there before running this loader.
+2026-07-10 23:07:05,172 | ERROR    | utils.timing | FAILED | Kaggle Ingestion Pipeline
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\ingestion\kaggle_loader.py", line 139, in run
+    df = self.read_csv(filename)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\ingestion\kaggle_loader.py", line 70, in read_csv
+    raise FileNotFoundError(
+FileNotFoundError: Expected Kaggle CSV file 'semiconductor_trade_supply_chain.csv' not found at 'D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\semiconductor_trade_supply_chain.csv'. Place the Kaggle dataset CSV(s) there before running this loader.
+2026-07-10 23:07:05,173 | ERROR    | __main__ | Kaggle ingestion skipped: Expected Kaggle CSV file 'semiconductor_trade_supply_chain.csv' not found at 'D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\semiconductor_trade_supply_chain.csv'. Place the Kaggle dataset CSV(s) there before running this loader.
+2026-07-10 23:07:05,174 | INFO     | __main__ | Ingestion stage complete. Sources processed: []
+2026-07-10 23:07:05,174 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-10 23:07:05,638 | INFO     | utils.timing | END | Full Ingestion Pipeline | duration=19.99s
+2026-07-10 23:08:07,962 | INFO     | __main__ | Starting ingestion pipeline for sources: ['kaggle']
+2026-07-10 23:08:07,962 | INFO     | utils.timing | START | Full Ingestion Pipeline
+2026-07-10 23:08:07,970 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-10 23:08:16,554 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-10 23:08:16,554 | INFO     | utils.timing | START | Kaggle Ingestion Pipeline
+2026-07-10 23:08:16,554 | INFO     | utils.timing | START | Kaggle CSV Read
+2026-07-10 23:08:16,554 | INFO     | ingestion.kaggle_loader | Reading Kaggle CSV: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\1_semiconductor_production.csv
+2026-07-10 23:08:18,979 | INFO     | ingestion.kaggle_loader | Loaded file: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\1_semiconductor_production.csv
+2026-07-10 23:08:18,979 | INFO     | utils.timing | END | Kaggle CSV Read | duration=2.42s
+2026-07-10 23:08:18,979 | INFO     | ingestion.kaggle_loader | [1_semiconductor_production.csv] Schema:
+2026-07-10 23:08:19,008 | INFO     | ingestion.kaggle_loader |   root
+2026-07-10 23:08:19,008 | INFO     | ingestion.kaggle_loader |    |-- Year: integer (nullable = true)
+2026-07-10 23:08:19,008 | INFO     | ingestion.kaggle_loader |    |-- Country: string (nullable = true)
+2026-07-10 23:08:19,008 | INFO     | ingestion.kaggle_loader |    |-- Company: string (nullable = true)
+2026-07-10 23:08:19,008 | INFO     | ingestion.kaggle_loader |    |-- Production_Capacity_Wafers: double (nullable = true)
+2026-07-10 23:08:19,009 | INFO     | ingestion.kaggle_loader |    |-- Fab_Count: integer (nullable = true)
+2026-07-10 23:08:19,009 | INFO     | ingestion.kaggle_loader |    |-- Technology_Node_nm: string (nullable = true)
+2026-07-10 23:08:19,009 | INFO     | ingestion.kaggle_loader |    |-- AI_Chip_Production: double (nullable = true)
+2026-07-10 23:08:19,009 | INFO     | ingestion.kaggle_loader |    |-- Foundry_Revenue_USD: double (nullable = true)
+2026-07-10 23:08:19,009 | INFO     | ingestion.kaggle_loader |    |-- Global_Market_Share: double (nullable = true)
+2026-07-10 23:08:20,871 | INFO     | ingestion.kaggle_loader | [1_semiconductor_production.csv] Row count: 2282
+2026-07-10 23:08:20,871 | INFO     | ingestion.kaggle_loader | [1_semiconductor_production.csv] Summary statistics:
+2026-07-10 23:08:23,165 | INFO     | ingestion.kaggle_loader |   {'summary': 'count', 'Year': '2282', 'Country': '2282', 'Company': '2282', 'Production_Capacity_Wafers': '2282', 'Fab_Count': '2282', 'Technology_Node_nm': '2282', 'AI_Chip_Production': '2282', 'Foundry_Revenue_USD': '2282', 'Global_Market_Share': '2282'}
+2026-07-10 23:08:23,165 | INFO     | ingestion.kaggle_loader |   {'summary': 'mean', 'Year': '2013.3781770376863', 'Country': None, 'Company': None, 'Production_Capacity_Wafers': '843759.9084228694', 'Fab_Count': '13.76424189307625', 'Technology_Node_nm': None, 'AI_Chip_Production': '103812.64942156662', 'Foundry_Revenue_USD': '1.3628231555306988E9', 'Global_Market_Share': '2.0595836985100777'}
+2026-07-10 23:08:23,165 | INFO     | ingestion.kaggle_loader |   {'summary': 'stddev', 'Year': '13.520935967338964', 'Country': None, 'Company': None, 'Production_Capacity_Wafers': '594922.055521889', 'Fab_Count': '12.506257305190736', 'Technology_Node_nm': None, 'AI_Chip_Production': '176131.530648527', 'Foundry_Revenue_USD': '1.35477000973586E9', 'Global_Market_Share': '1.209097203525345'}
+2026-07-10 23:08:23,166 | INFO     | ingestion.kaggle_loader |   {'summary': 'min', 'Year': '1990', 'Country': 'China', 'Company': 'AMD', 'Production_Capacity_Wafers': '12705.837390565175', 'Fab_Count': '1', 'Technology_Node_nm': '1.4nm', 'AI_Chip_Production': '0.0', 'Foundry_Revenue_USD': '1.2705837390565176E7', 'Global_Market_Share': '0.06'}
+2026-07-10 23:08:23,166 | INFO     | ingestion.kaggle_loader |   {'summary': '25%', 'Year': '2002', 'Country': None, 'Company': None, 'Production_Capacity_Wafers': '371378.44644245366', 'Fab_Count': '5', 'Technology_Node_nm': None, 'AI_Chip_Production': '0.0', 'Foundry_Revenue_USD': '4.3386891838041764E8', 'Global_Market_Share': '1.06'}
+2026-07-10 23:08:23,166 | INFO     | ingestion.kaggle_loader |   {'summary': '50%', 'Year': '2014', 'Country': None, 'Company': None, 'Production_Capacity_Wafers': '705753.3855975872', 'Fab_Count': '10', 'Technology_Node_nm': None, 'AI_Chip_Production': '0.0', 'Foundry_Revenue_USD': '8.684502562656714E8', 'Global_Market_Share': '1.97'}
+2026-07-10 23:08:23,166 | INFO     | ingestion.kaggle_loader |   {'summary': '75%', 'Year': '2025', 'Country': None, 'Company': None, 'Production_Capacity_Wafers': '1213054.238557408', 'Fab_Count': '19', 'Technology_Node_nm': None, 'AI_Chip_Production': '144288.01926410172', 'Foundry_Revenue_USD': '1.828012346102273E9', 'Global_Market_Share': '2.94'}
+2026-07-10 23:08:23,166 | INFO     | ingestion.kaggle_loader |   {'summary': 'max', 'Year': '2036', 'Country': 'USA', 'Company': 'Western Digital', 'Production_Capacity_Wafers': '2784326.232928346', 'Fab_Count': '77', 'Technology_Node_nm': '99nm', 'AI_Chip_Production': '1070084.2422192607', 'Foundry_Revenue_USD': '8.036072382801228E9', 'Global_Market_Share': '6.34'}
+2026-07-10 23:08:23,313 | INFO     | ingestion.validator | Validation Report [1_semiconductor_production] - PASSED
+  rows                : 2282
+  empty               : False
+  duplicate_rows      : 0
+  missing_columns     : none
+  unexpected_columns  : none
+  type_mismatches     : none
+2026-07-10 23:08:23,314 | INFO     | utils.timing | START | Kaggle Bronze Write
+2026-07-10 23:08:24,847 | INFO     | ingestion.kaggle_loader | Kaggle Bronze data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\1_semiconductor_production
+2026-07-10 23:08:24,847 | INFO     | utils.timing | END | Kaggle Bronze Write | duration=1.53s
+2026-07-10 23:08:24,847 | INFO     | utils.timing | START | Kaggle CSV Read
+2026-07-10 23:08:24,847 | INFO     | ingestion.kaggle_loader | Reading Kaggle CSV: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\2_ai_hardware_demand.csv
+2026-07-10 23:08:25,007 | INFO     | ingestion.kaggle_loader | Loaded file: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\2_ai_hardware_demand.csv
+2026-07-10 23:08:25,008 | INFO     | utils.timing | END | Kaggle CSV Read | duration=0.16s
+2026-07-10 23:08:25,008 | INFO     | ingestion.kaggle_loader | [2_ai_hardware_demand.csv] Schema:
+2026-07-10 23:08:25,008 | INFO     | ingestion.kaggle_loader |   root
+2026-07-10 23:08:25,008 | INFO     | ingestion.kaggle_loader |    |-- Year: integer (nullable = true)
+2026-07-10 23:08:25,008 | INFO     | ingestion.kaggle_loader |    |-- Country: string (nullable = true)
+2026-07-10 23:08:25,008 | INFO     | ingestion.kaggle_loader |    |-- AI_GPU_Demand: double (nullable = true)
+2026-07-10 23:08:25,008 | INFO     | ingestion.kaggle_loader |    |-- Data_Center_Count: integer (nullable = true)
+2026-07-10 23:08:25,008 | INFO     | ingestion.kaggle_loader |    |-- AI_Compute_Power: double (nullable = true)
+2026-07-10 23:08:25,008 | INFO     | ingestion.kaggle_loader |    |-- Cloud_AI_Investment: double (nullable = true)
+2026-07-10 23:08:25,008 | INFO     | ingestion.kaggle_loader |    |-- Training_Compute_FLOPS: double (nullable = true)
+2026-07-10 23:08:25,011 | INFO     | ingestion.kaggle_loader |    |-- AI_Model_Count: integer (nullable = true)
+2026-07-10 23:08:25,133 | INFO     | ingestion.kaggle_loader | [2_ai_hardware_demand.csv] Row count: 1880
+2026-07-10 23:08:25,133 | INFO     | ingestion.kaggle_loader | [2_ai_hardware_demand.csv] Summary statistics:
+2026-07-10 23:08:26,261 | INFO     | ingestion.kaggle_loader |   {'summary': 'count', 'Year': '1880', 'Country': '1880', 'AI_GPU_Demand': '1880', 'Data_Center_Count': '1880', 'AI_Compute_Power': '1880', 'Cloud_AI_Investment': '1880', 'Training_Compute_FLOPS': '1880', 'AI_Model_Count': '1880'}
+2026-07-10 23:08:26,268 | INFO     | ingestion.kaggle_loader |   {'summary': 'mean', 'Year': '2013.0', 'Country': None, 'AI_GPU_Demand': '1.2157698752677226E8', 'Data_Center_Count': '24340.128191489363', 'AI_Compute_Power': '3.643789455687633E8', 'Cloud_AI_Investment': '1.5525053666625088E14', 'Training_Compute_FLOPS': '2.0461888862043647E22', 'AI_Model_Count': '121581.11861702127'}
+2026-07-10 23:08:26,268 | INFO     | ingestion.kaggle_loader |   {'summary': 'stddev', 'Year': '13.568269028431246', 'Country': None, 'AI_GPU_Demand': '4.3910768934065586E8', 'Data_Center_Count': '87821.96151397351', 'AI_Compute_Power': '1.3925086339313798E9', 'Cloud_AI_Investment': '5.87944303173517E14', 'Training_Compute_FLOPS': '8.912125723543054E22', 'AI_Model_Count': '439107.6142862827'}
+2026-07-10 23:08:26,268 | INFO     | ingestion.kaggle_loader |   {'summary': 'min', 'Year': '1990', 'Country': 'Argentina', 'AI_GPU_Demand': '0.0', 'Data_Center_Count': '1', 'AI_Compute_Power': '0.0', 'Cloud_AI_Investment': '0.0', 'Training_Compute_FLOPS': '0.0', 'AI_Model_Count': '0'}
+2026-07-10 23:08:26,270 | INFO     | ingestion.kaggle_loader |   {'summary': '25%', 'Year': '2001', 'Country': None, 'AI_GPU_Demand': '52.55496701502296', 'Data_Center_Count': '22', 'AI_Compute_Power': '127.82013913129092', 'Cloud_AI_Investment': '5.493191773150875E7', 'Training_Compute_FLOPS': '5.858140012011693E15', 'AI_Model_Count': '4'}
+2026-07-10 23:08:26,270 | INFO     | ingestion.kaggle_loader |   {'summary': '50%', 'Year': '2013', 'Country': None, 'AI_GPU_Demand': '4048.268167552095', 'Data_Center_Count': '44', 'AI_Compute_Power': '9803.122534783986', 'Cloud_AI_Investment': '5.289274395695672E9', 'Training_Compute_FLOPS': '5.851452625337568E17', 'AI_Model_Count': '9'}
+2026-07-10 23:08:26,270 | INFO     | ingestion.kaggle_loader |   {'summary': '75%', 'Year': '2025', 'Country': None, 'AI_GPU_Demand': '8504880.035163565', 'Data_Center_Count': '1709', 'AI_Compute_Power': '2.453140243715897E7', 'Cloud_AI_Investment': '9.63711606426755E12', 'Training_Compute_FLOPS': '1.1887234519301226E21', 'AI_Model_Count': '8507'}
+2026-07-10 23:08:26,270 | INFO     | ingestion.kaggle_loader |   {'summary': 'max', 'Year': '2036', 'Country': 'Vietnam', 'AI_GPU_Demand': '3.84929302390277E9', 'Data_Center_Count': '769894', 'AI_Compute_Power': '1.5733110862173986E10', 'Cloud_AI_Investment': '6.265035424303961E15', 'Training_Compute_FLOPS': '1.3658393442240905E24', 'AI_Model_Count': '3849295'}
+2026-07-10 23:08:26,541 | INFO     | ingestion.validator | Validation Report [2_ai_hardware_demand] - PASSED
+  rows                : 1880
+  empty               : False
+  duplicate_rows      : 0
+  missing_columns     : none
+  unexpected_columns  : none
+  type_mismatches     : none
+2026-07-10 23:08:26,541 | INFO     | utils.timing | START | Kaggle Bronze Write
+2026-07-10 23:08:26,879 | INFO     | ingestion.kaggle_loader | Kaggle Bronze data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\2_ai_hardware_demand
+2026-07-10 23:08:26,887 | INFO     | utils.timing | END | Kaggle Bronze Write | duration=0.33s
+2026-07-10 23:08:26,887 | INFO     | utils.timing | START | Kaggle CSV Read
+2026-07-10 23:08:26,887 | INFO     | ingestion.kaggle_loader | Reading Kaggle CSV: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\3_semiconductor_trade_supply_chain.csv
+2026-07-10 23:08:27,073 | INFO     | ingestion.kaggle_loader | Loaded file: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\3_semiconductor_trade_supply_chain.csv
+2026-07-10 23:08:27,089 | INFO     | utils.timing | END | Kaggle CSV Read | duration=0.20s
+2026-07-10 23:08:27,089 | INFO     | ingestion.kaggle_loader | [3_semiconductor_trade_supply_chain.csv] Schema:
+2026-07-10 23:08:27,089 | INFO     | ingestion.kaggle_loader |   root
+2026-07-10 23:08:27,089 | INFO     | ingestion.kaggle_loader |    |-- Year: integer (nullable = true)
+2026-07-10 23:08:27,091 | INFO     | ingestion.kaggle_loader |    |-- Exporting_Country: string (nullable = true)
+2026-07-10 23:08:27,091 | INFO     | ingestion.kaggle_loader |    |-- Importing_Country: string (nullable = true)
+2026-07-10 23:08:27,091 | INFO     | ingestion.kaggle_loader |    |-- Chip_Export_Value_USD: double (nullable = true)
+2026-07-10 23:08:27,091 | INFO     | ingestion.kaggle_loader |    |-- Chip_Import_Value_USD: double (nullable = true)
+2026-07-10 23:08:27,091 | INFO     | ingestion.kaggle_loader |    |-- Trade_Balance: double (nullable = true)
+2026-07-10 23:08:27,091 | INFO     | ingestion.kaggle_loader |    |-- Logistics_Route: string (nullable = true)
+2026-07-10 23:08:27,091 | INFO     | ingestion.kaggle_loader |    |-- Supply_Chain_Dependency: double (nullable = true)
+2026-07-10 23:08:27,194 | INFO     | ingestion.kaggle_loader | [3_semiconductor_trade_supply_chain.csv] Row count: 3948
+2026-07-10 23:08:27,194 | INFO     | ingestion.kaggle_loader | [3_semiconductor_trade_supply_chain.csv] Summary statistics:
+2026-07-10 23:08:28,256 | INFO     | ingestion.kaggle_loader |   {'summary': 'count', 'Year': '3948', 'Exporting_Country': '3948', 'Importing_Country': '3948', 'Chip_Export_Value_USD': '3948', 'Chip_Import_Value_USD': '3948', 'Trade_Balance': '3948', 'Logistics_Route': '3948', 'Supply_Chain_Dependency': '3948'}
+2026-07-10 23:08:28,256 | INFO     | ingestion.kaggle_loader |   {'summary': 'mean', 'Year': '2013.0', 'Exporting_Country': None, 'Importing_Country': None, 'Chip_Export_Value_USD': '5.314377437812777E10', 'Chip_Import_Value_USD': '5.302959207154876E10', 'Trade_Balance': '1.1418230657908066E8', 'Logistics_Route': None, 'Supply_Chain_Dependency': '31.893179789393006'}
+2026-07-10 23:08:28,258 | INFO     | ingestion.kaggle_loader |   {'summary': 'stddev', 'Year': '13.566378208064876', 'Exporting_Country': None, 'Importing_Country': None, 'Chip_Export_Value_USD': '6.815704428578211E10', 'Chip_Import_Value_USD': '6.796779861969766E10', 'Trade_Balance': '2.453162507276568E9', 'Logistics_Route': None, 'Supply_Chain_Dependency': '20.431216392043556'}
+2026-07-10 23:08:28,258 | INFO     | ingestion.kaggle_loader |   {'summary': 'min', 'Year': '1990', 'Exporting_Country': 'China', 'Importing_Country': 'China', 'Chip_Export_Value_USD': '1.0310193128347611E8', 'Chip_Import_Value_USD': '1.0747596818009062E8', 'Trade_Balance': '-2.1518272421833557E10', 'Logistics_Route': 'Air Freight', 'Supply_Chain_Dependency': '5.007048934700864'}
+2026-07-10 23:08:28,258 | INFO     | ingestion.kaggle_loader |   {'summary': '25%', 'Year': '2001', 'Exporting_Country': None, 'Importing_Country': None, 'Chip_Export_Value_USD': '1.0026332405838646E10', 'Chip_Import_Value_USD': '9.999214060102797E9', 'Trade_Balance': '-4.482398013123894E8', 'Logistics_Route': None, 'Supply_Chain_Dependency': '16.735347888632'}
+2026-07-10 23:08:28,258 | INFO     | ingestion.kaggle_loader |   {'summary': '50%', 'Year': '2013', 'Exporting_Country': None, 'Importing_Country': None, 'Chip_Export_Value_USD': '2.5235155974187325E10', 'Chip_Import_Value_USD': '2.523508956853912E10', 'Trade_Balance': '8406891.853948355', 'Logistics_Route': None, 'Supply_Chain_Dependency': '27.8872479474013'}
+2026-07-10 23:08:28,258 | INFO     | ingestion.kaggle_loader |   {'summary': '75%', 'Year': '2025', 'Exporting_Country': None, 'Importing_Country': None, 'Chip_Export_Value_USD': '6.857866715282411E10', 'Chip_Import_Value_USD': '6.780700302392113E10', 'Trade_Balance': '5.557621725811081E8', 'Logistics_Route': None, 'Supply_Chain_Dependency': '38.315933201639574'}
+2026-07-10 23:08:28,258 | INFO     | ingestion.kaggle_loader |   {'summary': 'max', 'Year': '2036', 'Exporting_Country': 'USA', 'Importing_Country': 'Vietnam', 'Chip_Export_Value_USD': '5.726196947262946E11', 'Chip_Import_Value_USD': '5.697832659112665E11', 'Trade_Balance': '1.748349367093451E10', 'Logistics_Route': 'Pacific Ocean', 'Supply_Chain_Dependency': '89.97856674365379'}
+2026-07-10 23:08:28,361 | INFO     | ingestion.validator | Validation Report [3_semiconductor_trade_supply_chain] - PASSED
+  rows                : 3948
+  empty               : False
+  duplicate_rows      : 0
+  missing_columns     : none
+  unexpected_columns  : none
+  type_mismatches     : none
+2026-07-10 23:08:28,361 | INFO     | utils.timing | START | Kaggle Bronze Write
+2026-07-10 23:08:28,649 | INFO     | ingestion.kaggle_loader | Kaggle Bronze data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\3_semiconductor_trade_supply_chain
+2026-07-10 23:08:28,649 | INFO     | utils.timing | END | Kaggle Bronze Write | duration=0.29s
+2026-07-10 23:08:28,649 | INFO     | utils.timing | START | Kaggle CSV Read
+2026-07-10 23:08:28,649 | INFO     | ingestion.kaggle_loader | Reading Kaggle CSV: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\4_technology_node_innovation.csv
+2026-07-10 23:08:28,809 | INFO     | ingestion.kaggle_loader | Loaded file: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\4_technology_node_innovation.csv
+2026-07-10 23:08:28,809 | INFO     | utils.timing | END | Kaggle CSV Read | duration=0.16s
+2026-07-10 23:08:28,809 | INFO     | ingestion.kaggle_loader | [4_technology_node_innovation.csv] Schema:
+2026-07-10 23:08:28,815 | INFO     | ingestion.kaggle_loader |   root
+2026-07-10 23:08:28,815 | INFO     | ingestion.kaggle_loader |    |-- Year: integer (nullable = true)
+2026-07-10 23:08:28,815 | INFO     | ingestion.kaggle_loader |    |-- Company: string (nullable = true)
+2026-07-10 23:08:28,815 | INFO     | ingestion.kaggle_loader |    |-- Node_Size_nm: double (nullable = true)
+2026-07-10 23:08:28,815 | INFO     | ingestion.kaggle_loader |    |-- Transistor_Density: double (nullable = true)
+2026-07-10 23:08:28,815 | INFO     | ingestion.kaggle_loader |    |-- RD_Spending_USD: double (nullable = true)
+2026-07-10 23:08:28,815 | INFO     | ingestion.kaggle_loader |    |-- Patent_Count: integer (nullable = true)
+2026-07-10 23:08:28,815 | INFO     | ingestion.kaggle_loader |    |-- AI_Chip_Performance: double (nullable = true)
+2026-07-10 23:08:28,815 | INFO     | ingestion.kaggle_loader |    |-- Energy_Efficiency: double (nullable = true)
+2026-07-10 23:08:28,916 | INFO     | ingestion.kaggle_loader | [4_technology_node_innovation.csv] Row count: 2282
+2026-07-10 23:08:28,916 | INFO     | ingestion.kaggle_loader | [4_technology_node_innovation.csv] Summary statistics:
+2026-07-10 23:08:29,761 | INFO     | ingestion.kaggle_loader |   {'summary': 'count', 'Year': '2282', 'Company': '2282', 'Node_Size_nm': '2282', 'Transistor_Density': '2282', 'RD_Spending_USD': '2282', 'Patent_Count': '2282', 'AI_Chip_Performance': '2282', 'Energy_Efficiency': '2282'}
+2026-07-10 23:08:29,761 | INFO     | ingestion.kaggle_loader |   {'summary': 'mean', 'Year': '2013.3781770376863', 'Company': None, 'Node_Size_nm': '150.60254163014946', 'Transistor_Density': '1.068945859058878E11', 'RD_Spending_USD': '2.3712591236845267E8', 'Patent_Count': '274.7002629272568', 'AI_Chip_Performance': '8375.029410244268', 'Energy_Efficiency': '231.84037664563948'}
+2026-07-10 23:08:29,761 | INFO     | ingestion.kaggle_loader |   {'summary': 'stddev', 'Year': '13.520935967338964', 'Company': None, 'Node_Size_nm': '322.68424300888347', 'Transistor_Density': '1.3965052649242664E11', 'RD_Spending_USD': '2.5112466951448125E8', 'Patent_Count': '144.49838097456677', 'AI_Chip_Performance': '9190.208239967076', 'Energy_Efficiency': '248.83721404658317'}
+2026-07-10 23:08:29,761 | INFO     | ingestion.kaggle_loader |   {'summary': 'min', 'Year': '1990', 'Company': 'AMD', 'Node_Size_nm': '1.4', 'Transistor_Density': '244884.9968388254', 'RD_Spending_USD': '2289715.4389229147', 'Patent_Count': '16', 'AI_Chip_Performance': '0.4647258089427245', 'Energy_Efficiency': '0.3166563699446727'}
+2026-07-10 23:08:29,761 | INFO     | ingestion.kaggle_loader |   {'summary': '25%', 'Year': '2002', 'Company': None, 'Node_Size_nm': '2.3', 'Transistor_Density': '8.110954926028198E7', 'RD_Spending_USD': '7.140222860071173E7', 'Patent_Count': '150', 'AI_Chip_Performance': '114.15891686423933', 'Energy_Efficiency': '8.742788590278286'}
+2026-07-10 23:08:29,761 | INFO     | ingestion.kaggle_loader |   {'summary': '50%', 'Year': '2014', 'Company': None, 'Node_Size_nm': '7.5', 'Transistor_Density': '1.7302051553026432E10', 'RD_Spending_USD': '1.4560931963108668E8', 'Patent_Count': '274', 'AI_Chip_Performance': '3221.2042974451965', 'Energy_Efficiency': '126.16100533001239'}
+2026-07-10 23:08:29,761 | INFO     | ingestion.kaggle_loader |   {'summary': '75%', 'Year': '2025', 'Company': None, 'Node_Size_nm': '110.0', 'Transistor_Density': '1.861883012411738E11', 'RD_Spending_USD': '3.080948800453961E8', 'Patent_Count': '398', 'AI_Chip_Performance': '16317.32442692004', 'Energy_Efficiency': '421.6867966550528'}
+2026-07-10 23:08:29,764 | INFO     | ingestion.kaggle_loader |   {'summary': 'max', 'Year': '2036', 'Company': 'Western Digital', 'Node_Size_nm': '1969.0', 'Transistor_Density': '6.113406285035339E11', 'RD_Spending_USD': '1.9754186141842616E9', 'Patent_Count': '644', 'AI_Chip_Performance': '35910.17779048971', 'Energy_Efficiency': '997.1010818909318'}
+2026-07-10 23:08:29,894 | INFO     | ingestion.validator | Validation Report [4_technology_node_innovation] - PASSED
+  rows                : 2282
+  empty               : False
+  duplicate_rows      : 0
+  missing_columns     : none
+  unexpected_columns  : none
+  type_mismatches     : none
+2026-07-10 23:08:29,897 | INFO     | utils.timing | START | Kaggle Bronze Write
+2026-07-10 23:08:30,137 | INFO     | ingestion.kaggle_loader | Kaggle Bronze data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\4_technology_node_innovation
+2026-07-10 23:08:30,137 | INFO     | utils.timing | END | Kaggle Bronze Write | duration=0.25s
+2026-07-10 23:08:30,137 | INFO     | utils.timing | START | Kaggle CSV Read
+2026-07-10 23:08:30,137 | INFO     | ingestion.kaggle_loader | Reading Kaggle CSV: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\5_geopolitical_risk_sanctions.csv
+2026-07-10 23:08:30,278 | INFO     | ingestion.kaggle_loader | Loaded file: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\5_geopolitical_risk_sanctions.csv
+2026-07-10 23:08:30,278 | INFO     | utils.timing | END | Kaggle CSV Read | duration=0.13s
+2026-07-10 23:08:30,278 | INFO     | ingestion.kaggle_loader | [5_geopolitical_risk_sanctions.csv] Schema:
+2026-07-10 23:08:30,278 | INFO     | ingestion.kaggle_loader |   root
+2026-07-10 23:08:30,278 | INFO     | ingestion.kaggle_loader |    |-- Year: integer (nullable = true)
+2026-07-10 23:08:30,278 | INFO     | ingestion.kaggle_loader |    |-- Country: string (nullable = true)
+2026-07-10 23:08:30,278 | INFO     | ingestion.kaggle_loader |    |-- Export_Control_Level: double (nullable = true)
+2026-07-10 23:08:30,278 | INFO     | ingestion.kaggle_loader |    |-- Sanctions_Index: double (nullable = true)
+2026-07-10 23:08:30,278 | INFO     | ingestion.kaggle_loader |    |-- Trade_Tension_Level: double (nullable = true)
+2026-07-10 23:08:30,278 | INFO     | ingestion.kaggle_loader |    |-- Military_Tech_Influence: double (nullable = true)
+2026-07-10 23:08:30,278 | INFO     | ingestion.kaggle_loader |    |-- Semiconductor_Security_Risk: double (nullable = true)
+2026-07-10 23:08:30,396 | INFO     | ingestion.kaggle_loader | [5_geopolitical_risk_sanctions.csv] Row count: 1880
+2026-07-10 23:08:30,396 | INFO     | ingestion.kaggle_loader | [5_geopolitical_risk_sanctions.csv] Summary statistics:
+2026-07-10 23:08:31,193 | INFO     | ingestion.kaggle_loader |   {'summary': 'count', 'Year': '1880', 'Country': '1880', 'Export_Control_Level': '1880', 'Sanctions_Index': '1880', 'Trade_Tension_Level': '1880', 'Military_Tech_Influence': '1880', 'Semiconductor_Security_Risk': '1880'}
+2026-07-10 23:08:31,193 | INFO     | ingestion.kaggle_loader |   {'summary': 'mean', 'Year': '2013.0', 'Country': None, 'Export_Control_Level': '5.582123208541016', 'Sanctions_Index': '5.564995698067831', 'Trade_Tension_Level': '5.579087233732385', 'Military_Tech_Influence': '2.75647537820244', 'Semiconductor_Security_Risk': '4.649985591112552'}
+2026-07-10 23:08:31,193 | INFO     | ingestion.kaggle_loader |   {'summary': 'stddev', 'Year': '13.568269028431246', 'Country': None, 'Export_Control_Level': '2.5812595558104485', 'Sanctions_Index': '2.6190944759148143', 'Trade_Tension_Level': '2.620100359092903', 'Military_Tech_Influence': '1.4353890855805302', 'Semiconductor_Security_Risk': '1.3969510988823308'}
+2026-07-10 23:08:31,193 | INFO     | ingestion.kaggle_loader |   {'summary': 'min', 'Year': '1990', 'Country': 'Argentina', 'Export_Control_Level': '1.0035823939181991', 'Sanctions_Index': '0.8138366763128813', 'Trade_Tension_Level': '1.0028874437731088', 'Military_Tech_Influence': '1.0012160655710072', 'Semiconductor_Security_Risk': '1.3064851677575926'}
+2026-07-10 23:08:31,193 | INFO     | ingestion.kaggle_loader |   {'summary': '25%', 'Year': '2001', 'Country': None, 'Export_Control_Level': '3.344273639609527', 'Sanctions_Index': '3.3705883589777414', 'Trade_Tension_Level': '3.3109141080614743', 'Military_Tech_Influence': '1.7802021306107392', 'Semiconductor_Security_Risk': '3.6438244278159524'}
+2026-07-10 23:08:31,193 | INFO     | ingestion.kaggle_loader |   {'summary': '50%', 'Year': '2013', 'Country': None, 'Export_Control_Level': '5.591211091949985', 'Sanctions_Index': '5.55753295979073', 'Trade_Tension_Level': '5.6170343173263335', 'Military_Tech_Influence': '2.577010555712623', 'Semiconductor_Security_Risk': '4.60034516327482'}
+2026-07-10 23:08:31,193 | INFO     | ingestion.kaggle_loader |   {'summary': '75%', 'Year': '2025', 'Country': None, 'Export_Control_Level': '7.784551104672122', 'Sanctions_Index': '7.709250550281129', 'Trade_Tension_Level': '7.846865323846253', 'Military_Tech_Influence': '3.4036635153105834', 'Semiconductor_Security_Risk': '5.566378289617377'}
+2026-07-10 23:08:31,193 | INFO     | ingestion.kaggle_loader |   {'summary': 'max', 'Year': '2036', 'Country': 'Vietnam', 'Export_Control_Level': '10.0', 'Sanctions_Index': '10.0', 'Trade_Tension_Level': '10.0', 'Military_Tech_Influence': '9.809098470993128', 'Semiconductor_Security_Risk': '10.0'}
+2026-07-10 23:08:31,324 | INFO     | ingestion.validator | Validation Report [5_geopolitical_risk_sanctions] - PASSED
+  rows                : 1880
+  empty               : False
+  duplicate_rows      : 0
+  missing_columns     : none
+  unexpected_columns  : none
+  type_mismatches     : none
+2026-07-10 23:08:31,325 | INFO     | utils.timing | START | Kaggle Bronze Write
+2026-07-10 23:08:31,629 | INFO     | ingestion.kaggle_loader | Kaggle Bronze data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\5_geopolitical_risk_sanctions
+2026-07-10 23:08:31,629 | INFO     | utils.timing | END | Kaggle Bronze Write | duration=0.31s
+2026-07-10 23:08:31,629 | INFO     | utils.timing | START | Kaggle CSV Read
+2026-07-10 23:08:31,629 | INFO     | ingestion.kaggle_loader | Reading Kaggle CSV: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\6_supply_chain_disruption.csv
+2026-07-10 23:08:31,779 | INFO     | ingestion.kaggle_loader | Loaded file: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\6_supply_chain_disruption.csv
+2026-07-10 23:08:31,779 | INFO     | utils.timing | END | Kaggle CSV Read | duration=0.14s
+2026-07-10 23:08:31,780 | INFO     | ingestion.kaggle_loader | [6_supply_chain_disruption.csv] Schema:
+2026-07-10 23:08:31,783 | INFO     | ingestion.kaggle_loader |   root
+2026-07-10 23:08:31,789 | INFO     | ingestion.kaggle_loader |    |-- Year: integer (nullable = true)
+2026-07-10 23:08:31,789 | INFO     | ingestion.kaggle_loader |    |-- Region: string (nullable = true)
+2026-07-10 23:08:31,789 | INFO     | ingestion.kaggle_loader |    |-- Natural_Disaster_Risk: double (nullable = true)
+2026-07-10 23:08:31,789 | INFO     | ingestion.kaggle_loader |    |-- Energy_Supply_Risk: double (nullable = true)
+2026-07-10 23:08:31,791 | INFO     | ingestion.kaggle_loader |    |-- Water_Shortage_Risk: double (nullable = true)
+2026-07-10 23:08:31,793 | INFO     | ingestion.kaggle_loader |    |-- Factory_Shutdown_Risk: double (nullable = true)
+2026-07-10 23:08:31,800 | INFO     | ingestion.kaggle_loader |    |-- Supply_Disruption_Index: double (nullable = true)
+2026-07-10 23:08:32,012 | INFO     | ingestion.kaggle_loader | [6_supply_chain_disruption.csv] Row count: 329
+2026-07-10 23:08:32,013 | INFO     | ingestion.kaggle_loader | [6_supply_chain_disruption.csv] Summary statistics:
+2026-07-10 23:08:32,391 | INFO     | ingestion.kaggle_loader |   {'summary': 'count', 'Year': '329', 'Region': '329', 'Natural_Disaster_Risk': '329', 'Energy_Supply_Risk': '329', 'Water_Shortage_Risk': '329', 'Factory_Shutdown_Risk': '329', 'Supply_Disruption_Index': '329'}
+2026-07-10 23:08:32,391 | INFO     | ingestion.kaggle_loader |   {'summary': 'mean', 'Year': '2013.0', 'Region': None, 'Natural_Disaster_Risk': '5.654870737730829', 'Energy_Supply_Risk': '5.655075124094694', 'Water_Shortage_Risk': '5.960711807446809', 'Factory_Shutdown_Risk': '5.988137214401666', 'Supply_Disruption_Index': '5.854230775878007'}
+2026-07-10 23:08:32,391 | INFO     | ingestion.kaggle_loader |   {'summary': 'stddev', 'Year': '13.585322064999021', 'Region': None, 'Natural_Disaster_Risk': '2.6451413845469682', 'Energy_Supply_Risk': '2.6761926804344216', 'Water_Shortage_Risk': '2.6782785980179464', 'Factory_Shutdown_Risk': '2.6062571219328206', 'Supply_Disruption_Index': '1.4608217836736164'}
+2026-07-10 23:08:32,391 | INFO     | ingestion.kaggle_loader |   {'summary': 'min', 'Year': '1990', 'Region': 'East Asia', 'Natural_Disaster_Risk': '1.0593853886961235', 'Energy_Supply_Risk': '1.103229693532995', 'Water_Shortage_Risk': '1.0196029710152015', 'Factory_Shutdown_Risk': '1.0217294973439088', 'Supply_Disruption_Index': '1.9395259136680465'}
+2026-07-10 23:08:32,391 | INFO     | ingestion.kaggle_loader |   {'summary': '25%', 'Year': '2001', 'Region': None, 'Natural_Disaster_Risk': '3.3137545426785615', 'Energy_Supply_Risk': '3.423252289449538', 'Water_Shortage_Risk': '3.7252798135894873', 'Factory_Shutdown_Risk': '3.796775535103987', 'Supply_Disruption_Index': '4.801877565255481'}
+2026-07-10 23:08:32,391 | INFO     | ingestion.kaggle_loader |   {'summary': '50%', 'Year': '2013', 'Region': None, 'Natural_Disaster_Risk': '5.5608536325564515', 'Energy_Supply_Risk': '5.6467744353994025', 'Water_Shortage_Risk': '6.100073487088153', 'Factory_Shutdown_Risk': '6.298420253160542', 'Supply_Disruption_Index': '5.847598485548382'}
+2026-07-10 23:08:32,391 | INFO     | ingestion.kaggle_loader |   {'summary': '75%', 'Year': '2025', 'Region': None, 'Natural_Disaster_Risk': '7.890135793897303', 'Energy_Supply_Risk': '7.9155582883036555', 'Water_Shortage_Risk': '8.223619097965173', 'Factory_Shutdown_Risk': '8.351500346960101', 'Supply_Disruption_Index': '6.784539276415567'}
+2026-07-10 23:08:32,391 | INFO     | ingestion.kaggle_loader |   {'summary': 'max', 'Year': '2036', 'Region': 'Southeast Asia', 'Natural_Disaster_Risk': '10.0', 'Energy_Supply_Risk': '10.0', 'Water_Shortage_Risk': '10.0', 'Factory_Shutdown_Risk': '10.0', 'Supply_Disruption_Index': '9.826338741400349'}
+2026-07-10 23:08:32,488 | INFO     | ingestion.validator | Validation Report [6_supply_chain_disruption] - PASSED
+  rows                : 329
+  empty               : False
+  duplicate_rows      : 0
+  missing_columns     : none
+  unexpected_columns  : none
+  type_mismatches     : none
+2026-07-10 23:08:32,488 | INFO     | utils.timing | START | Kaggle Bronze Write
+2026-07-10 23:08:32,692 | INFO     | ingestion.kaggle_loader | Kaggle Bronze data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\6_supply_chain_disruption
+2026-07-10 23:08:32,692 | INFO     | utils.timing | END | Kaggle Bronze Write | duration=0.20s
+2026-07-10 23:08:32,692 | INFO     | utils.timing | START | Kaggle CSV Read
+2026-07-10 23:08:32,692 | INFO     | ingestion.kaggle_loader | Reading Kaggle CSV: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\7_semiconductor_market_economics.csv
+2026-07-10 23:08:32,829 | INFO     | ingestion.kaggle_loader | Loaded file: D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\raw\kaggle\7_semiconductor_market_economics.csv
+2026-07-10 23:08:32,830 | INFO     | utils.timing | END | Kaggle CSV Read | duration=0.14s
+2026-07-10 23:08:32,830 | INFO     | ingestion.kaggle_loader | [7_semiconductor_market_economics.csv] Schema:
+2026-07-10 23:08:32,831 | INFO     | ingestion.kaggle_loader |   root
+2026-07-10 23:08:32,832 | INFO     | ingestion.kaggle_loader |    |-- Year: integer (nullable = true)
+2026-07-10 23:08:32,832 | INFO     | ingestion.kaggle_loader |    |-- Global_Semiconductor_Revenue: double (nullable = true)
+2026-07-10 23:08:32,832 | INFO     | ingestion.kaggle_loader |    |-- AI_Chip_Revenue: double (nullable = true)
+2026-07-10 23:08:32,833 | INFO     | ingestion.kaggle_loader |    |-- Consumer_Electronics_Demand: double (nullable = true)
+2026-07-10 23:08:32,833 | INFO     | ingestion.kaggle_loader |    |-- Automotive_Chip_Demand: double (nullable = true)
+2026-07-10 23:08:32,833 | INFO     | ingestion.kaggle_loader |    |-- Chip_Price_Index: double (nullable = true)
+2026-07-10 23:08:32,833 | INFO     | ingestion.kaggle_loader |    |-- Market_Growth_Rate: double (nullable = true)
+2026-07-10 23:08:32,965 | INFO     | ingestion.kaggle_loader | [7_semiconductor_market_economics.csv] Row count: 47
+2026-07-10 23:08:32,965 | INFO     | ingestion.kaggle_loader | [7_semiconductor_market_economics.csv] Summary statistics:
+2026-07-10 23:08:33,571 | INFO     | ingestion.kaggle_loader |   {'summary': 'count', 'Year': '47', 'Global_Semiconductor_Revenue': '47', 'AI_Chip_Revenue': '47', 'Consumer_Electronics_Demand': '47', 'Automotive_Chip_Demand': '47', 'Chip_Price_Index': '47', 'Market_Growth_Rate': '47'}
+2026-07-10 23:08:33,571 | INFO     | ingestion.kaggle_loader |   {'summary': 'mean', 'Year': '2013.0', 'Global_Semiconductor_Revenue': '1.3417012650584116E11', 'AI_Chip_Revenue': '3.599146605070592E10', 'Consumer_Electronics_Demand': '5.381282072111684E10', 'Automotive_Chip_Demand': '2.5193833638661095E10', 'Chip_Price_Index': '242.5727582689695', 'Market_Growth_Rate': '10.840147499468781'}
+2026-07-10 23:08:33,571 | INFO     | ingestion.kaggle_loader |   {'summary': 'stddev', 'Year': '13.711309200802088', 'Global_Semiconductor_Revenue': '9.493351482557974E10', 'AI_Chip_Revenue': '4.16984636848741E10', 'Consumer_Electronics_Demand': '3.995479449702187E10', 'Automotive_Chip_Demand': '2.8206410138807777E10', 'Chip_Price_Index': '188.4938142874271', 'Market_Growth_Rate': '35.83652486460769'}
+2026-07-10 23:08:33,571 | INFO     | ingestion.kaggle_loader |   {'summary': 'min', 'Year': '1990', 'Global_Semiconductor_Revenue': '2.1160464715988113E10', 'AI_Chip_Revenue': '0.0', 'Consumer_Electronics_Demand': '8.342579330028333E9', 'Automotive_Chip_Demand': '1.0580232357994057E9', 'Chip_Price_Index': '100.0', 'Market_Growth_Rate': '-37.997840913676264'}
+2026-07-10 23:08:33,571 | INFO     | ingestion.kaggle_loader |   {'summary': '25%', 'Year': '2001', 'Global_Semiconductor_Revenue': '4.9649483750476425E10', 'AI_Chip_Revenue': '0.0', 'Consumer_Electronics_Demand': '1.905352457465893E10', 'Automotive_Chip_Demand': '2.4824741875238214E9', 'Chip_Price_Index': '124.33743083946524', 'Market_Growth_Rate': '-17.855070495774488'}
+2026-07-10 23:08:33,571 | INFO     | ingestion.kaggle_loader |   {'summary': '50%', 'Year': '2013', 'Global_Semiconductor_Revenue': '9.319262599746892E10', 'AI_Chip_Revenue': '0.0', 'Consumer_Electronics_Demand': '3.499953756615286E10', 'Automotive_Chip_Demand': '7.455410079797514E9', 'Chip_Price_Index': '157.68992641913982', 'Market_Growth_Rate': '4.0453247974310145'}
+2026-07-10 23:08:33,571 | INFO     | ingestion.kaggle_loader |   {'summary': '75%', 'Year': '2025', 'Global_Semiconductor_Revenue': '2.1860471405752728E11', 'AI_Chip_Revenue': '7.729705798305772E10', 'Consumer_Electronics_Demand': '8.246548171084616E10', 'Automotive_Chip_Demand': '4.651951419830431E10', 'Chip_Price_Index': '291.72159448142946', 'Market_Growth_Rate': '32.10531864075101'}
+2026-07-10 23:08:33,571 | INFO     | ingestion.kaggle_loader |   {'summary': 'max', 'Year': '2036', 'Global_Semiconductor_Revenue': '3.16493413798534E11', 'AI_Chip_Revenue': '1.1778227850540585E11', 'Consumer_Electronics_Demand': '1.427955656148355E11', 'Automotive_Chip_Demand': '1.0127789241553088E11', 'Chip_Price_Index': '832.315754748014', 'Market_Growth_Rate': '137.7133434554843'}
+2026-07-10 23:08:33,664 | INFO     | ingestion.validator | Validation Report [7_semiconductor_market_economics] - PASSED
+  rows                : 47
+  empty               : False
+  duplicate_rows      : 0
+  missing_columns     : none
+  unexpected_columns  : none
+  type_mismatches     : none
+2026-07-10 23:08:33,664 | INFO     | utils.timing | START | Kaggle Bronze Write
+2026-07-10 23:08:33,843 | INFO     | ingestion.kaggle_loader | Kaggle Bronze data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\7_semiconductor_market_economics
+2026-07-10 23:08:33,843 | INFO     | utils.timing | END | Kaggle Bronze Write | duration=0.18s
+2026-07-10 23:08:33,843 | INFO     | utils.timing | END | Kaggle Ingestion Pipeline | duration=17.28s
+2026-07-10 23:08:33,843 | INFO     | __main__ | Ingestion stage complete. Sources processed: ['kaggle']
+2026-07-10 23:08:33,843 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-10 23:08:34,009 | INFO     | utils.timing | END | Full Ingestion Pipeline | duration=26.05s
+2026-07-10 23:16:16,413 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-10 23:16:25,824 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-10 23:16:25,828 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-10 23:16:25,828 | ERROR    | utils.timing | FAILED | Kaggle Bronze->Silver Transform
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\base_transformer.py", line 155, in _execute
+    bronze_df = self.read_bronze()
+                ^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\base_transformer.py", line 106, in read_bronze
+    raise FileNotFoundError(
+FileNotFoundError: Bronze data not found for source 'kaggle' at 'D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\semiconductor_production'. Run the ingestion stage for this source before running Silver processing.
+2026-07-10 23:16:25,828 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-10 23:18:39,239 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-10 23:18:48,850 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-10 23:18:48,850 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-10 23:18:48,854 | ERROR    | utils.timing | FAILED | Kaggle Bronze->Silver Transform
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\base_transformer.py", line 155, in _execute
+    bronze_df = self.read_bronze()
+                ^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\base_transformer.py", line 106, in read_bronze
+    raise FileNotFoundError(
+FileNotFoundError: Bronze data not found for source 'kaggle' at 'D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\semiconductor_production'. Run the ingestion stage for this source before running Silver processing.
+2026-07-10 23:18:48,854 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-10 23:20:07,498 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-10 23:20:17,438 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-10 23:20:17,438 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-10 23:20:17,438 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\1_semiconductor_production
+2026-07-10 23:20:22,620 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 2282
+2026-07-10 23:20:22,713 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'country', 'company', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-10 23:20:22,982 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Standardised string values in columns: ['country', 'company']
+2026-07-10 23:20:24,538 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Column 'production_capacity_wafers': flagged and capped 8 outlier row(s) (bounds=[-941006.26, 2628526.07])
+2026-07-10 23:20:25,108 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Column 'foundry_revenue_usd': flagged and capped 45 outlier row(s) (bounds=[-2701486873.68, 5427133184.74])
+2026-07-10 23:20:25,640 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Column 'ai_chip_production': flagged and capped 59 outlier row(s) (bounds=[-424581.94, 632207.24])
+2026-07-10 23:20:28,352 | ERROR    | utils.timing | FAILED | Kaggle Bronze->Silver Transform
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\base_transformer.py", line 160, in _execute
+    filtered_df = self.apply_quality_filters(transformed_df)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\kaggle_bronze_silver.py", line 325, in apply_quality_filters
+    removed = before - deduped.count()
+                       ^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\sql\classic\dataframe.py", line 439, in count
+    return int(self._jdf.count())
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\java_gateway.py", line 1362, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\errors\exceptions\captured.py", line 269, in deco
+    raise converted from None
+pyspark.errors.exceptions.captured.NumberFormatException: [CAST_INVALID_INPUT] The value '1731nm' of the type "STRING" cannot be cast to "DOUBLE" because it is malformed. Correct the value as per the syntax, or change its target type. Use `try_cast` to tolerate malformed input and return NULL instead. SQLSTATE: 22018
+== DataFrame ==
+"cast" was called from
+D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\kaggle_bronze_silver.py:241
+
+2026-07-10 23:20:28,354 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-10 23:28:02,529 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-10 23:28:11,458 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-10 23:28:11,458 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-10 23:28:11,458 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\1_semiconductor_production
+2026-07-10 23:28:16,010 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 2282
+2026-07-10 23:28:16,128 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'country', 'company', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-10 23:28:16,429 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Standardised string values in columns: ['country', 'company']
+2026-07-10 23:28:17,743 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Column 'production_capacity_wafers': flagged and capped 8 outlier row(s) (bounds=[-941006.26, 2628526.07])
+2026-07-10 23:28:18,244 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Column 'foundry_revenue_usd': flagged and capped 45 outlier row(s) (bounds=[-2701486873.68, 5427133184.74])
+2026-07-10 23:28:18,743 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Column 'ai_chip_production': flagged and capped 59 outlier row(s) (bounds=[-424581.94, 632207.24])
+2026-07-10 23:28:21,381 | ERROR    | utils.timing | FAILED | Kaggle Bronze->Silver Transform
+Traceback (most recent call last):
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\utils\timing.py", line 39, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\base_transformer.py", line 160, in _execute
+    filtered_df = self.apply_quality_filters(transformed_df)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\kaggle_bronze_silver.py", line 325, in apply_quality_filters
+    removed = before - deduped.count()
+                       ^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\sql\classic\dataframe.py", line 439, in count
+    return int(self._jdf.count())
+               ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\py4j\java_gateway.py", line 1362, in __call__
+    return_value = get_return_value(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python312\Lib\site-packages\pyspark\errors\exceptions\captured.py", line 269, in deco
+    raise converted from None
+pyspark.errors.exceptions.captured.NumberFormatException: [CAST_INVALID_INPUT] The value '1731nm' of the type "STRING" cannot be cast to "DOUBLE" because it is malformed. Correct the value as per the syntax, or change its target type. Use `try_cast` to tolerate malformed input and return NULL instead. SQLSTATE: 22018
+== DataFrame ==
+"cast" was called from
+D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\kaggle_bronze_silver.py:241
+
+2026-07-10 23:28:21,385 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-10 23:29:38,360 | INFO     | spark.spark_session | Initialising SparkSession 'AISemiconductorDemandForecasting-Ingestion'
+2026-07-10 23:29:47,273 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-10 23:29:47,273 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-10 23:29:47,278 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\1_semiconductor_production
+2026-07-10 23:29:51,628 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 2282
+2026-07-10 23:29:51,720 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'country', 'company', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-10 23:29:51,967 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Standardised string values in columns: ['country', 'company']
+2026-07-10 23:29:53,202 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Column 'production_capacity_wafers': flagged and capped 8 outlier row(s) (bounds=[-941006.26, 2628526.07])
+2026-07-10 23:29:53,694 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Column 'foundry_revenue_usd': flagged and capped 45 outlier row(s) (bounds=[-2701486873.68, 5427133184.74])
+2026-07-10 23:29:54,148 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Column 'ai_chip_production': flagged and capped 59 outlier row(s) (bounds=[-424581.94, 632207.24])
+2026-07-10 23:29:58,348 | INFO     | processing.base_transformer | [kaggle] Silver row count: 2282 (unchanged)
+2026-07-10 23:29:59,168 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle\1_semiconductor_production
+2026-07-10 23:29:59,168 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=11.89s
+2026-07-10 23:29:59,168 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-10 23:29:59,168 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\2_ai_hardware_demand
+2026-07-10 23:29:59,378 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 1880
+2026-07-10 23:29:59,407 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'country', 'ai_gpu_demand', 'data_center_count', 'ai_compute_power', 'cloud_ai_investment', 'training_compute_flops', 'ai_model_count']
+2026-07-10 23:29:59,538 | INFO     | processing.kaggle_bronze_silver | [kaggle:2_ai_hardware_demand] Standardised string values in columns: ['country']
+2026-07-10 23:29:59,942 | INFO     | processing.kaggle_bronze_silver | [kaggle:2_ai_hardware_demand] Column 'ai_gpu_demand': flagged and capped 47 outlier row(s) (bounds=[-1195746080.50, 1438900055.55])
+2026-07-10 23:30:00,380 | INFO     | processing.kaggle_bronze_silver | [kaggle:2_ai_hardware_demand] Column 'cloud_ai_investment': flagged and capped 45 outlier row(s) (bounds=[-1608582372854300.00, 1919083446186802.00])
+2026-07-10 23:30:00,818 | INFO     | processing.kaggle_bronze_silver | [kaggle:2_ai_hardware_demand] Column 'training_compute_flops': flagged and capped 39 outlier row(s) (bounds=[-246901882844247987585024.00, 287825660568335298854912.00])
+2026-07-10 23:30:02,141 | INFO     | processing.base_transformer | [kaggle] Silver row count: 1880 (unchanged)
+2026-07-10 23:30:02,380 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle\2_ai_hardware_demand
+2026-07-10 23:30:02,380 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=3.21s
+2026-07-10 23:30:02,381 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-10 23:30:02,381 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\3_semiconductor_trade_supply_chain
+2026-07-10 23:30:02,580 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 3948
+2026-07-10 23:30:02,611 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'exporting_country', 'importing_country', 'chip_export_value_usd', 'chip_import_value_usd', 'trade_balance', 'logistics_route', 'supply_chain_dependency']
+2026-07-10 23:30:02,752 | INFO     | processing.kaggle_bronze_silver | [kaggle:3_semiconductor_trade_supply_chain] Standardised string values in columns: ['exporting_country', 'importing_country', 'logistics_route']
+2026-07-10 23:30:03,128 | INFO     | processing.kaggle_bronze_silver | [kaggle:3_semiconductor_trade_supply_chain] Column 'chip_export_value_usd': flagged and capped 80 outlier row(s) (bounds=[-151327358479.22, 257614907235.47])
+2026-07-10 23:30:03,440 | INFO     | processing.kaggle_bronze_silver | [kaggle:3_semiconductor_trade_supply_chain] Column 'chip_import_value_usd': flagged and capped 80 outlier row(s) (bounds=[-150873803787.54, 256932987930.64])
+2026-07-10 23:30:03,778 | INFO     | processing.kaggle_bronze_silver | [kaggle:3_semiconductor_trade_supply_chain] Column 'trade_balance': flagged and capped 120 outlier row(s) (bounds=[-7245305215.25, 7473669828.41])
+2026-07-10 23:30:05,248 | INFO     | processing.base_transformer | [kaggle] Silver row count: 3948 (unchanged)
+2026-07-10 23:30:05,520 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle\3_semiconductor_trade_supply_chain
+2026-07-10 23:30:05,520 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=3.14s
+2026-07-10 23:30:05,520 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-10 23:30:05,520 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\4_technology_node_innovation
+2026-07-10 23:30:05,788 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 2282
+2026-07-10 23:30:05,818 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'company', 'node_size_nm', 'transistor_density', 'rd_spending_usd', 'patent_count', 'ai_chip_performance', 'energy_efficiency']
+2026-07-10 23:30:05,954 | INFO     | processing.kaggle_bronze_silver | [kaggle:4_technology_node_innovation] Standardised string values in columns: ['company']
+2026-07-10 23:30:06,282 | INFO     | processing.kaggle_bronze_silver | [kaggle:4_technology_node_innovation] Column 'rd_spending_usd': flagged and capped 52 outlier row(s) (bounds=[-516248096.17, 990499920.91])
+2026-07-10 23:30:06,659 | INFO     | processing.kaggle_bronze_silver | [kaggle:4_technology_node_innovation] Column 'transistor_density': flagged and capped 26 outlier row(s) (bounds=[-312056993571.39, 525846165383.17])
+2026-07-10 23:30:08,643 | INFO     | processing.base_transformer | [kaggle] Silver row count: 2282 (unchanged)
+2026-07-10 23:30:08,868 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle\4_technology_node_innovation
+2026-07-10 23:30:08,873 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=3.35s
+2026-07-10 23:30:08,873 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-10 23:30:08,873 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\5_geopolitical_risk_sanctions
+2026-07-10 23:30:09,044 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 1880
+2026-07-10 23:30:09,061 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'country', 'export_control_level', 'sanctions_index', 'trade_tension_level', 'military_tech_influence', 'semiconductor_security_risk']
+2026-07-10 23:30:09,148 | INFO     | processing.kaggle_bronze_silver | [kaggle:5_geopolitical_risk_sanctions] Standardised string values in columns: ['country']
+2026-07-10 23:30:10,058 | INFO     | processing.kaggle_bronze_silver | [kaggle:5_geopolitical_risk_sanctions] Column 'semiconductor_security_risk': flagged and capped 11 outlier row(s) (bounds=[0.46, 8.84])
+2026-07-10 23:30:11,138 | INFO     | processing.base_transformer | [kaggle] Silver row count: 1880 (unchanged)
+2026-07-10 23:30:11,368 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle\5_geopolitical_risk_sanctions
+2026-07-10 23:30:11,368 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=2.50s
+2026-07-10 23:30:11,368 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-10 23:30:11,368 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\6_supply_chain_disruption
+2026-07-10 23:30:11,586 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 329
+2026-07-10 23:30:11,606 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'region', 'natural_disaster_risk', 'energy_supply_risk', 'water_shortage_risk', 'factory_shutdown_risk', 'supply_disruption_index']
+2026-07-10 23:30:11,691 | INFO     | processing.kaggle_bronze_silver | [kaggle:6_supply_chain_disruption] Standardised string values in columns: ['region']
+2026-07-10 23:30:12,808 | INFO     | processing.base_transformer | [kaggle] Silver row count: 329 (unchanged)
+2026-07-10 23:30:13,038 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle\6_supply_chain_disruption
+2026-07-10 23:30:13,038 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=1.67s
+2026-07-10 23:30:13,041 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-10 23:30:13,041 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\7_semiconductor_market_economics
+2026-07-10 23:30:13,208 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 47
+2026-07-10 23:30:13,218 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'global_semiconductor_revenue', 'ai_chip_revenue', 'consumer_electronics_demand', 'automotive_chip_demand', 'chip_price_index', 'market_growth_rate']
+2026-07-10 23:30:14,028 | INFO     | processing.kaggle_bronze_silver | [kaggle:7_semiconductor_market_economics] Column 'chip_price_index': flagged and capped 1 outlier row(s) (bounds=[-322.91, 808.05])
+2026-07-10 23:30:14,810 | INFO     | processing.base_transformer | [kaggle] Silver row count: 47 (unchanged)
+2026-07-10 23:30:15,052 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle\7_semiconductor_market_economics
+2026-07-10 23:30:15,052 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=2.01s
+2026-07-10 23:30:15,052 | INFO     | spark.spark_session | Stopping SparkSession

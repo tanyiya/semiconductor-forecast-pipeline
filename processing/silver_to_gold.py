@@ -213,6 +213,7 @@ def build_dim_product(trendforce_df: Optional[DataFrame]) -> Optional[DataFrame]
     logger.info("[gold] Dim_Product: %d distinct product(s)", dim_product.count())
     return dim_product
 
+
 # ==========================================================================
 # Dim_Company (conformed: Yahoo tickers + Kaggle company names)
 # ==========================================================================
@@ -232,8 +233,7 @@ def build_dim_company(
 
     if yahoo_df is not None:
         yahoo_companies = (
-            yahoo_df.select(F.col("ticker").alias("ticker"))
-            .dropna(subset=["ticker"])
+            yahoo_df.select("ticker")
             .distinct()
             .withColumn(
                 "company",
@@ -246,8 +246,6 @@ def build_dim_company(
     if kaggle_df is not None and KAGGLE_GOLD_CONFIG.company_column in kaggle_df.columns:
         kaggle_companies = (
             kaggle_df.select(F.col(KAGGLE_GOLD_CONFIG.company_column).alias("company"))
-            .dropna(subset=["company"])
-            .filter(F.expr("TRY_CAST(company AS DOUBLE)").isNull())  # Remove float contamination
             .distinct()
             .withColumn("ticker", company_to_ticker.getItem(F.col("company")))
             .select("company", "ticker")
@@ -260,7 +258,7 @@ def build_dim_company(
 
     combined = sides[0]
     for extra in sides[1:]:
-        combined = combined.union(extra)  # Use position-based union to avoid case-sensitivity bugs
+        combined = combined.unionByName(extra)
 
     # A company may appear on both sides (with/without a ticker) - collapse
     # to one row per company, keeping the first non-null ticker seen.
@@ -307,22 +305,7 @@ def build_dim_country(kaggle_df: Optional[DataFrame]) -> Optional[DataFrame]:
         kaggle_df.select(F.col(country_column).alias("country"))
         .distinct()
         .dropna(subset=["country"])
-        .filter(F.expr("TRY_CAST(country AS DOUBLE)").isNull())  # Remove float contamination
     )
-
-    # Remove companies that leaked into the country column by anti-joining valid companies
-    if KAGGLE_GOLD_CONFIG.company_column in kaggle_df.columns:
-        valid_companies_df = (
-            kaggle_df.select(F.col(KAGGLE_GOLD_CONFIG.company_column).alias("company_name"))
-            .filter(F.expr("TRY_CAST(company_name AS DOUBLE)").isNull())
-            .dropna(subset=["company_name"])
-            .distinct()
-        )
-        countries = countries.join(
-            valid_companies_df,
-            countries.country == valid_companies_df.company_name,
-            "left_anti"
-        )
 
     window = Window.orderBy("country")
     dim_country = countries.withColumn("country_key", F.dense_rank().over(window)).select(
