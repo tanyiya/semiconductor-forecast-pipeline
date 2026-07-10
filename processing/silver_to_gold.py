@@ -1,619 +1,370 @@
 """
-silver_to_gold.py
+scripts/silver_to_gold.py
 
-Builds the Gold-layer galaxy schema from the three Silver datasets
-(Kaggle, Yahoo Finance, TrendForce): one shared Dim_Date, three
-source-specific dimensions (Dim_Product, Dim_Company, Dim_Country), and
-three fact tables at their specified grains:
-
-    Fact_MarketPrice  (TrendForce) - one product price observation for a
-                                      product on a reporting date.
-    Fact_StockMarket  (Yahoo)      - one ticker for one trading day.
-    Fact_Production   (Kaggle)     - one company for one calendar year.
-
-All table and column names are snake_case, matching the Silver layer's
-naming convention.
-
-Conformed dimensions
----------------------
-Dim_Date is shared by all three facts (Fact_Production references it at
-year grain via ``year_key``, which is simply the integer year - joinable
-against ``dim_date.year`` - since a yearly-grain fact can't meaningfully
-hold a single-day date_key).
-
-Dim_Company is shared by Fact_StockMarket (identified by ticker) and
-Fact_Production (identified by company name). These are reconciled via
-``config.TICKER_TO_COMPANY_NAME``, a small conformed mapping between the
-7 tracked tickers and their company names.
-
-Known limitation - Kaggle column names
-----------------------------------------
-The real Kaggle "Global AI Chip Supply Chain" dataset's exact Silver
-column names could not be verified from this environment. Target metric
-columns (production_capacity, fab_count, ai_chip_production,
-foundry_revenue, global_market_share) and the country column are
-declared in ``config.KAGGLE_GOLD_CONFIG`` - update that config if your
-actual Silver Kaggle schema differs. Any configured column not found in
-Silver at build time is filled with NULL and logged as a warning rather
-than crashing the run, so Fact_Production can still be inspected and the
-mapping adjusted iteratively.
-
-Rebuild strategy
------------------
-Every table here is a full drop-and-rebuild from Silver on each run (no
-incremental Type-1/2 merge logic) - appropriate for this project's scope.
-Dimension surrogate keys are generated via ``dense_rank()`` over a
-deterministic ordering of the natural key, so they are stable across
-rebuilds as long as the same distinct values are present.
+Lakehouse Pipeline: Silver to Gold Transformation
+Transforms cleaned Silver parquet data into a dimensional Gold star schema.
 """
 
-from __future__ import annotations
-
-from typing import Dict, Optional
-
-from pyspark.sql import DataFrame, SparkSession
+import sys
+import logging
+from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
-from pyspark.sql.window import Window
+from pyspark.sql.types import DateType
+from pyspark.sql.utils import AnalysisException
 
-from config.config import (
-    GOLD_DIM_COMPANY_DIR,
-    GOLD_DIM_COUNTRY_DIR,
-    GOLD_DIM_DATE_DIR,
-    GOLD_DIM_PRODUCT_DIR,
-    GOLD_FACT_MARKET_PRICE_DIR,
-    GOLD_FACT_PRODUCTION_DIR,
-    GOLD_FACT_STOCK_MARKET_DIR,
-    KAGGLE_GOLD_CONFIG,
-    SILVER_KAGGLE_DIR,
-    SILVER_TRENDFORCE_DIR,
-    SILVER_YAHOO_DIR,
-    TICKER_TO_COMPANY_NAME,
-    ensure_directories,
+# ---------------------------------------------------------
+# Logging Configuration
+# ---------------------------------------------------------
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
 )
-from utils.logger import get_logger
-from utils.timing import log_execution_time
-
-logger = get_logger(__name__)
-
-
-# ==========================================================================
-# Shared helpers
-# ==========================================================================
-def _read_silver(spark: SparkSession, path, source_name: str) -> Optional[DataFrame]:
-    """
-    Read a Silver Parquet dataset. Returns None (with a warning) instead
-    of raising if it doesn't exist yet, so the Gold build degrades
-    gracefully - e.g. you can build Dim_Date/Fact_StockMarket from Yahoo
-    alone before the Kaggle or TrendForce Silver stages have been run.
-    """
-    if not path.exists() or not any(path.iterdir()):
-        logger.warning(
-            "[gold] Silver data not found for '%s' at %s - skipping anything "
-            "that depends on it",
-            source_name,
-            path,
-        )
-        return None
-    df = spark.read.parquet(str(path))
-    logger.info("[gold] Read Silver '%s': %d row(s)", source_name, df.count())
-    return df
-
-
-def _write_gold(df: DataFrame, path, table_name: str) -> None:
-    """Persist a Gold dimension/fact table to Parquet (full overwrite)."""
-    path.mkdir(parents=True, exist_ok=True)
-    df.write.mode("overwrite").option("compression", "snappy").parquet(str(path))
-    logger.info("[gold] Wrote %s to %s", table_name, path)
-
-
-def _create_map_expr(mapping: Dict[str, str]):
-    """Build a Spark map() literal expression from a small Python dict."""
-    if not mapping:
-        return F.create_map()
-    literals = []
-    for key, value in mapping.items():
-        literals.extend([F.lit(key), F.lit(value)])
-    return F.create_map(*literals)
-
-
-# ==========================================================================
-# Dim_Date
-# ==========================================================================
-@log_execution_time("Build Dim_Date")
-def build_dim_date(
-    yahoo_df: Optional[DataFrame],
-    trendforce_df: Optional[DataFrame],
-    kaggle_df: Optional[DataFrame],
-    spark: SparkSession,
-) -> Optional[DataFrame]:
-    """
-    Build a full daily calendar spanning the min-to-max date found across
-    every available Silver source, with date_key as an integer YYYYMMDD
-    (the standard Kimball convention) plus day/month/quarter/year/week
-    attributes.
-    """
-    date_columns = []
-    if yahoo_df is not None:
-        date_columns.append(yahoo_df.select(F.col("date")))
-    if trendforce_df is not None:
-        date_columns.append(trendforce_df.select(F.col("date")))
-    if kaggle_df is not None and KAGGLE_GOLD_CONFIG.date_column in kaggle_df.columns:
-        date_columns.append(
-            kaggle_df.select(F.col(KAGGLE_GOLD_CONFIG.date_column).alias("date"))
-        )
-
-    if not date_columns:
-        logger.warning("[gold] No Silver source available to derive Dim_Date - skipping")
-        return None
-
-    all_dates = date_columns[0]
-    for extra in date_columns[1:]:
-        all_dates = all_dates.unionByName(extra)
-    all_dates = all_dates.dropna(subset=["date"])
-
-    if all_dates.limit(1).count() == 0:
-        logger.warning(
-            "[gold] No valid (non-null) dates found across Silver sources - skipping Dim_Date"
-        )
-        return None
-
-    # Build the min-to-max day sequence entirely inside Spark's own
-    # execution graph (F.sequence over an aggregate) rather than
-    # collecting the bounds to the driver and calling
-    # spark.createDataFrame() on local Python data. The latter can route
-    # through a separate Python worker subprocess for serialisation,
-    # which has proven unreliable on some platforms (see spark_session.py
-    # for the matching Arrow-disable note) - this version avoids that
-    # entirely for calendar generation.
-    calendar_df = (
-        all_dates.agg(F.sequence(F.min("date"), F.max("date"), F.expr("interval 1 day")).alias("date_seq"))
-        .withColumn("full_date", F.explode("date_seq"))
-        .select("full_date")
-    )
-
-    dim_date = (
-        calendar_df.withColumn("date_key", F.date_format(F.col("full_date"), "yyyyMMdd").cast("int"))
-        .withColumn("day", F.dayofmonth("full_date"))
-        .withColumn("month", F.month("full_date"))
-        .withColumn("quarter", F.quarter("full_date"))
-        .withColumn("year", F.year("full_date"))
-        .withColumn("week", F.weekofyear("full_date"))
-        .select("date_key", "full_date", "day", "month", "quarter", "year", "week")
-        .orderBy("date_key")
-    )
-
-    date_range = dim_date.agg(F.min("full_date").alias("min_date"), F.max("full_date").alias("max_date")).collect()[0]
-    logger.info(
-        "[gold] Dim_Date spans %s to %s (%d day(s))",
-        date_range["min_date"],
-        date_range["max_date"],
-        dim_date.count(),
-    )
-    return dim_date
-
-
-# ==========================================================================
-# Dim_Product (TrendForce)
-# ==========================================================================
-@log_execution_time("Build Dim_Product")
-def build_dim_product(trendforce_df: Optional[DataFrame]) -> Optional[DataFrame]:
-    """Distinct (product, category, unit) combinations from TrendForce Silver."""
-    if trendforce_df is None:
-        logger.warning("[gold] TrendForce Silver unavailable - skipping Dim_Product")
-        return None
-
-    distinct_products = trendforce_df.select("product", "category", "unit").distinct()
-
-    # Small dimension table - a global (unpartitioned) window is fine here.
-    window = Window.orderBy("category", "product", "unit")
-    dim_product = distinct_products.withColumn("product_key", F.dense_rank().over(window)).select(
-        "product_key", "product", "category", "unit"
-    )
-
-    logger.info("[gold] Dim_Product: %d distinct product(s)", dim_product.count())
-    return dim_product
-
-
-# ==========================================================================
-# Dim_Company (conformed: Yahoo tickers + Kaggle company names)
-# ==========================================================================
-@log_execution_time("Build Dim_Company")
-def build_dim_company(
-    yahoo_df: Optional[DataFrame], kaggle_df: Optional[DataFrame]
-) -> Optional[DataFrame]:
-    """
-    Build the conformed Dim_Company shared by Fact_StockMarket (Yahoo,
-    keyed by ticker) and Fact_Production (Kaggle, keyed by company name),
-    reconciled via config.TICKER_TO_COMPANY_NAME.
-    """
-    ticker_to_company = _create_map_expr(TICKER_TO_COMPANY_NAME)
-    company_to_ticker = _create_map_expr({v: k for k, v in TICKER_TO_COMPANY_NAME.items()})
-
-    sides = []
-
-    if yahoo_df is not None:
-        yahoo_companies = (
-            yahoo_df.select("ticker")
-            .distinct()
-            .withColumn(
-                "company",
-                F.coalesce(ticker_to_company.getItem(F.col("ticker")), F.lower(F.col("ticker"))),
-            )
-            .select("company", "ticker")
-        )
-        sides.append(yahoo_companies)
-
-    if kaggle_df is not None and KAGGLE_GOLD_CONFIG.company_column in kaggle_df.columns:
-        kaggle_companies = (
-            kaggle_df.select(F.col(KAGGLE_GOLD_CONFIG.company_column).alias("company"))
-            .distinct()
-            .withColumn("ticker", company_to_ticker.getItem(F.col("company")))
-            .select("company", "ticker")
-        )
-        sides.append(kaggle_companies)
-
-    if not sides:
-        logger.warning("[gold] Neither Yahoo nor Kaggle Silver available - skipping Dim_Company")
-        return None
-
-    combined = sides[0]
-    for extra in sides[1:]:
-        combined = combined.unionByName(extra)
-
-    # A company may appear on both sides (with/without a ticker) - collapse
-    # to one row per company, keeping the first non-null ticker seen.
-    dim_company = combined.groupBy("company").agg(
-        F.first(F.col("ticker"), ignorenulls=True).alias("ticker")
-    )
-
-    window = Window.orderBy("company")
-    dim_company = dim_company.withColumn("company_key", F.dense_rank().over(window)).select(
-        "company_key", "company", "ticker"
-    )
-
-    logger.info("[gold] Dim_Company: %d distinct compan(y/ies)", dim_company.count())
-    return dim_company
-
-
-# ==========================================================================
-# Dim_Country (Kaggle)
-# ==========================================================================
-@log_execution_time("Build Dim_Country")
-def build_dim_country(kaggle_df: Optional[DataFrame]) -> Optional[DataFrame]:
-    """Distinct countries/regions from Kaggle Silver."""
-    country_column = KAGGLE_GOLD_CONFIG.country_column
-
-    if kaggle_df is None:
-        logger.warning("[gold] Kaggle Silver unavailable - skipping Dim_Country")
-        return None
-
-    if country_column not in kaggle_df.columns:
-        logger.warning(
-            "[gold] Configured country column '%s' not found in Kaggle Silver "
-            "(columns present: %s) - Dim_Country will be empty. Update "
-            "config.KAGGLE_GOLD_CONFIG.country_column if your dataset names "
-            "this differently.",
-            country_column,
-            kaggle_df.columns,
-        )
-        empty_schema = kaggle_df.sparkSession.createDataFrame(
-            [], "country_key int, country string"
-        )
-        return empty_schema
-
-    countries = (
-        kaggle_df.select(F.col(country_column).alias("country"))
-        .distinct()
-        .dropna(subset=["country"])
-    )
-
-    window = Window.orderBy("country")
-    dim_country = countries.withColumn("country_key", F.dense_rank().over(window)).select(
-        "country_key", "country"
-    )
-
-    logger.info("[gold] Dim_Country: %d distinct countr(y/ies)", dim_country.count())
-    return dim_country
-
-
-# ==========================================================================
-# Fact_MarketPrice (TrendForce)
-# ==========================================================================
-@log_execution_time("Build Fact_MarketPrice")
-def build_fact_market_price(
-    trendforce_df: Optional[DataFrame],
-    dim_date: Optional[DataFrame],
-    dim_product: Optional[DataFrame],
-) -> Optional[DataFrame]:
-    """
-    Grain: one product price observation for a product on a reporting
-    date. The Silver TrendForce table is exploded to daily grain (one row
-    per calendar day a price was in effect); this collapses it back down
-    to one row per original (product, category, report_date) observation,
-    which is exactly the SCD2 interval already computed in Silver.
-    """
-    if trendforce_df is None or dim_date is None or dim_product is None:
-        logger.warning(
-            "[gold] Missing TrendForce Silver, Dim_Date, or Dim_Product - "
-            "skipping Fact_MarketPrice"
-        )
-        return None
-
-    observations = trendforce_df.dropDuplicates(
-        ["product", "category", "report_date"]
-    ).select(
-        "product",
-        "category",
-        "unit",
-        "price",
-        "report_date",
-        "price_effective_date",
-        "price_expiration_date",
-    )
-
-    observations = observations.join(
-        dim_product, on=["product", "category", "unit"], how="left"
-    )
-
-    date_for_report = dim_date.select(
-        F.col("date_key").alias("date_key"), F.col("full_date").alias("report_date")
-    )
-    date_for_effective = dim_date.select(
-        F.col("date_key").alias("effective_date_key"),
-        F.col("full_date").alias("price_effective_date"),
-    )
-    date_for_expiration = dim_date.select(
-        F.col("date_key").alias("expiration_date_key"),
-        F.col("full_date").alias("price_expiration_date"),
-    )
-
-    observations = (
-        observations.join(date_for_report, on="report_date", how="left")
-        .join(date_for_effective, on="price_effective_date", how="left")
-        .join(date_for_expiration, on="price_expiration_date", how="left")
-    )
-
-    fact = observations.withColumn(
-        "price_fact_key", F.monotonically_increasing_id()
-    ).select(
-        "price_fact_key",
-        "date_key",
-        "product_key",
-        "price",
-        "effective_date_key",
-        "expiration_date_key",
-    )
-
-    logger.info("[gold] Fact_MarketPrice: %d row(s)", fact.count())
-    return fact
-
-
-# ==========================================================================
-# Fact_StockMarket (Yahoo)
-# ==========================================================================
-@log_execution_time("Build Fact_StockMarket")
-def build_fact_stock_market(
-    yahoo_df: Optional[DataFrame],
-    dim_date: Optional[DataFrame],
-    dim_company: Optional[DataFrame],
-) -> Optional[DataFrame]:
-    """Grain: one ticker for one trading day."""
-    if yahoo_df is None or dim_date is None or dim_company is None:
-        logger.warning(
-            "[gold] Missing Yahoo Silver, Dim_Date, or Dim_Company - "
-            "skipping Fact_StockMarket"
-        )
-        return None
-
-    date_lookup = dim_date.select(F.col("date_key"), F.col("full_date").alias("date"))
-    company_lookup = dim_company.select("company_key", "ticker")
-
-    stock = yahoo_df.join(date_lookup, on="date", how="left").join(
-        company_lookup, on="ticker", how="left"
-    )
-
-    fact = stock.withColumn("stock_fact_key", F.monotonically_increasing_id()).select(
-        "stock_fact_key",
-        "date_key",
-        "company_key",
-        "open",
-        "high",
-        "low",
-        "close",
-        "adj_close",
-        "volume",
-        "daily_return",
-        "ma_5",
-        "ma_20",
-    )
-
-    logger.info("[gold] Fact_StockMarket: %d row(s)", fact.count())
-    return fact
-
-
-# ==========================================================================
-# Fact_Production (Kaggle)
-# ==========================================================================
-@log_execution_time("Build Fact_Production")
-def build_fact_production(
-    kaggle_df: Optional[DataFrame],
-    dim_company: Optional[DataFrame],
-    dim_country: Optional[DataFrame],
-) -> Optional[DataFrame]:
-    """
-    Grain: one company for one calendar year. Rolls up (potentially
-    finer-grained) Kaggle Silver rows to company+year using the
-    aggregation function configured per metric column in
-    config.KAGGLE_GOLD_CONFIG.metric_aggregations. year_key is the plain
-    integer year (joinable against dim_date.year - a yearly-grain fact
-    has no single date_key to reference).
-    """
-    if kaggle_df is None or dim_company is None or dim_country is None:
-        logger.warning(
-            "[gold] Missing Kaggle Silver, Dim_Company, or Dim_Country - "
-            "skipping Fact_Production"
-        )
-        return None
-
-    company_col = KAGGLE_GOLD_CONFIG.company_column
-    country_col = KAGGLE_GOLD_CONFIG.country_column
-    date_col = KAGGLE_GOLD_CONFIG.date_column
-    metric_aggregations = KAGGLE_GOLD_CONFIG.metric_aggregations
-
-    df = kaggle_df
-
-    if date_col in df.columns:
-        df = df.withColumn("year", F.year(F.col(date_col)))
-    elif "year" in df.columns:
-        logger.info(
-            "[gold] Kaggle Silver has no configured date column '%s'; using existing 'year' column instead",
-            date_col,
-        )
-        df = df.withColumn("year", F.col("year").cast("int"))
-    else:
-        logger.error(
-            "[gold] Configured Kaggle date column '%s' not found (columns: %s) - "
-            "cannot derive calendar year, skipping Fact_Production",
-            date_col,
-            df.columns,
-        )
-        return None
-
-    missing_metrics = [c for c in metric_aggregations if c not in df.columns]
-    if missing_metrics:
-        logger.warning(
-            "[gold] Metric column(s) not found in Kaggle Silver (filled with NULL): "
-            "%s. Update config.KAGGLE_GOLD_CONFIG.metric_aggregations if your "
-            "dataset names these differently.",
-            missing_metrics,
-        )
-        for col in missing_metrics:
-            df = df.withColumn(col, F.lit(None).cast("double"))
-
-    if country_col not in df.columns:
-        logger.warning(
-            "[gold] Country column '%s' not found in Kaggle Silver - Fact_Production "
-            "rows will have a null country_key",
-            country_col,
-        )
-        df = df.withColumn(country_col, F.lit(None).cast("string"))
-
-    if company_col not in df.columns:
-        logger.error(
-            "[gold] Company column '%s' not found in Kaggle Silver - cannot build "
-            "Fact_Production",
-            company_col,
-        )
-        return None
-
-    for metric_column in metric_aggregations:
-        if metric_column in df.columns:
-            df = df.withColumn(
-                metric_column,
-                F.expr(f"try_cast({metric_column} AS DOUBLE)"),
-            )
-
-    agg_func_map = {"sum": F.sum, "avg": F.avg, "max": F.max, "min": F.min}
-    agg_exprs = []
-    for column, func_name in metric_aggregations.items():
-        agg_func = agg_func_map.get(func_name)
-        if agg_func is None:
-            logger.warning(
-                "[gold] Unknown aggregation '%s' for column '%s' - defaulting to 'avg'",
-                func_name,
-                column,
-            )
-            agg_func = F.avg
-        agg_exprs.append(agg_func(F.col(column)).alias(column))
-
-    rolled_up = df.groupBy(F.col(company_col).alias("company"), "year", F.col(country_col).alias("country")).agg(
-        *agg_exprs
-    )
-
-    rolled_up = rolled_up.join(dim_company.select("company_key", "company"), on="company", how="left")
-    rolled_up = rolled_up.join(dim_country.select("country_key", "country"), on="country", how="left")
-
-    fact = rolled_up.withColumnRenamed("year", "year_key").withColumn(
-        "production_fact_key", F.monotonically_increasing_id()
-    )
-
-    final_columns = ["production_fact_key", "year_key", "company_key", "country_key"] + list(
-        metric_aggregations.keys()
-    )
-    fact = fact.select(*final_columns)
-
-    logger.info("[gold] Fact_Production: %d row(s)", fact.count())
-    return fact
-
-
-# ==========================================================================
-# Orchestration
-# ==========================================================================
-@log_execution_time("Full Silver -> Gold Build")
-def run_silver_to_gold(spark: SparkSession) -> Dict[str, DataFrame]:
-    """
-    Read every available Silver source, build the full galaxy schema
-    (Dim_Date, Dim_Product, Dim_Company, Dim_Country, and the three fact
-    tables), write each to the Gold layer, and return whatever was
-    successfully built (as a dict keyed by table name) for inspection or
-    testing.
-    """
-    ensure_directories()
-
-    yahoo_df = _read_silver(spark, SILVER_YAHOO_DIR, "yahoo")
-    trendforce_df = _read_silver(spark, SILVER_TRENDFORCE_DIR, "trendforce")
-    kaggle_df = _read_silver(spark, SILVER_KAGGLE_DIR, "kaggle")
-
-    built: Dict[str, DataFrame] = {}
-
-    dim_date = build_dim_date(yahoo_df, trendforce_df, kaggle_df, spark)
-    if dim_date is not None:
-        _write_gold(dim_date, GOLD_DIM_DATE_DIR, "Dim_Date")
-        built["dim_date"] = dim_date
-
-    dim_product = build_dim_product(trendforce_df)
-    if dim_product is not None:
-        _write_gold(dim_product, GOLD_DIM_PRODUCT_DIR, "Dim_Product")
-        built["dim_product"] = dim_product
-
-    dim_company = build_dim_company(yahoo_df, kaggle_df)
-    if dim_company is not None:
-        _write_gold(dim_company, GOLD_DIM_COMPANY_DIR, "Dim_Company")
-        built["dim_company"] = dim_company
-
-    dim_country = build_dim_country(kaggle_df)
-    if dim_country is not None:
-        _write_gold(dim_country, GOLD_DIM_COUNTRY_DIR, "Dim_Country")
-        built["dim_country"] = dim_country
-
-    fact_market_price = build_fact_market_price(trendforce_df, dim_date, dim_product)
-    if fact_market_price is not None:
-        _write_gold(fact_market_price, GOLD_FACT_MARKET_PRICE_DIR, "Fact_MarketPrice")
-        built["fact_market_price"] = fact_market_price
-
-    fact_stock_market = build_fact_stock_market(yahoo_df, dim_date, dim_company)
-    if fact_stock_market is not None:
-        _write_gold(fact_stock_market, GOLD_FACT_STOCK_MARKET_DIR, "Fact_StockMarket")
-        built["fact_stock_market"] = fact_stock_market
-
-    fact_production = build_fact_production(kaggle_df, dim_company, dim_country)
-    if fact_production is not None:
-        _write_gold(fact_production, GOLD_FACT_PRODUCTION_DIR, "Fact_Production")
-        built["fact_production"] = fact_production
-
-    logger.info("[gold] Gold build complete. Tables written: %s", list(built.keys()))
-    return built
-
-
-def main() -> None:
-    from spark.spark_session import get_spark_session, stop_spark_session
-
-    spark = get_spark_session()
+logger = logging.getLogger(__name__)
+
+# ---------------------------------------------------------
+# Configuration & Paths
+# ---------------------------------------------------------
+SILVER_BASE_PATH = "data/silver"
+GOLD_BASE_PATH = "data/gold"
+
+# ---------------------------------------------------------
+# Helper Functions
+# ---------------------------------------------------------
+
+def create_spark_session() -> SparkSession:
+    """Initialize and return a SparkSession."""
+    logger.info("Initializing SparkSession...")
+    return SparkSession.builder \
+        .appName("SilverToGold_Transformation") \
+        .getOrCreate()
+
+def read_silver_table(spark: SparkSession, path: str, recursive: bool = False):
+    """Read a parquet file/folder from the Silver layer."""
     try:
-        run_silver_to_gold(spark)
-    finally:
-        stop_spark_session()
+        if recursive:
+            return spark.read.option("recursiveFileLookup", "true").parquet(path)
+        return spark.read.parquet(path)
+    except AnalysisException as e:
+        logger.error(f"Failed to read path {path}. Error: {e}")
+        sys.exit(1)
 
+def write_gold_table(df, path: str, table_name: str):
+    """Write DataFrame to Gold layer, print schema and row count for quality checks."""
+    logger.info(f"Writing {table_name} to {path}...")
+    
+    # Save as parquet
+    df.write.mode("overwrite").parquet(path)
+    
+    # Quality Checks
+    row_count = df.count()
+    logger.info(f"=======================================")
+    logger.info(f"QUALITY CHECK: {table_name}")
+    logger.info(f"Rows: {row_count}")
+    logger.info("Schema:")
+    df.printSchema()
+    logger.info(f"=======================================\n")
+
+def map_company_name(col):
+    """Apply mapping logic for company names to standardized tickers where applicable."""
+    return F.when(F.upper(col).contains("NVIDIA"), "NVDA") \
+            .when(F.upper(col).contains("ADVANCED MICRO"), "AMD") \
+            .when(F.upper(col).contains("INTEL"), "INTC") \
+            .when(F.upper(col).contains("BROADCOM"), "AVGO") \
+            .when(F.upper(col).contains("MICRON"), "MU") \
+            .when(F.upper(col).contains("QUALCOMM"), "QCOM") \
+            .when(F.upper(col).contains("TAIWAN SEMI"), "TSM") \
+            .otherwise(col)
+
+def standardize_to_date(col):
+    """Convert year integer or string date to yyyy-MM-dd date type."""
+    return F.when(
+        F.length(col.cast("string")) == 4, 
+        F.to_date(F.concat(col.cast("string"), F.lit("-01-01")), "yyyy-MM-dd")
+    ).otherwise(F.to_date(col))
+
+# ---------------------------------------------------------
+# Transformation Logic
+# ---------------------------------------------------------
+
+def main():
+    spark = create_spark_session()
+    
+    logger.info("Starting Silver -> Gold transformation...")
+
+    # 1. Read Silver Data
+    logger.info("Reading Silver data...")
+    df_prod = read_silver_table(spark, f"{SILVER_BASE_PATH}/kaggle/1_semiconductor_production", recursive=True)
+    df_demand = read_silver_table(spark, f"{SILVER_BASE_PATH}/kaggle/2_ai_hardware_demand", recursive=True)
+    df_trade = read_silver_table(spark, f"{SILVER_BASE_PATH}/kaggle/3_semiconductor_trade_supply_chain", recursive=True)
+    df_tech = read_silver_table(spark, f"{SILVER_BASE_PATH}/kaggle/4_technology_node_innovation", recursive=True)
+    df_geo = read_silver_table(spark, f"{SILVER_BASE_PATH}/kaggle/5_geopolitical_risk_sanctions", recursive=True)
+    df_disruption = read_silver_table(spark, f"{SILVER_BASE_PATH}/kaggle/6_supply_chain_disruption", recursive=True)
+    df_market = read_silver_table(spark, f"{SILVER_BASE_PATH}/kaggle/7_semiconductor_market_economics", recursive=True)
+    
+    df_trendforce = read_silver_table(spark, f"{SILVER_BASE_PATH}/trendforce", recursive=True)
+    # Read Yahoo data without recursiveFileLookup to preserve Ticker partition column
+    df_yahoo = read_silver_table(spark, f"{SILVER_BASE_PATH}/yahoo", recursive=False)
+
+
+    # ==========================================
+    # BUILD DIMENSIONS
+    # ==========================================
+    logger.info("Building Dimension Tables...")
+
+    # --- dim_company ---
+    logger.info("Creating dim_company...")
+    companies_prod = df_prod.select(F.col("company").alias("company_name"))
+    companies_tech = df_tech.select(F.col("company").alias("company_name"))
+    companies_yahoo = df_yahoo.select(F.col("Ticker").alias("company_name"))
+    
+    dim_company = companies_prod.union(companies_tech).union(companies_yahoo) \
+        .dropna(subset=["company_name"]) \
+        .dropDuplicates() \
+        .withColumn("ticker", map_company_name(F.col("company_name"))) \
+        .withColumn("company_key", F.monotonically_increasing_id()) \
+        .select("company_key", "company_name", "ticker")
+    
+    write_gold_table(dim_company, f"{GOLD_BASE_PATH}/dimensions/dim_company", "dim_company")
+
+
+    # --- dim_country ---
+    logger.info("Creating dim_country...")
+    countries = df_prod.select(F.col("country").alias("country_name")) \
+        .union(df_demand.select(F.col("country").alias("country_name"))) \
+        .union(df_geo.select(F.col("country").alias("country_name"))) \
+        .union(df_trade.select(F.col("exporting_country").alias("country_name"))) \
+        .union(df_trade.select(F.col("importing_country").alias("country_name")))
+    
+    dim_country = countries.dropna(subset=["country_name"]) \
+        .dropDuplicates() \
+        .withColumn("country_key", F.monotonically_increasing_id()) \
+        .select("country_key", "country_name")
+        
+    write_gold_table(dim_country, f"{GOLD_BASE_PATH}/dimensions/dim_country", "dim_country")
+
+
+    # --- dim_region ---
+    logger.info("Creating dim_region...")
+    dim_region = df_disruption.select(F.col("region").alias("region_name")) \
+        .dropna(subset=["region_name"]) \
+        .dropDuplicates() \
+        .withColumn("region_key", F.monotonically_increasing_id()) \
+        .select("region_key", "region_name")
+        
+    write_gold_table(dim_region, f"{GOLD_BASE_PATH}/dimensions/dim_region", "dim_region")
+
+
+    # --- dim_product ---
+    logger.info("Creating dim_product...")
+    dim_product = df_trendforce.select(
+        F.col("product").alias("product_name"), 
+        "category", 
+        "unit"
+    ).dropna(subset=["product_name"]) \
+     .dropDuplicates() \
+     .withColumn("product_key", F.monotonically_increasing_id()) \
+     .select("product_key", "product_name", "category", "unit")
+     
+    write_gold_table(dim_product, f"{GOLD_BASE_PATH}/dimensions/dim_product", "dim_product")
+
+
+    # --- dim_technology ---
+    logger.info("Creating dim_technology...")
+    dim_technology = df_tech.select("node_size_nm") \
+        .union(df_prod.select(F.col("technology_node_nm").alias("node_size_nm"))) \
+        .dropna(subset=["node_size_nm"]) \
+        .dropDuplicates() \
+        .withColumn("technology_key", F.monotonically_increasing_id()) \
+        .select("technology_key", "node_size_nm")
+        
+    write_gold_table(dim_technology, f"{GOLD_BASE_PATH}/dimensions/dim_technology", "dim_technology")
+
+
+# --- dim_date ---
+    logger.info("Creating dim_date...")
+    
+    # Cast all incoming date/year columns to string before unioning to prevent INCOMPATIBLE_COLUMN_TYPE errors
+    dates = df_prod.select(F.col("year").cast("string").alias("raw_date")) \
+        .union(df_demand.select(F.col("year").cast("string").alias("raw_date"))) \
+        .union(df_trade.select(F.col("year").cast("string").alias("raw_date"))) \
+        .union(df_tech.select(F.col("year").cast("string").alias("raw_date"))) \
+        .union(df_geo.select(F.col("year").cast("string").alias("raw_date"))) \
+        .union(df_disruption.select(F.col("year").cast("string").alias("raw_date"))) \
+        .union(df_market.select(F.col("year").cast("string").alias("raw_date"))) \
+        .union(df_trendforce.select(F.col("date").cast("string").alias("raw_date"))) \
+        .union(df_yahoo.select(F.col("date").cast("string").alias("raw_date")))
+
+    dim_date = dates.dropna(subset=["raw_date"]) \
+        .select(standardize_to_date(F.col("raw_date")).alias("full_date")) \
+        .dropDuplicates() \
+        .withColumn("date_key", F.monotonically_increasing_id()) \
+        .withColumn("day", F.dayofmonth("full_date")) \
+        .withColumn("month", F.month("full_date")) \
+        .withColumn("quarter", F.quarter("full_date")) \
+        .withColumn("year", F.year("full_date")) \
+        .withColumn("week_number", F.weekofyear("full_date")) \
+        .select("date_key", "full_date", "day", "month", "quarter", "year", "week_number")
+
+    write_gold_table(dim_date, f"{GOLD_BASE_PATH}/dimensions/dim_date", "dim_date")
+
+
+    # ==========================================
+    # BUILD FACT TABLES
+    # ==========================================
+    logger.info("Building Fact Tables...")
+
+    # Prep DataFrames for Fact Join Mapping
+    # Creating broadcast lookups where practical
+    dim_date_lkp = dim_date.select("full_date", "date_key")
+    dim_company_lkp = dim_company.select("company_name", "company_key")
+    dim_company_ticker_lkp = dim_company.select("ticker", "company_key").filter(F.col("ticker").isNotNull())
+    dim_country_lkp = dim_country.select("country_name", "country_key")
+    dim_region_lkp = dim_region.select("region_name", "region_key")
+    dim_product_lkp = dim_product.select("product_name", "product_key")
+    dim_tech_lkp = dim_technology.select("node_size_nm", "technology_key")
+
+
+    # --- FACT 1: fact_semiconductor_market ---
+    logger.info("Creating fact_semiconductor_market...")
+    
+    # Standardize dates and map keys for all 4 sources
+    f1_demand = df_demand.withColumn("full_date", standardize_to_date(F.col("year"))) \
+        .join(dim_date_lkp, "full_date", "left") \
+        .join(dim_country_lkp, df_demand.country == dim_country_lkp.country_name, "left") \
+        .withColumn("product_key", F.lit(None).cast("long")) \
+        .withColumn("company_key", F.lit(None).cast("long")) \
+        .select("date_key", "country_key", "product_key", "company_key",
+                "ai_gpu_demand", "data_center_count", "ai_compute_power",
+                "cloud_ai_investment", "training_compute_flops", "ai_model_count")
+
+    f1_market = df_market.withColumn("full_date", standardize_to_date(F.col("year"))) \
+        .join(dim_date_lkp, "full_date", "left") \
+        .withColumn("country_key", F.lit(None).cast("long")) \
+        .withColumn("product_key", F.lit(None).cast("long")) \
+        .withColumn("company_key", F.lit(None).cast("long")) \
+        .select("date_key", "country_key", "product_key", "company_key",
+                "global_semiconductor_revenue", "ai_chip_revenue", 
+                "consumer_electronics_demand", "automotive_chip_demand",
+                "chip_price_index", "market_growth_rate")
+
+    f1_trendforce = df_trendforce.withColumn("full_date", standardize_to_date(F.col("date"))) \
+        .join(dim_date_lkp, "full_date", "left") \
+        .join(dim_product_lkp, df_trendforce.product == dim_product_lkp.product_name, "left") \
+        .withColumn("country_key", F.lit(None).cast("long")) \
+        .withColumn("company_key", F.lit(None).cast("long")) \
+        .select("date_key", "country_key", "product_key", "company_key", "price")
+
+    f1_yahoo = df_yahoo.withColumn("full_date", standardize_to_date(F.col("date"))) \
+        .join(dim_date_lkp, "full_date", "left") \
+        .join(dim_company_ticker_lkp, df_yahoo.Ticker == dim_company_ticker_lkp.ticker, "left") \
+        .withColumn("country_key", F.lit(None).cast("long")) \
+        .withColumn("product_key", F.lit(None).cast("long")) \
+        .select("date_key", "country_key", "product_key", "company_key",
+                "open", "high", "low", "close", "adj_close", "volume", 
+                "daily_return", "volatility_range", "ma_5", "ma_20")
+
+    # Union by column to create a sparse fact table as requested
+    fact_market = f1_demand.unionByName(f1_market, allowMissingColumns=True) \
+        .unionByName(f1_trendforce, allowMissingColumns=True) \
+        .unionByName(f1_yahoo, allowMissingColumns=True) \
+        .withColumn("market_fact_key", F.monotonically_increasing_id())
+
+    # Reorder columns to place key at the front
+    cols_market = ["market_fact_key", "date_key", "country_key", "product_key", "company_key"] + \
+        [c for c in fact_market.columns if c not in ["market_fact_key", "date_key", "country_key", "product_key", "company_key"]]
+    fact_market = fact_market.select(*cols_market)
+    
+    write_gold_table(fact_market, f"{GOLD_BASE_PATH}/facts/fact_semiconductor_market", "fact_semiconductor_market")
+
+
+# --- FACT 2: fact_semiconductor_production ---
+    logger.info("Creating fact_semiconductor_production...")
+    
+    # Outer join production and tech on shared granularity (year, company, node_size)
+    prod_prep = df_prod.withColumn("join_node", F.col("technology_node_nm"))
+    tech_prep = df_tech.withColumn("join_node", F.col("node_size_nm"))
+    
+    fact_prod_raw = prod_prep.join(
+        tech_prep, 
+        on=["year", "company", "join_node"],
+        how="outer"
+    ).withColumn("full_date", standardize_to_date(F.col("year")))
+    
+    # Alias DataFrames to break PySpark lineage ambiguity
+    f_raw = fact_prod_raw.alias("f_raw")
+    d_tech = dim_tech_lkp.alias("d_tech")
+    d_comp = dim_company_lkp.alias("d_comp")
+    d_count = dim_country_lkp.alias("d_count")
+    d_date = dim_date_lkp.alias("d_date")
+
+    fact_prod = f_raw \
+        .join(d_date, F.col("f_raw.full_date") == F.col("d_date.full_date"), "left") \
+        .join(d_comp, F.col("f_raw.company") == F.col("d_comp.company_name"), "left") \
+        .join(d_count, F.col("f_raw.country") == F.col("d_count.country_name"), "left") \
+        .join(d_tech, F.col("f_raw.join_node") == F.col("d_tech.node_size_nm"), "left") \
+        .withColumn("production_fact_key", F.monotonically_increasing_id()) \
+        .select("production_fact_key", "date_key", "company_key", "country_key", "technology_key",
+                "production_capacity_wafers", "fab_count", "ai_chip_production", 
+                "foundry_revenue_usd", "global_market_share", "transistor_density", 
+                "rd_spending_usd", "patent_count", "ai_chip_performance", "energy_efficiency")
+        
+    write_gold_table(fact_prod, f"{GOLD_BASE_PATH}/facts/fact_semiconductor_production", "fact_semiconductor_production")
+
+# --- FACT 3: fact_semiconductor_supply_risk ---
+    logger.info("Creating fact_semiconductor_supply_risk...")
+
+    f3_trade = df_trade.withColumn("full_date", standardize_to_date(F.col("year"))) \
+        .join(dim_date_lkp, "full_date", "left") \
+        .join(dim_country_lkp.alias("exp"), F.col("exporting_country") == F.col("exp.country_name"), "left") \
+        .join(dim_country_lkp.alias("imp"), F.col("importing_country") == F.col("imp.country_name"), "left") \
+        .select(
+            "date_key", 
+            F.lit(None).cast("long").alias("country_key"), 
+            F.lit(None).cast("long").alias("region_key"), 
+            F.col("exp.country_key").alias("export_country_key"), 
+            F.col("imp.country_key").alias("import_country_key"),
+            "chip_export_value_usd", "chip_import_value_usd", "trade_balance", 
+            "logistics_route", "supply_chain_dependency"
+        )
+
+    f3_geo = df_geo.withColumn("full_date", standardize_to_date(F.col("year"))) \
+        .join(dim_date_lkp, "full_date", "left") \
+        .join(dim_country_lkp, df_geo.country == dim_country_lkp.country_name, "left") \
+        .select(
+            "date_key", "country_key", 
+            F.lit(None).cast("long").alias("region_key"), 
+            F.lit(None).cast("long").alias("export_country_key"), 
+            F.lit(None).cast("long").alias("import_country_key"),
+            "export_control_level", "sanctions_index", "trade_tension_level", 
+            "military_tech_influence", "semiconductor_security_risk"
+        )
+
+    f3_supply = df_disruption.withColumn("full_date", standardize_to_date(F.col("year"))) \
+        .join(dim_date_lkp, "full_date", "left") \
+        .join(dim_region_lkp, df_disruption.region == dim_region_lkp.region_name, "left") \
+        .select(
+            "date_key", 
+            F.lit(None).cast("long").alias("country_key"), 
+            "region_key", 
+            F.lit(None).cast("long").alias("export_country_key"), 
+            F.lit(None).cast("long").alias("import_country_key"),
+            "natural_disaster_risk", "energy_supply_risk", "water_shortage_risk", 
+            "factory_shutdown_risk", "supply_disruption_index"
+        )
+
+    # Union by column for sparse risk fact
+    fact_risk = f3_trade.unionByName(f3_geo, allowMissingColumns=True) \
+        .unionByName(f3_supply, allowMissingColumns=True) \
+        .withColumn("risk_fact_key", F.monotonically_increasing_id())
+
+    # Reorder columns to put keys first
+    cols_risk = ["risk_fact_key", "date_key", "country_key", "region_key", "export_country_key", "import_country_key"] + \
+        [c for c in fact_risk.columns if c not in ["risk_fact_key", "date_key", "country_key", "region_key", "export_country_key", "import_country_key"]]
+    fact_risk = fact_risk.select(*cols_risk)
+
+    write_gold_table(fact_risk, f"{GOLD_BASE_PATH}/facts/fact_semiconductor_supply_risk", "fact_semiconductor_supply_risk")
+    
+    logger.info("Silver -> Gold transformation completed successfully.")
 
 if __name__ == "__main__":
     main()
