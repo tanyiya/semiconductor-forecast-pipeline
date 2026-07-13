@@ -207,8 +207,20 @@ class KaggleTransformer(BaseTransformer):
         Note: there is no dedicated date column for these datasets --
         `year` is just an integer and is cast to LongType like any other
         configured column.
+
+        Special case: in dataset "1_semiconductor_production", the
+        `technology_node_nm` column arrives with a literal "nm" unit
+        suffix baked into the value (e.g. "1731nm"), which would cast to
+        null against DoubleType. That suffix is stripped here before the
+        generic cast loop runs so the numeric value survives the cast.
         """
         schema: Dict[str, str] = self.config["column_schema"]
+
+        if self.dataset_name == "1_semiconductor_production" and "technology_node_nm" in df.columns:
+            df = df.withColumn(
+                "technology_node_nm",
+                F.trim(F.regexp_replace(F.col("technology_node_nm"), "(?i)nm", "")),
+            )
 
         missing = [c for c in schema if c not in df.columns]
         if missing:
@@ -341,4 +353,4 @@ def run_kaggle_silver_transform(spark) -> Dict[str, DataFrame]:
     for dataset_name, dataset_config in DATASET_SCHEMAS.items():
         transformer = KaggleTransformer(spark, dataset_name, dataset_config)
         results[dataset_name] = transformer.run()
-    return results
+    return transformer.run()

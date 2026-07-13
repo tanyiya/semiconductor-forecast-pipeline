@@ -8214,3 +8214,80 @@ D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\kaggle_bronze_
 2026-07-13 16:30:57,498 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
 2026-07-13 16:31:07,767 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
 2026-07-13 16:31:56,166 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-13 16:50:51,577 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
+2026-07-13 16:51:03,043 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-13 16:51:03,043 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-13 16:51:03,043 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\1_semiconductor_production
+2026-07-13 16:51:08,410 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 2282
+2026-07-13 16:51:08,562 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'country', 'company', 'production_capacity_wafers', 'fab_count', 'technology_node_nm', 'ai_chip_production', 'foundry_revenue_usd', 'global_market_share']
+2026-07-13 16:51:08,865 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Standardised string values in columns: ['country', 'company']
+2026-07-13 16:51:10,489 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Column 'production_capacity_wafers': flagged and capped 8 outlier row(s) (bounds=[-941006.26, 2628526.07])
+2026-07-13 16:51:11,168 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Column 'foundry_revenue_usd': flagged and capped 45 outlier row(s) (bounds=[-2701486873.68, 5427133184.74])
+2026-07-13 16:51:11,886 | INFO     | processing.kaggle_bronze_silver | [kaggle:1_semiconductor_production] Column 'ai_chip_production': flagged and capped 59 outlier row(s) (bounds=[-424581.94, 632207.24])
+2026-07-13 16:51:16,837 | INFO     | processing.base_transformer | [kaggle] Silver row count: 2282 (unchanged)
+2026-07-13 16:51:17,746 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle\1_semiconductor_production
+2026-07-13 16:51:17,746 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=14.70s
+2026-07-13 16:51:17,746 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-13 16:51:17,746 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\2_ai_hardware_demand
+2026-07-13 16:51:17,980 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 1880
+2026-07-13 16:51:18,009 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'country', 'ai_gpu_demand', 'data_center_count', 'ai_compute_power', 'cloud_ai_investment', 'training_compute_flops', 'ai_model_count']
+2026-07-13 16:51:18,147 | INFO     | processing.kaggle_bronze_silver | [kaggle:2_ai_hardware_demand] Standardised string values in columns: ['country']
+2026-07-13 16:51:18,518 | INFO     | processing.kaggle_bronze_silver | [kaggle:2_ai_hardware_demand] Column 'ai_gpu_demand': flagged and capped 47 outlier row(s) (bounds=[-1195746080.50, 1438900055.55])
+2026-07-13 16:51:18,867 | INFO     | processing.kaggle_bronze_silver | [kaggle:2_ai_hardware_demand] Column 'cloud_ai_investment': flagged and capped 45 outlier row(s) (bounds=[-1608582372854300.00, 1919083446186802.00])
+2026-07-13 16:51:19,351 | INFO     | processing.kaggle_bronze_silver | [kaggle:2_ai_hardware_demand] Column 'training_compute_flops': flagged and capped 39 outlier row(s) (bounds=[-246901882844247987585024.00, 287825660568335298854912.00])
+2026-07-13 16:51:20,814 | INFO     | processing.base_transformer | [kaggle] Silver row count: 1880 (unchanged)
+2026-07-13 16:51:21,018 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle\2_ai_hardware_demand
+2026-07-13 16:51:21,018 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=3.28s
+2026-07-13 16:51:21,018 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-13 16:51:21,018 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\3_semiconductor_trade_supply_chain
+2026-07-13 16:51:21,249 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 3948
+2026-07-13 16:51:21,276 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'exporting_country', 'importing_country', 'chip_export_value_usd', 'chip_import_value_usd', 'trade_balance', 'logistics_route', 'supply_chain_dependency']
+2026-07-13 16:51:21,406 | INFO     | processing.kaggle_bronze_silver | [kaggle:3_semiconductor_trade_supply_chain] Standardised string values in columns: ['exporting_country', 'importing_country', 'logistics_route']
+2026-07-13 16:51:21,680 | INFO     | processing.kaggle_bronze_silver | [kaggle:3_semiconductor_trade_supply_chain] Column 'chip_export_value_usd': flagged and capped 80 outlier row(s) (bounds=[-151327358479.22, 257614907235.47])
+2026-07-13 16:51:21,970 | INFO     | processing.kaggle_bronze_silver | [kaggle:3_semiconductor_trade_supply_chain] Column 'chip_import_value_usd': flagged and capped 80 outlier row(s) (bounds=[-150873803787.54, 256932987930.64])
+2026-07-13 16:51:22,279 | INFO     | processing.kaggle_bronze_silver | [kaggle:3_semiconductor_trade_supply_chain] Column 'trade_balance': flagged and capped 120 outlier row(s) (bounds=[-7245305215.25, 7473669828.41])
+2026-07-13 16:51:23,455 | INFO     | processing.base_transformer | [kaggle] Silver row count: 3948 (unchanged)
+2026-07-13 16:51:23,668 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle\3_semiconductor_trade_supply_chain
+2026-07-13 16:51:23,668 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=2.64s
+2026-07-13 16:51:23,668 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-13 16:51:23,668 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\4_technology_node_innovation
+2026-07-13 16:51:23,851 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 2282
+2026-07-13 16:51:23,892 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'company', 'node_size_nm', 'transistor_density', 'rd_spending_usd', 'patent_count', 'ai_chip_performance', 'energy_efficiency']
+2026-07-13 16:51:23,978 | INFO     | processing.kaggle_bronze_silver | [kaggle:4_technology_node_innovation] Standardised string values in columns: ['company']
+2026-07-13 16:51:24,276 | INFO     | processing.kaggle_bronze_silver | [kaggle:4_technology_node_innovation] Column 'rd_spending_usd': flagged and capped 52 outlier row(s) (bounds=[-516248096.17, 990499920.91])
+2026-07-13 16:51:24,692 | INFO     | processing.kaggle_bronze_silver | [kaggle:4_technology_node_innovation] Column 'transistor_density': flagged and capped 26 outlier row(s) (bounds=[-312056993571.39, 525846165383.17])
+2026-07-13 16:51:26,160 | INFO     | processing.base_transformer | [kaggle] Silver row count: 2282 (unchanged)
+2026-07-13 16:51:26,372 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle\4_technology_node_innovation
+2026-07-13 16:51:26,372 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=2.71s
+2026-07-13 16:51:26,372 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-13 16:51:26,372 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\5_geopolitical_risk_sanctions
+2026-07-13 16:51:26,607 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 1880
+2026-07-13 16:51:26,630 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'country', 'export_control_level', 'sanctions_index', 'trade_tension_level', 'military_tech_influence', 'semiconductor_security_risk']
+2026-07-13 16:51:26,724 | INFO     | processing.kaggle_bronze_silver | [kaggle:5_geopolitical_risk_sanctions] Standardised string values in columns: ['country']
+2026-07-13 16:51:27,706 | INFO     | processing.kaggle_bronze_silver | [kaggle:5_geopolitical_risk_sanctions] Column 'semiconductor_security_risk': flagged and capped 11 outlier row(s) (bounds=[0.46, 8.84])
+2026-07-13 16:51:28,771 | INFO     | processing.base_transformer | [kaggle] Silver row count: 1880 (unchanged)
+2026-07-13 16:51:28,952 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle\5_geopolitical_risk_sanctions
+2026-07-13 16:51:28,954 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=2.58s
+2026-07-13 16:51:28,954 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-13 16:51:28,954 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\6_supply_chain_disruption
+2026-07-13 16:51:29,158 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 329
+2026-07-13 16:51:29,189 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'region', 'natural_disaster_risk', 'energy_supply_risk', 'water_shortage_risk', 'factory_shutdown_risk', 'supply_disruption_index']
+2026-07-13 16:51:29,274 | INFO     | processing.kaggle_bronze_silver | [kaggle:6_supply_chain_disruption] Standardised string values in columns: ['region']
+2026-07-13 16:51:30,591 | INFO     | processing.base_transformer | [kaggle] Silver row count: 329 (unchanged)
+2026-07-13 16:51:30,757 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle\6_supply_chain_disruption
+2026-07-13 16:51:30,757 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=1.81s
+2026-07-13 16:51:30,757 | INFO     | utils.timing | START | Kaggle Bronze->Silver Transform
+2026-07-13 16:51:30,757 | INFO     | processing.base_transformer | [kaggle] Reading Bronze data from D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\bronze\kaggle\7_semiconductor_market_economics
+2026-07-13 16:51:30,941 | INFO     | processing.base_transformer | [kaggle] Bronze row count: 47
+2026-07-13 16:51:30,963 | INFO     | processing.base_transformer | [kaggle] Standardised column names to snake_case: ['year', 'global_semiconductor_revenue', 'ai_chip_revenue', 'consumer_electronics_demand', 'automotive_chip_demand', 'chip_price_index', 'market_growth_rate']
+2026-07-13 16:51:31,785 | INFO     | processing.kaggle_bronze_silver | [kaggle:7_semiconductor_market_economics] Column 'chip_price_index': flagged and capped 1 outlier row(s) (bounds=[-322.91, 808.05])
+2026-07-13 16:51:32,618 | INFO     | processing.base_transformer | [kaggle] Silver row count: 47 (unchanged)
+2026-07-13 16:51:32,776 | INFO     | processing.base_transformer | [kaggle] Silver data written to D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\data\silver\kaggle\7_semiconductor_market_economics
+2026-07-13 16:51:32,776 | INFO     | utils.timing | END | Kaggle Bronze->Silver Transform | duration=2.02s
+2026-07-13 16:51:32,776 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-13 16:53:08,597 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
+2026-07-13 16:53:17,956 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-13 16:54:00,995 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-13 17:12:32,128 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
+2026-07-13 17:12:41,243 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-13 17:13:19,144 | INFO     | spark.spark_session | Stopping SparkSession

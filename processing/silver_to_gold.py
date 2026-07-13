@@ -356,102 +356,7 @@ def create_fact_production(spark, df_prod, df_tech, dims):
         (prod_clean.prod_node_norm == tech_clean.tech_node_norm),
         "left"
     ).withColumn("full_date", standardize_to_date(F.col("prod_year")))
-    # =====================================================
-    # TEMPORARY DEBUG - FACT_PRODUCTION JOIN
-    # =====================================================
 
-    logger.info("=" * 80)
-    logger.info("DEBUG: FACT_PRODUCTION JOIN")
-    logger.info("=" * 80)
-
-    logger.info(f"Production rows : {prod_clean.count()}")
-    logger.info(f"Technology rows : {tech_clean.count()}")
-
-    logger.info("\n===== Production Schema =====")
-    prod_clean.printSchema()
-
-    logger.info("\n===== Technology Schema =====")
-    tech_clean.printSchema()
-
-    logger.info("\n===== Production Sample =====")
-    prod_clean.select(
-        "company_name",
-        "prod_company_norm",
-        "country_name",
-        "prod_year",
-        "node_size_nm",
-        "prod_node_norm"
-    ).show(20, truncate=False)
-
-    logger.info("\n===== Technology Sample =====")
-    tech_clean.select(
-        "tech_company_norm",
-        "tech_year",
-        "tech_node_norm",
-        "transistor_density",
-        "rd_spending_usd",
-        "patent_count",
-        "ai_chip_performance",
-        "energy_efficiency"
-    ).show(20, truncate=False)
-
-    logger.info("\n===== Joined Sample =====")
-    joined.select(
-        "company_name",
-        "prod_year",
-        "node_size_nm",
-        "transistor_density",
-        "rd_spending_usd",
-        "patent_count",
-        "ai_chip_performance",
-        "energy_efficiency"
-    ).show(30, truncate=False)
-
-    logger.info("\n===== Join Match Statistics =====")
-    joined.select(
-        F.count("*").alias("total_rows"),
-        F.count("transistor_density").alias("matched_transistor_density"),
-        F.count("rd_spending_usd").alias("matched_rd_spending"),
-        F.count("patent_count").alias("matched_patents"),
-        F.count("ai_chip_performance").alias("matched_ai_performance"),
-        F.count("energy_efficiency").alias("matched_energy_efficiency")
-    ).show(truncate=False)
-
-    logger.info("\n===== Unmatched Production Records =====")
-    unmatched = prod_clean.join(
-        tech_clean,
-        (prod_clean.prod_company_norm == tech_clean.tech_company_norm) &
-        (prod_clean.prod_year == tech_clean.tech_year) &
-        (prod_clean.prod_node_norm == tech_clean.tech_node_norm),
-        "left_anti"
-    )
-
-    logger.info(f"Unmatched production rows: {unmatched.count()}")
-
-    unmatched.select(
-        "company_name",
-        "country_name",
-        "prod_year",
-        "node_size_nm",
-        "prod_company_norm",
-        "prod_node_norm"
-    ).show(50, truncate=False)
-
-    logger.info("\n===== Distinct Production Companies =====")
-    prod_clean.select("prod_company_norm").distinct().orderBy("prod_company_norm").show(100, truncate=False)
-
-    logger.info("\n===== Distinct Technology Companies =====")
-    tech_clean.select("tech_company_norm").distinct().orderBy("tech_company_norm").show(100, truncate=False)
-
-    logger.info("\n===== Distinct Production Node Sizes =====")
-    prod_clean.select("prod_node_norm").distinct().orderBy("prod_node_norm").show(100, truncate=False)
-
-    logger.info("\n===== Distinct Technology Node Sizes =====")
-    tech_clean.select("tech_node_norm").distinct().orderBy("tech_node_norm").show(100, truncate=False)
-
-    logger.info("=" * 80)
-    logger.info("END DEBUG")
-    logger.info("=" * 80)
     # -----------------------------------------------------
     # Step 3: Prepare dimension lookups on natural keys
     # -----------------------------------------------------
@@ -539,14 +444,46 @@ def create_fact_supply_risk(spark, df_trade, df_geo, df_disruption, dims):
     dim_date, dim_country, dim_region = dims['date'], dims['country'], dims['region']
 
     COUNTRY_REGION_MAPPING = {
-        "israel": "middle east", "south korea": "east asia", "japan": "east asia",
-        "switzerland": "europe", "uk": "europe", "netherlands": "europe", "germany": "europe",
-        "china": "east asia", "taiwan": "east asia", "usa": "north america", "finland": "europe",
-        "australia": "other", "uae": "middle east", "poland": "europe", "austria": "europe",
-        "czech republic": "europe", "thailand": "southeast asia", "india": "south asia",
-        "sweden": "europe", "indonesia": "southeast asia"
-    }
-
+    "japan": "east asia",
+    "taiwan": "east asia",
+    "china": "east asia",
+    "uk": "europe",
+    "switzerland": "europe",
+    "germany": "europe",
+    "israel": "middle east",
+    "netherlands": "europe",
+    "usa": "north america",
+    "south korea": "east asia",
+    "romania": "europe",
+    "brazil": "south america",
+    "vietnam": "southeast asia",
+    "austria": "europe",
+    "canada": "north america",
+    "saudi arabia": "middle east",
+    "finland": "europe",
+    "denmark": "europe",
+    "mexico": "north america",
+    "norway": "europe",
+    "sweden": "europe",
+    "australia": "oceania",
+    "czech republic": "europe",
+    "singapore": "southeast asia",
+    "belgium": "europe",
+    "thailand": "southeast asia",
+    "chile": "south america",
+    "hungary": "europe",
+    "indonesia": "southeast asia",
+    "spain": "europe",
+    "poland": "europe",
+    "uae": "middle east",
+    "philippines": "southeast asia",
+    "argentina": "south america",
+    "malaysia": "southeast asia",
+    "south africa": "africa",
+    "india": "south asia",
+    "italy": "europe",
+    "ireland": "europe",
+    "france": "europe",}
     # -----------------------------------------------------
     # Step 1: Normalize natural keys per source, BEFORE any joins
     # -----------------------------------------------------
