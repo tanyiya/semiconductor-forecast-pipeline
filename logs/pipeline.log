@@ -8291,3 +8291,27 @@ D:\01_Bomi\03_Projects\semiconductor-forecast-pipeline\processing\kaggle_bronze_
 2026-07-13 17:12:32,128 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
 2026-07-13 17:12:41,243 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
 2026-07-13 17:13:19,144 | INFO     | spark.spark_session | Stopping SparkSession
+2026-07-13 21:00:01,450 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
+2026-07-13 21:00:26,237 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-14 18:04:25,714 | INFO     | spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
+2026-07-14 18:04:55,947 | INFO     | spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-14 18:07:16,914 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
+2026-07-14 18:07:26,484 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-14 18:12:18,406 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
+2026-07-14 18:12:27,165 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-14 20:39:06,147 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
+2026-07-14 20:39:27,798 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-14 20:53:04,249 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
+2026-07-14 20:53:14,073 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-14 20:57:34,317 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
+2026-07-14 20:57:42,576 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-14 20:59:50,653 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
+2026-07-14 20:59:59,005 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-14 21:19:14,193 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
+2026-07-14 21:19:22,079 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-14 21:22:42,829 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
+2026-07-14 21:22:57,977 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-14 21:24:40,977 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
+2026-07-14 21:24:56,937 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
+2026-07-14 21:25:45,879 | INFO     | spark.spark_session | Initialising SparkSession 'SemiconductorForecastPipeline'
+2026-07-14 21:25:54,792 | INFO     | spark.spark_session | SparkSession ready | master=local[*] | driver_memory=4g | executor_memory=4g
