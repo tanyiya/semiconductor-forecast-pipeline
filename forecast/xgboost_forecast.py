@@ -1,15 +1,16 @@
 import logging
 import os
+import shutil
 import sys
 from pathlib import Path
-from typing import List, Tuple, Dict, Optional
+from typing import Dict, List, Tuple
 
 import numpy as np
 import pandas as pd
 import xgboost as xgb
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 # Fix Windows PySpark binary crash by binding environment variables before Spark boots
 os.environ["PYSPARK_PYTHON"] = sys.executable
@@ -41,6 +42,9 @@ FORECAST_YEARS: List[int] = [2026, 2027, 2028, 2029, 2030]
 
 TARGET_COLUMNS: List[str] = ["ai_gpu_demand", "ai_chip_revenue"]
 
+# Train on YoY growth rates to allow native time-series compounding without leaf ceilings
+GROWTH_TARGET_COLUMNS: List[str] = [f"{col}_yoy_growth" for col in TARGET_COLUMNS]
+
 DEMAND_FEATURE_COLUMNS: List[str] = [
     "data_center_count",
     "ai_compute_power",
@@ -67,7 +71,14 @@ PRODUCTION_FEATURE_COLUMNS: List[str] = [
     "energy_efficiency",
 ]
 
-ALL_FEATURE_COLUMNS: List[str] = DEMAND_FEATURE_COLUMNS + PRODUCTION_FEATURE_COLUMNS
+LAG_FEATURE_COLUMNS: List[str] = [f"{col}_lag_1" for col in TARGET_COLUMNS]
+
+EXOGENOUS_FEATURES: List[str] = DEMAND_FEATURE_COLUMNS + PRODUCTION_FEATURE_COLUMNS
+
+# Include year and autoregressive lags so the tree can partition on temporal progression
+ALL_FEATURE_COLUMNS: List[str] = (
+    ["year"] + EXOGENOUS_FEATURES + LAG_FEATURE_COLUMNS
+)
 
 XGB_PARAMS: Dict[str, object] = {
     "n_estimators": 400,
@@ -152,31 +163,49 @@ def spark_to_pandas(df: DataFrame) -> pd.DataFrame:
 
 
 def preprocess_features(pdf: pd.DataFrame) -> pd.DataFrame:
-    logger.info("Preprocessing features and handling missing values")
+    logger.info("Preprocessing features and transforming targets to YoY growth rates")
     pdf = pdf.copy()
 
-    for col in ALL_FEATURE_COLUMNS:
+    for col in EXOGENOUS_FEATURES:
         if col not in pdf.columns:
             pdf[col] = np.nan
 
-    numeric_columns = ALL_FEATURE_COLUMNS + TARGET_COLUMNS
+    numeric_columns = EXOGENOUS_FEATURES + TARGET_COLUMNS + ["year"]
     for col in numeric_columns:
         pdf[col] = pd.to_numeric(pdf[col], errors="coerce")
 
     group_cols = ["country_key"]
-    # Suppress NumPy warnings for all-NaN group slices during median transforms
+    
     with np.errstate(invalid="ignore"):
-        for col in ALL_FEATURE_COLUMNS:
+        for col in EXOGENOUS_FEATURES:
             pdf[col] = pdf.groupby(group_cols)[col].transform(
                 lambda s: s.fillna(s.median())
             )
             pdf[col] = pdf[col].fillna(pdf[col].median())
             pdf[col] = pdf[col].fillna(0.0)
 
-    pdf["country_key"] = pdf["country_key"].astype("category").cat.codes
+    pdf = pdf.sort_values(by=["country_key", "year"]).reset_index(drop=True)
 
-    pdf = pdf.dropna(subset=TARGET_COLUMNS)
-    pdf = pdf.sort_values(by=["year"]).reset_index(drop=True)
+    # Engineer lags and YoY growth rates so the model learns relative momentum
+    for target in TARGET_COLUMNS:
+        lag_col = f"{target}_lag_1"
+        pdf[lag_col] = pdf.groupby("country_key")[target].shift(1)
+        
+        pdf[lag_col] = pdf.groupby("country_key")[lag_col].transform(
+            lambda s: s.bfill().ffill().fillna(0.0)
+        )
+        
+        growth_col = f"{target}_yoy_growth"
+        pdf[growth_col] = np.where(
+            pdf[lag_col] != 0,
+            (pdf[target] - pdf[lag_col]) / pdf[lag_col],
+            0.0
+        )
+        # Clip extreme historical anomalies (-50% to +150%) to stabilize tree split thresholds
+        pdf[growth_col] = pd.Series(pdf[growth_col]).clip(lower=-0.5, upper=1.5).fillna(0.0)
+
+    pdf["country_key"] = pdf["country_key"].astype("category").cat.codes
+    pdf = pdf.dropna(subset=TARGET_COLUMNS).reset_index(drop=True)
 
     return pdf
 
@@ -284,6 +313,9 @@ def build_latest_country_snapshot(pdf: pd.DataFrame) -> pd.DataFrame:
     snapshot = pdf[pdf["year"] == latest_year].copy()
     snapshot = snapshot.drop_duplicates(subset=["country_key"]).reset_index(drop=True)
 
+    for target in TARGET_COLUMNS:
+        snapshot[f"{target}_lag_1"] = snapshot[target]
+
     return snapshot
 
 
@@ -295,7 +327,7 @@ def iterative_forecast(
     feature_columns: List[str],
     forecast_years: List[int],
 ) -> pd.DataFrame:
-    logger.info("Generating iterative forecasts through year %d", forecast_years[-1])
+    logger.info("Generating dynamic iterative forecasts through year %d without artificial multipliers", forecast_years[-1])
 
     working = snapshot.copy()
     results: List[pd.DataFrame] = []
@@ -304,37 +336,34 @@ def iterative_forecast(
         working["year"] = year
 
         x_input = working[feature_columns]
+        
+        # 1. Model predicts the YoY growth rate natively from features and autoregressive lags
+        predicted_gpu_growth = model_gpu.predict(x_input)
+        predicted_revenue_growth = model_revenue.predict(x_input)
 
-        predicted_gpu_demand = model_gpu.predict(x_input)
-        predicted_chip_revenue = model_revenue.predict(x_input)
+        # 2. Dynamically compound absolute demand and revenue from predicted growth rates
+        predicted_gpu_demand = working["ai_gpu_demand"] * (1.0 + predicted_gpu_growth)
+        predicted_chip_revenue = working["ai_chip_revenue"] * (1.0 + predicted_revenue_growth)
 
         year_result = working[["country_key"]].copy()
         year_result["forecast_year"] = year
         year_result["predicted_ai_gpu_demand"] = predicted_gpu_demand
         year_result["predicted_ai_chip_revenue"] = predicted_chip_revenue
-
         results.append(year_result)
 
-        working["global_semiconductor_revenue"] = (
-            working["global_semiconductor_revenue"] * 1.0
-            + predicted_chip_revenue * 0.05
-        )
-        working["market_growth_rate"] = (
-            (predicted_chip_revenue - working["ai_chip_revenue"])
-            / working["ai_chip_revenue"].replace(0, np.nan)
-        ).fillna(0.0)
+        # 3. Update autoregressive state organically for the next iteration (NO arbitrary drift)
+        working["ai_gpu_demand_lag_1"] = working["ai_gpu_demand"]
+        working["ai_chip_revenue_lag_1"] = working["ai_chip_revenue"]
+        
         working["ai_gpu_demand"] = predicted_gpu_demand
         working["ai_chip_revenue"] = predicted_chip_revenue
+        
+        # 4. Update market growth rate feature with the model's own predicted revenue growth
+        working["market_growth_rate"] = predicted_revenue_growth
 
     forecast_df = pd.concat(results, ignore_index=True)
-
-    forecast_df = forecast_df.merge(
-        country_lookup, on="country_key", how="left"
-    )
-
-    forecast_df = forecast_df.sort_values(
-        by=["forecast_year", "country_name"]
-    ).reset_index(drop=True)
+    forecast_df = forecast_df.merge(country_lookup, on="country_key", how="left")
+    forecast_df = forecast_df.sort_values(by=["forecast_year", "country_name"]).reset_index(drop=True)
 
     forecast_df["predicted_market_growth_rate"] = forecast_df.groupby("country_key")[
         "predicted_ai_chip_revenue"
@@ -369,12 +398,13 @@ def build_global_summary(forecast_country_df: pd.DataFrame) -> pd.DataFrame:
     )
 
     base_value = global_summary.loc[0, "global_market_value"]
+    min_year = global_summary["forecast_year"].min()
+    
     global_summary["cagr"] = global_summary.apply(
         lambda row: (
-            ((row["global_market_value"] / base_value) ** (1 / max(row["forecast_year"] - global_summary["forecast_year"].min(), 1)))
-            - 1
+            ((row["global_market_value"] / base_value) ** (1 / max(row["forecast_year"] - min_year, 1))) - 1
         )
-        if base_value not in (0, np.nan) and row["forecast_year"] != global_summary["forecast_year"].min()
+        if base_value not in (0, np.nan) and row["forecast_year"] != min_year
         else 0.0,
         axis=1,
     )
@@ -386,15 +416,14 @@ def save_pandas_as_parquet(
     spark: SparkSession, pdf: pd.DataFrame, output_path: Path
 ) -> None:
     logger.info("Saving output to %s using pandas to bypass PySpark worker crash", output_path)
-    
-    import shutil
+
     if output_path.exists():
         shutil.rmtree(output_path)
     output_path.mkdir(parents=True, exist_ok=True)
-    
+
     file_path = output_path / "part-00000.parquet"
     pdf.to_parquet(str(file_path), engine="pyarrow", index=False)
-    
+
     (output_path / "_SUCCESS").touch()
 
 
@@ -432,12 +461,13 @@ def run_pipeline() -> None:
     all_importances: List[pd.DataFrame] = []
     trained_models: Dict[str, xgb.XGBRegressor] = {}
 
-    for target_column in TARGET_COLUMNS:
+    # Train models on growth targets instead of absolute level ceilings
+    for target_column, growth_target in zip(TARGET_COLUMNS, GROWTH_TARGET_COLUMNS):
         model, metrics_df = train_xgboost_model(
-            train_df, test_df, feature_columns, target_column
+            train_df, test_df, feature_columns, growth_target
         )
         importance_df = extract_feature_importance(
-            model, feature_columns, target_column
+            model, feature_columns, growth_target
         )
 
         trained_models[target_column] = model
